@@ -1,0 +1,41 @@
+
+// GLOBAL
+.section-container {
+    display: none;
+}
+
+// PLACE FORM
+
+.form-meta-info-box i.fa {
+    margin-right:20px;
+}
+
+.form-meta-info-box p {
+    font-size:12px;
+    line-height: 16px;
+}
+
+.form-coordinate-button-container {
+    margin-top:20px;
+}
+
+.form-google-map {
+    width: 100%;
+    height: 300px;
+}
+
+.complete-address-button {
+    margin-left: 30px;
+}
+
+
+// PLACE TABLE
+.delete-many-button {
+}
+
+thead tr {
+}
+
+// PLACE DETAIL
+
+// PLACE CONFIRM DELETE

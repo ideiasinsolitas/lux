@@ -1,0 +1,37 @@
+
+<form id="place-browser-form" class="form-horizontal" role="form">
+  <table id="place-browser" class="place-browser table table-striped table-bordered">
+    <thead> 
+    <tr>
+        <th>name</th>
+        <th>street</th>
+        <th>number</th>
+    </tr>
+  </thead>
+  <tbody>
+
+      {{#result}}
+      <tr id="table-row-{{id}}" data-id="{{id}}">
+        <td class="browser-place_name">
+          {{name}}
+        </td>
+        
+        <td class="browser-place_address">
+          {{address.street}}
+        </td>
+
+        <td class="browser-place_address">
+          {{address.number}}
+        </td>
+        
+        <td class="browser-view" data-id="{{id}}">
+           <a href="#" id="table-delete-button-{{id}}" data-id="{{id}}" class="browser-view-button btn btn-default btn-xs"><i class="fa fa-info"></i></a>
+        </td>
+        
+      </tr>
+      {{/result}}
+
+    </tbody>
+  </table>
+</form>
+
