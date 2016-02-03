@@ -20,8 +20,8 @@ $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'aut
                 get('/{id}/restore', 'VoteController@delete')->name('core.interaction.vote.delete');
                 post('/delete', 'VoteController@deleteMany')->name('core.interaction.vote.delete.many');
                 post('/mark', 'VoteController@mark')->name('core.interaction.vote.mark');
-                get('/deleted/{page?}', 'VoteController@')->name('core.interaction.vote.deleted');
-                get('/deactivated/{page?}', 'VoteController@')->name('core.interaction.vote.deactivated');
+                get('/deleted/{page?}', 'VoteController@deleted')->name('core.interaction.vote.deleted');
+                get('/deactivated/{page?}', 'VoteController@deactivated')->name('core.interaction.vote.deactivated');
             });
 
             $router->group(['namespace' => 'Like', 'prefix' => 'like'], function () {
@@ -38,8 +38,8 @@ $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'aut
                 get('/{id}/restore', 'LikeController@delete')->name('core.interaction.like.delete');
                 post('/delete', 'LikeController@deleteMany')->name('core.interaction.like.delete.many');
                 post('/mark', 'LikeController@mark')->name('core.interaction.like.mark');
-                get('/deleted/{page?}', 'LikeController@')->name('core.interaction.like.deleted');
-                get('/deactivated/{page?}', 'LikeController@')->name('core.interaction.like.deactivated');
+                get('/deleted/{page?}', 'LikeController@deleted')->name('core.interaction.like.deleted');
+                get('/deactivated/{page?}', 'LikeController@deactivated')->name('core.interaction.like.deactivated');
             });
 
             $router->group(['namespace' => 'Friendship', 'prefix' => 'friendship'], function () {
