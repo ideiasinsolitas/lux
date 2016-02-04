@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('front.layouts.master')
 
 @section('content')
 	<div class="row">
@@ -10,7 +10,7 @@
 
 				<div class="panel-body">
 
-                       {!! Form::model($user, ['route' => 'frontend.profile.update', 'class' => 'form-horizontal', 'method' => 'PATCH']) !!}
+                       {!! Form::model($user, ['route' => 'front.profile.update', 'class' => 'form-horizontal', 'method' => 'PATCH']) !!}
 
                               <div class="form-group">
                                     {!! Form::label('name', trans('validation.attributes.name'), ['class' => ' control-label']) !!}

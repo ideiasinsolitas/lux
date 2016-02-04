@@ -2,20 +2,13 @@
 
 namespace App\Repositories\Common;
 
-trait Type
+/**
+ * @author Pedro Koblitz
+ * @package Maltz
+ * @subpackage Http
+ */
+
+trait Typed
 {
-    public function isTyped()
-    {
 
-    }
-
-    public function setType()
-    {
-
-    }
-    
-    public function getByType($type)
-    {
-
-    }
 }

@@ -44,7 +44,7 @@ class PasswordController extends Controller
      */
     public function getEmail()
     {
-        return view('frontend.auth.password');
+        return view('front.auth.password');
     }
 
     /**
@@ -88,7 +88,7 @@ class PasswordController extends Controller
         if (is_null($token)) {
             throw new NotFoundHttpException;
         }
-        return view('frontend.auth.reset')->withToken($token);
+        return view('front.auth.reset')->withToken($token);
     }
 
     /**
@@ -96,7 +96,7 @@ class PasswordController extends Controller
      */
     public function getChangePassword()
     {
-        return view('frontend.auth.change-password');
+        return view('front.auth.change-password');
     }
 
     /**
@@ -106,6 +106,6 @@ class PasswordController extends Controller
     public function postChangePassword(ChangePasswordRequest $request)
     {
         $this->user->changePassword($request->all());
-        return redirect()->route('frontend.dashboard')->withFlashSuccess(trans("strings.password_successfully_changed"));
+        return redirect()->route('front.dashboard')->withFlashSuccess(trans("strings.password_successfully_changed"));
     }
 }

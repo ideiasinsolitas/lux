@@ -28,15 +28,6 @@ class LikeController extends Controller
     }
 
     /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.interaction.like');
-    }
-
-    /**
      * Display a listing of the resource.
      * @param  integer $page [description]
      * @return [type]        [description]
@@ -44,6 +35,8 @@ class LikeController extends Controller
     public function index($page = 1)
     {
         $likes = $this->likes->getLikesPaginated(config('core.interaction.like.default_per_page'))->items();
+        
+        // $res = SPAService::response($likes);
         $res = [
             'status' => $likes ? 'OK' : 'error',
             'result' => $likes,
@@ -64,6 +57,8 @@ class LikeController extends Controller
         } else {
             $like = $this->likes->update($input);
         }
+        
+        // $res = SPAService::response($likes, trans('alerts.like.stored'));
         $res = [
             'status' => $like ? 'OK' : 'error',
             'message' => trans('alerts.like.stored'),

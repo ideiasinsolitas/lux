@@ -28,15 +28,6 @@ class VoteController extends Controller
     }
 
     /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.interaction.name');
-    }
-
-    /**
      * Display a listing of the resource.
      * @param  integer $page [description]
      * @return [type]        [description]

@@ -79,7 +79,7 @@ class NameController extends Controller
      */
     public function show($id)
     {
-        $name = $this->names->findOrFail($id, true);
+        $name = $this->names->findOrThrowException($id, true);
         $res = [
             'status' => $name ? 'OK' : 'error',
             'result' => $name,
@@ -110,7 +110,7 @@ class NameController extends Controller
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]
      */
-    public function deleteMany(DeleteRequest $request)
+    public function deleteMany($id, DeleteRequest $request)
     {
         $ids = $request->only('ids');
         $names = $this->names->deleteMany($var['ids']);

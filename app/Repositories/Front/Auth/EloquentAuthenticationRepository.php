@@ -108,7 +108,7 @@ class EloquentAuthenticationRepository implements AuthenticationContract
         $user = $this->users->findByUserNameOrCreate($this->getSocialUser($provider), $provider);
         $this->auth->login($user, true);
         event(new UserLoggedIn($user));
-        return redirect()->route('frontend.dashboard');
+        return redirect()->route('front.dashboard');
     }
 
     /**

@@ -28,15 +28,6 @@ class FriendshipController extends Controller
     }
 
     /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.interaction.friendship');
-    }
-
-    /**
      * Display a listing of the resource.
      * @param  integer $page [description]
      * @return [type]        [description]

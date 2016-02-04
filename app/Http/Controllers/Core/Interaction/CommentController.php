@@ -28,15 +28,6 @@ class CommentController extends Controller
     }
 
     /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.interaction.comment');
-    }
-
-    /**
      * Display a listing of the resource.
      * @param  integer $page [description]
      * @return [type]        [description]

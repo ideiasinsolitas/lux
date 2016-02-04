@@ -30,7 +30,7 @@ class AuthController extends Controller
      */
     public function getRegister()
     {
-        return view('frontend.auth.register');
+        return view('front.auth.register');
     }
 
     /**
@@ -45,7 +45,7 @@ class AuthController extends Controller
         } else {
             //Use native auth login because do not need to check status when registering
             auth()->login($this->auth->create($request->all()));
-            return redirect()->route('frontend.dashboard');
+            return redirect()->route('front.dashboard');
         }
     }
 
@@ -54,7 +54,7 @@ class AuthController extends Controller
      */
     public function getLogin()
     {
-        return view('frontend.auth.login')
+        return view('front.auth.login')
             ->withSocialiteLinks($this->getSocialLinks());
     }
 
@@ -123,7 +123,7 @@ class AuthController extends Controller
         //Don't know why the exception handler is not catching this
         try {
             $this->auth->confirmAccount($token);
-            return redirect()->route('frontend.dashboard')->withFlashSuccess("Your account has been successfully confirmed!");
+            return redirect()->route('front.dashboard')->withFlashSuccess("Your account has been successfully confirmed!");
         } catch (GeneralException $e) {
             return redirect()->back()->withInput()->withFlashDanger($e->getMessage());
         }

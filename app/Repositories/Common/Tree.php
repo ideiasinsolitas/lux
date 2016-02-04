@@ -2,20 +2,115 @@
 
 namespace App\Repositories\Common;
 
+/**
+ * @author Pedro Koblitz
+ * @package Maltz
+ * @subpackage Http
+ */
+
 trait Tree
 {
-    public function isHierachical()
+    protected $elements;
+
+    /**
+     * /
+     * @return [type] [description]
+     */
+    public function displayTree()
     {
-        return true;
+        $result = $this->display();
+        $tree = $this->generateTree($result);
+        return $tree;
     }
 
-    public function generateBranch()
+    /**
+     * /
+     * @param  array  $items [description]
+     * @return [type]        [description]
+     */
+    public function generate(array $items)
     {
-
+        $this->elements = array();
+        foreach ($items as $item) {
+            $this->elements[$item['id']] = $item;
+        }
+        return $this->buildTree();
     }
 
-    public function generateTree()
+    /**
+     * /
+     * @param  integer $branch_id [description]
+     * @return [type]             [description]
+     */
+    public function buildTree($branch_id = 0)
     {
+        $branch = array();
+        foreach ($this->elements as $element) {
+            if ((int) $element['parent_id'] === (int) $branch_id) {
+                $leafs = $this->buildTree($element['id']);
+                if ($leafs) {
+                    $element['leafs'] = $leafs;
+                }
+                $branch[$element['id']] = $element;
+                unset($this->elements[$element['id']]);
+            }
+        }
+        return $branch;
+    }
 
+    /**
+     * /
+     * @param [type]  $leaf_id  [description]
+     * @param integer $branch_id [description]
+     */
+    public function setBranch($leaf_id, $branch_id = 0)
+    {
+        return DB::table($this->mainTable)->update(['parent_id' => $branch_id])->where('id', $leaf_id);
+    }
+
+    /**
+     * /
+     * @param  [type] $leaf_id [description]
+     * @return [type]           [description]
+     */
+    public function getBranch($leaf_id)
+    {
+        return DB::table($this->mainTable)
+            ->where(
+                'id',
+                DB::table($this->mainTable)
+                    ->select('id')
+                    ->where('id', $leaf_id)
+            );
+    }
+
+    /**
+     * /
+     * @param  [type] $branch_id [description]
+     * @return [type]            [description]
+     */
+    public function getLeafs($branch_id)
+    {
+        return DB::table($this->mainTable)->where('parent_id', $branch_id)->get();
+    }
+
+    /**
+     * /
+     * @param [type] $branch_id [description]
+     * @param [type] $leaf_id  [description]
+     */
+    public function addLeaf($branch_id, $leaf_id)
+    {
+        return DB::table($this->mainTable)->update(['parent_id' => $branch_id])->where('id', $leaf_id);
+    }
+
+    /**
+     * /
+     * @param  [type] $leaf_id [description]
+     * @return [type]           [description]
+     */
+    public function removeLeaf($leaf_id)
+    {
+        return DB::table($this->mainTable)->update(['parent_id' => 0])->where('id', $leaf_id);
     }
 }

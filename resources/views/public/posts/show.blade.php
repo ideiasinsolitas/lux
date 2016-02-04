@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('front.layouts.master')
 
 @section('title')
   @if($post)

@@ -4,5 +4,7 @@ namespace App\Repositories;
 
 class Repository
 {
-    protected $model;
+    protected $modelNamespace;
+    protected $mainTable;
+    protected $modelSlug;
 }

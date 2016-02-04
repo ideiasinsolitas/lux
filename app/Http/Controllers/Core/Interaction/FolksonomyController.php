@@ -26,16 +26,7 @@ class FolksonomyController extends Controller
     {
         $this->folksonomies = $folksonomies;
     }
-
-    /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.interaction.folksonomy');
-    }
-
+    
     /**
      * Display a listing of the resource.
      * @param  integer $page [description]

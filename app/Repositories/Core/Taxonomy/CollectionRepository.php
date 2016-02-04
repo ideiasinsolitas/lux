@@ -1,22 +1,18 @@
 <?php
-namespace App\Repositories\Core\Taxonomy\Term;
+namespace App\Repositories\Package\Collection;
 
-use App\Models\Core\Taxonomy\Term\Term;
+use App\Models\Package\Collection\Collection;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
-/**
- * Class EloquentTermRepository
- * @package App\Repositories\Term
- */
-class TermRepository extends Repository
+class CollectionRepository extends Repository
 {
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\Taxonomy\Term\Term';
+        $this->model = 'App\Models\Package\Collection\Collection';
     }
 
     /**
@@ -27,7 +23,7 @@ class TermRepository extends Repository
      */
     public function findOrFail($id)
     {
-        return Term::findOrFail($id);
+        return Collection::findOrFail($id);
     }
 
     /**
@@ -37,18 +33,18 @@ class TermRepository extends Repository
      * @param int $status
      * @return mixed
      */
-    public function getTermsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    public function getCollectionsPaginated($per_page, $status = 1, $order_by = 'id', $sort = 'asc')
     {
-        return Term::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
+        return Collection::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
     }
 
     /**
      * @param $per_page
      * @return \Illuminate\Pagination\Paginator
      */
-    public function getDeletedTermsPaginated($per_page = 20)
+    public function getDeletedCollectionsPaginated($per_page)
     {
-        return Term::onlyTrashed()->paginate($per_page);
+        return Collection::onlyTrashed()->paginate($per_page);
     }
 
     /**
@@ -56,9 +52,9 @@ class TermRepository extends Repository
      * @param string $sort
      * @return mixed
      */
-    public function getAllTerms($order_by = 'id', $sort = 'asc')
+    public function getAllCollections($order_by = 'id', $sort = 'asc')
     {
-        return Term::orderBy($order_by, $sort)->get();
+        return Collection::orderBy($order_by, $sort)->get();
     }
 
     /**
@@ -67,17 +63,17 @@ class TermRepository extends Repository
      * @param $permissions
      * @return bool
      * @throws GeneralException
-     * @throws TermNeedsRolesException
+     * @throws CollectionNeedsRolesException
      */
     public function create($input)
     {
-        $term = Term::create($input);
+        $name = Collection::create($input);
 
-        if ($term->save()) {
+        if ($name->save()) {
             return true;
         }
 
-        throw new GeneralException('There was a problem creating this term. Please try again.');
+        throw new GeneralException('There was a problem creating this name. Please try again.');
     }
 
     /**
@@ -89,13 +85,13 @@ class TermRepository extends Repository
      */
     public function update($id, $input)
     {
-        $term = $this->findOrFail($id);
+        $name = $this->findOrThrowException($id);
 
-        if ($term->update($input)) {
+        if ($name->update($input)) {
             return true;
         }
 
-        throw new GeneralException('There was a problem updating this term. Please try again.');
+        throw new GeneralException('There was a problem updating this name. Please try again.');
     }
 
     /**
@@ -109,12 +105,12 @@ class TermRepository extends Repository
             throw new GeneralException("You can not delete yourself.");
         }
 
-        $term = $this->findOrFail($id);
-        if ($term->delete()) {
+        $name = $this->findOrThrowException($id);
+        if ($name->delete()) {
             return true;
         }
 
-        throw new GeneralException("There was a problem deleting this term. Please try again.");
+        throw new GeneralException("There was a problem deleting this name. Please try again.");
     }
 
     /**
@@ -124,10 +120,10 @@ class TermRepository extends Repository
      */
     public function delete($id)
     {
-        $term = $this->findOrFail($id, true);
+        $name = $this->findOrThrowException($id, true);
 
         try {
-            $term->forceDelete();
+            $name->forceDelete();
         } catch (\Exception $e) {
             throw new GeneralException($e->getMessage());
         }
@@ -140,13 +136,13 @@ class TermRepository extends Repository
      */
     public function restore($id)
     {
-        $term = $this->findOrFail($id);
+        $name = $this->findOrThrowException($id);
 
-        if ($term->restore()) {
+        if ($name->restore()) {
             return true;
         }
 
-        throw new GeneralException("There was a problem restoring this term. Please try again.");
+        throw new GeneralException("There was a problem restoring this name. Please try again.");
     }
 
     /**
@@ -161,15 +157,21 @@ class TermRepository extends Repository
             throw new GeneralException("You can not do that to yourself.");
         }
 
-        $term = $this->findOrFail($id);
-        $term->status = $status;
+        $name = $this->findOrThrowException($id);
+        $name->status = $status;
 
-        if ($term->save()) {
+        if ($name->save()) {
             return true;
         }
 
-        throw new GeneralException("There was a problem updating this term. Please try again.");
+        throw new GeneralException("There was a problem updating this name. Please try again.");
     }
+
+
+
+
+
+
 
 
 
@@ -180,52 +182,52 @@ class TermRepository extends Repository
      */
     /**
      * /
-     * @param  Record $record [description]
+     * @param  Request $request [description]
      * @return [type]         [description]
      */
-    public function insert(Record $record)
+    public function insert(Request $request)
     {
-        $sql = "INSERT INTO terms (type_id, parent_id)
-            VALUES (:type_id, :parent_id)";
-        $result = $this->db->run($sql, array('type_id' => $record->get('type_id'), 'parent_id' => $record->get('parent_id')));
-        $record->remove('type_id');
-        $record->remove('parent_id');
-        $record->set('item_name', 'term');
-        $record->set('item_id', $result->getLastInsertId());
-        $slug = $this->generateSlug($record->get('title'));
-        $record->set('slug', $slug);
-        $fields = $record->getFieldsList();
-        $values = $record->getInsertValueString();
+        $sql = "INSERT INTO collections (type_id, parent_id, created, modified)
+            VALUES (:type_id, :parent_id, NOW(), NOW())";
+        $result = $this->db->run($sql, array('type_id' => $request->get('type_id'), 'parent_id' => $request->get('parent_id')));
+        $request->remove('parent_id');
+        $request->remove('type_id');
+        $request->set('item_name', 'collection');
+        $request->set('item_id', $result->getLastInsertId());
+        $slug = $this->generateSlug($request->get('title'));
+        $request->set('slug', $slug);
+        $fields = $request->getFieldsList();
+        $values = $request->getInsertValueString();
         $sql = "INSERT INTO translations $fields 
             VALUES $values";
-        $result = $this->db->run($sql, $record->toArray());
+        $result = $this->db->run($sql, $request->toArray());
         return $result;
     }
 
     /**
      * /
-     * @param  Record $record [description]
+     * @param  Request $request [description]
      * @return [type]         [description]
      */
-    public function update(Record $record)
+    public function update(Request $request)
     {
-        $id = $record->get('id');
-        $record->remove('id');
-        $language = $record->get('language');
-        $record->remove('language');
-        $sql = "UPDATE terms SET parent_id=:parent_id WHERE id=:id";
-        $result = $this->db->run($sql, array('id' => $id, 'parent_id' => $record->get('parent_id')));
-        $record->remove('type_id');
-        $record->remove('parent_id');
-        $values = $record->getUpdateValueString();
+        $id = $request->get('id');
+        $request->remove('id');
+        $language = $request->get('language');
+        $request->remove('language');
+        $sql = "UPDATE collections SET parent_id=:parent_id, modified=NOW() WHERE id=:id";
+        $result = $this->db->run($sql, array('id' => $id, 'parent_id' => $request->get('parent_id')));
+        $request->remove('parent_id');
+        $request->remove('type_id');
+        $values = $request->getUpdateValueString();
         $sql = "UPDATE translations SET $values
             WHERE item_id=:id 
                 AND language=:language
                 AND item_name=:item_name";
-        $record->set('language', $language);
-        $record->set('item_name', 'term');
-        $record->set('id', $id);
-        $result = $this->db->run($sql, $record->toArray());
+        $request->set('language', $language);
+        $request->set('item_name', 'collection');
+        $request->set('id', $id);
+        $result = $this->db->run($sql, $request->toArray());
         return $result;
     }
 
@@ -236,23 +238,23 @@ class TermRepository extends Repository
      * @param  string $lang  [description]
      * @return [type]        [description]
      */
-    public function display($key = 'type', $order = 'asc', $lang = 'pt-br')
+    public function display($key = 'type', $order = 'desc', $lang = 'pt-br')
     {
         if (!is_string($key) || !is_string($order) || !is_string($lang)) {
             throw new \Exception("Invalid input type", 1);
         }
         
-        $sql = "SELECT t1.id AS id, t1.parent_id AS parent_id, t1.name AS name, t1.value AS value, t3.name AS type 
-        FROM terms t1 
+        $sql = "SELECT t1.id AS id, t1.activity AS activity, t1.created AS created, t1.modified AS modified, t2.slug AS slug, t2.title AS title, t2.description AS description, t3.name AS type
+        FROM collections t1
             JOIN translations t2
                 ON t1.id=t2.item_id
                 AND t2.item_name=:item_name
-            JOIN types t3 
-                ON t1.type_id=t3.id 
+            JOIN types t3
+                ON t1.type_id=t3.id
             WHERE t1.activity > 0
-            AND t2.language=:lang
+            AND t2.language=:language
             ORDER BY $key $order";
-        $result = $this->db->run($sql, array('item_name' => 'term', 'lang' => $lang));
+        $result = $this->db->run($sql, array('item_name' => 'collection', 'language' => $lang));
         return $result;
     }
 
@@ -272,18 +274,18 @@ class TermRepository extends Repository
         }
         
         $pagination = Pagination::paginate($page, $per_page);
-        $sql = "SELECT t1.id AS id, t1.parent_id AS parent_id, t1.name AS name, t1.value AS value, t3.name AS type 
-        FROM terms t1 
+        $sql = "SELECT t1.id AS id, t1.activity AS activity, t1.created AS created, t1.modified AS modified, t2.slug AS slug, t2.title AS title, t2.description AS description, t3.name AS type
+        FROM collections t1
             JOIN translations t2
                 ON t1.id=t2.item_id
                 AND t2.item_name=:item_name
-            JOIN types t3 
-                ON t1.type_id=t3.id 
+            JOIN types t3
+                ON t1.type_id=t3.id
             WHERE t1.activity > 0
             AND t2.language=:language
             ORDER BY $key $order
             LIMIT $pagination->offset,$pagination->limit";
-        $result = $this->db->run($sql, array('item_name' => 'term', 'language' => $lang));
+        $result = $this->db->run($sql, array('item_name' => 'collection', 'language' => $lang));
         return $result;
     }
 
@@ -297,26 +299,26 @@ class TermRepository extends Repository
      * @param  string  $lang     [description]
      * @return [type]            [description]
      */
-    public function findByType($type, $page = 1, $per_page = 12, $key = 'name', $order = 'asc', $lang = 'pt-br')
+    public function findByType($type, $page = 1, $per_page = 12, $key = 'type', $order = 'desc', $lang = 'pt-br')
     {
         if (!is_string($type) || !is_int($page) || !is_int($per_page) || !is_string($key) || !is_string($order) || !is_string($lang)) {
             throw new \Exception("Invalid input type", 1);
         }
         
         $pagination = Pagination::paginate($page, $per_page);
-        $sql = "SELECT t1.id AS id, t1.parent_id AS parent_id, t1.name AS name, t1.value AS value, t3.name AS type 
-        FROM terms t1 
+        $sql = "SELECT t1.id AS id, t1.activity AS activity, t1.created AS created, t1.modified AS modified, t2.slug AS slug, t2.title AS title, t2.description AS description, t3.name AS type
+        FROM collections t1
             JOIN translations t2
                 ON t1.id=t2.item_id
                 AND t2.item_name=:item_name
-            JOIN types t3 
-                ON t1.type_id=t3.id 
+            JOIN types t3
+                ON t1.type_id=t3.id
             WHERE t3.name=:type
             AND t1.activity > 0
-            AND t2.language=:lang
+            AND t2.language=:language
             ORDER BY $key $order
             LIMIT $pagination->offset,$pagination->limit";
-        $result = $this->db->run($sql, array('type' => $type, 'lang' => $lang));
+        $result = $this->db->run($sql, array('item_name' => 'collection', 'type' => $type, 'language' => $lang));
         return $result;
     }
 
@@ -331,18 +333,18 @@ class TermRepository extends Repository
         if (!is_int($id) || !is_string($lang)) {
             throw new \Exception("Invalid input type", 1);
         }
-        
-        $sql = "SELECT t1.id AS id, t1.parent_id AS parent_id, t1.name AS name, t1.value AS value, t2.name AS type 
-        FROM terms t1 
-            JOIN translations t2 
+
+        $sql = "SELECT t1.id AS id, t1.activity AS activity, t1.created AS created, t1.modified AS modified, t2.slug AS slug, t2.title AS title, t2.description AS description, t3.name AS type
+        FROM collections t1
+            JOIN translations t2
                 ON t1.id=t2.item_id
                 AND t2.item_name=:item_name
-            JOIN types t3 
+            JOIN types t3
                 ON t1.type_id=t3.id
             WHERE t1.id=:id
-        AND t2.language=:lang
-        AND t1.activity > 0";
-        $result = $this->db->run($sql, array('id' => $id, 'item_name' => 'term', 'lang' => $lang));
+            AND t2.language=:language
+            AND t1.activity > 0";
+        $result = $this->db->run($sql, array('item_name' => 'collection', 'id' => $id, 'language' => $lang));
         return $result;
     }
 }
