@@ -28,13 +28,13 @@ class District extends Model
      */
     public function addresses()
     {
-        return $this->hasMany('App\Models\Intel\GeoLocation\Address\Address');
+        return $this->hasMany('App\Models\Intel\GeoLocation\Address');
     }
 
     /**
      */
     public function city()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\City\City');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\City');
     }
 }

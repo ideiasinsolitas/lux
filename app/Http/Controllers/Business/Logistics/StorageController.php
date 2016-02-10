@@ -60,7 +60,7 @@ class StorageController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'place_id', 'name', 'description']);
         if (isset($input['id'])) {
             $storage = $this->storages->create($input);
         } else {
@@ -162,7 +162,7 @@ class StorageController extends Controller
      */
     public function deactivated()
     {
-        $storages = $this->storages->getStoragesPaginated(25);
+        $storages = $this->storages->getStoragesPaginated();
         $res = [
             'status' => $storages ? 'OK' : 'error',
             'result' => $storages,
@@ -175,7 +175,7 @@ class StorageController extends Controller
      */
     public function deleted()
     {
-        $storages = $this->storages->getDeletedStoragesPaginated(25);
+        $storages = $this->storages->getDeletedStoragesPaginated();
         $res = [
             'status' => $storages ? 'OK' : 'error',
             'result' => $storages,

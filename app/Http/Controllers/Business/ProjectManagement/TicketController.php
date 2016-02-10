@@ -55,7 +55,7 @@ class TicketController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'responsible_id', 'customer_id', 'project_id', 'problem_url', 'description', 'activity']);
         if (isset($input['id'])) {
             $ticket = $this->tickets->create($input);
         } else {
@@ -131,7 +131,7 @@ class TicketController extends Controller
      */
     public function deactivated()
     {
-        $tickets = $this->tickets->getTicketsPaginated(25);
+        $tickets = $this->tickets->getTicketsPaginated();
         return response()->json($res);
     }
 
@@ -140,7 +140,7 @@ class TicketController extends Controller
      */
     public function deleted()
     {
-        $tickets = $this->tickets->getDeletedTicketsPaginated(25);
+        $tickets = $this->tickets->getDeletedTicketsPaginated();
         return response()->json($res);
     }
 }

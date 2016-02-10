@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Business\Store\ShoppingCart;
+namespace App\Models\Business\Store;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ShoppingCart extends Model
+class Cart extends Model
 {
     /**
      * The database table used by the model.

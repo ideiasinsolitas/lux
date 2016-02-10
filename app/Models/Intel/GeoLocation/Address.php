@@ -28,27 +28,27 @@ class Address extends Model
      */
     public function coordinate()
     {
-        return $this->hasOne('App\Models\Intel\GeoLocation\Coordinate\Coordinate');
+        return $this->hasOne('App\Models\Intel\GeoLocation\Coordinate');
     }
 
     /**
      */
     public function places()
     {
-        return $this->hasMany('App\Models\Intel\GeoLocation\Place\Place');
+        return $this->hasMany('App\Models\Intel\GeoLocation\Place');
     }
 
     /**
      */
     public function district()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\District\District');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\District');
     }
 
     /**
      */
     public function city()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\City\City');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\City');
     }
 }

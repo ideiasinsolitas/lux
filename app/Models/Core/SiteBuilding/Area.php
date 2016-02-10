@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\Core\SiteBuilding\Area;
+namespace App\Models\Core\SiteBuilding;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Package\Area\Relationship\AreaRelationship;
 
 class Area extends Model
 {
-    use AreaRelationship;
-
     /**
      * The database table used by the model.
      * @var string

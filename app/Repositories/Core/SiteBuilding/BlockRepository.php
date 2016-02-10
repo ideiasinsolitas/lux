@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\SiteBuilding\Block;
+namespace App\Repositories\Core\SiteBuilding;
 
-use App\Models\Core\SiteBuilding\Block\Block;
+use App\Models\Core\SiteBuilding\Block;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 

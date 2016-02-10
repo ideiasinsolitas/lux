@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\SiteBuilding\Menu;
+namespace App\Repositories\Core\SiteBuilding;
 
-use App\Models\Core\SiteBuilding\Menu\Menu;
+use App\Models\Core\SiteBuilding\Menu;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 

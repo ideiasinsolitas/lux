@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Package\Project;
+namespace App\Repositories\Business\ProjectManagement;
 
-use App\Models\Package\Project\Project;
+use App\Models\Business\ProjectManagement\Project;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -16,7 +16,7 @@ class ProjectRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Project\Project';
+        $this->model = 'App\Models\Business\ProjectManagement\Project';
     }
 
     /**

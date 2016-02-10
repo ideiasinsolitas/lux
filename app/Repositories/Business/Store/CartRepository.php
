@@ -1,22 +1,22 @@
 <?php
-namespace App\Repositories\Package\ShoppingCart;
+namespace App\Repositories\Business\Store;
 
-use App\Models\Package\ShoppingCart\ShoppingCart;
+use App\Models\Business\Store\Cart;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
 /**
- * Class EloquentShoppingCartRepository
- * @package App\Repositories\ShoppingCart
+ * Class EloquentCartRepository
+ * @package App\Repositories\Cart
  */
-class ShoppingCartRepository extends Repository
+class CartRepository extends Repository
 {
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\ShoppingCart\ShoppingCart';
+        $this->model = 'App\Models\Business\Store\Cart';
     }
 
     /**
@@ -27,7 +27,7 @@ class ShoppingCartRepository extends Repository
      */
     public function findOrFail($id)
     {
-        return ShoppingCart::findOrFail($id);
+        return Cart::findOrFail($id);
     }
 
     /**
@@ -37,18 +37,18 @@ class ShoppingCartRepository extends Repository
      * @param int $status
      * @return mixed
      */
-    public function getShoppingCartsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    public function getCartsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
     {
-        return ShoppingCart::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
+        return Cart::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
     }
 
     /**
      * @param $per_page
      * @return \Illuminate\Pagination\Paginator
      */
-    public function getDeletedShoppingCartsPaginated($per_page = 20)
+    public function getDeletedCartsPaginated($per_page = 20)
     {
-        return ShoppingCart::where('activity', 0)->paginate($per_page);
+        return Cart::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -56,9 +56,9 @@ class ShoppingCartRepository extends Repository
      * @param string $sort
      * @return mixed
      */
-    public function getAllShoppingCarts($order_by = 'id', $sort = 'asc')
+    public function getAllCarts($order_by = 'id', $sort = 'asc')
     {
-        return ShoppingCart::orderBy($order_by, $sort)->get();
+        return Cart::orderBy($order_by, $sort)->get();
     }
 
     /**
@@ -67,11 +67,11 @@ class ShoppingCartRepository extends Repository
      * @param $permissions
      * @return bool
      * @throws GeneralException
-     * @throws ShoppingCartNeedsRolesException
+     * @throws CartNeedsRolesException
      */
     public function create($input)
     {
-        $cart = ShoppingCart::create($input);
+        $cart = Cart::create($input);
 
         if ($cart->save()) {
             return true;

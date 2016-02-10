@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\Interaction\Comment;
+namespace App\Repositories\Core\Interaction;
 
-use App\Models\Core\Interaction\Comment\Comment;
+use App\Models\Core\Interaction\Comment;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 

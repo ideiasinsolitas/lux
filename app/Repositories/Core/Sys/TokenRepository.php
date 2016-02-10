@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Package\Token;
+namespace App\Repositories\Core\Sys;
 
-use App\Models\Package\Token\Token;
+use App\Models\Core\Sys\Token;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -12,7 +12,7 @@ class TokenRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Token';
+        $this->model = 'App\Models\Core\Sys\Token';
     }
 
 

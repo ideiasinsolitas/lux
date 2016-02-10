@@ -1,9 +1,8 @@
 <?php
-namespace App\Repositories\Package\Customer;
+namespace App\Repositories\Business\Store;
 
-use App\Models\Package\Customer\Customer;
+use App\Models\Business\Store\Customer;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,14 +11,12 @@ use App\Exceptions\GeneralException;
  */
 class CustomerRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Customer\Customer';
+        $this->model = 'App\Models\Business\Store\Customer';
     }
 
     /**

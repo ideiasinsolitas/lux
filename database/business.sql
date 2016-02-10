@@ -59,7 +59,7 @@ CREATE TABLE `business_products` (
   `store_id` int(10) unsigned NOT NULL,
   `in_stock` int(10) unsigned NOT NULL DEFAULT 0,
   `price` decimal(10,2) unsigned NOT NULL,
-  `weigth` decimal(10,2) unsigned DEFAULT NULL,
+  `weight` decimal(10,2) unsigned DEFAULT NULL,
   `height` decimal(10,2) unsigned DEFAULT NULL,
   `width` decimal(10,2) unsigned DEFAULT NULL,
   `depth` decimal(10,2) unsigned DEFAULT NULL,

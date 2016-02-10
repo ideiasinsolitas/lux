@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Business\Store\Shop;
+namespace App\Models\Business\Store;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,6 +39,6 @@ class Shop extends Model
      */
     public function storages()
     {
-        return $this->belongsToMany('App\Models\Business\Logistics\Storage\Storage');
+        return $this->belongsToMany('App\Models\Business\Logistics\Storage');
     }
 }

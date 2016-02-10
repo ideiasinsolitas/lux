@@ -60,7 +60,7 @@ class PaymentController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'invoice_id', 'type_id', 'amount']);
         if (isset($input['id'])) {
             $payment = $this->payments->create($input);
         } else {
@@ -162,7 +162,7 @@ class PaymentController extends Controller
      */
     public function deactivated()
     {
-        $payments = $this->payments->getPaymentsPaginated(25);
+        $payments = $this->payments->getPaymentsPaginated();
         $res = [
             'status' => $payments ? 'OK' : 'error',
             'result' => $payments,
@@ -175,7 +175,7 @@ class PaymentController extends Controller
      */
     public function deleted()
     {
-        $payments = $this->payments->getDeletedPaymentsPaginated(25);
+        $payments = $this->payments->getDeletedPaymentsPaginated();
         $res = [
             'status' => $payments ? 'OK' : 'error',
             'result' => $payments,

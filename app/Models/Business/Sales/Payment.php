@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Business\Sales\Payment;
+namespace App\Models\Business\Sales;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +30,6 @@ class Payment extends Model
      */
     public function invoice()
     {
-        return $this->belongsTo('App\Models\Business\Sales\Invoice\Invoice');
+        return $this->belongsTo('App\Models\Business\Sales\Invoice');
     }
 }

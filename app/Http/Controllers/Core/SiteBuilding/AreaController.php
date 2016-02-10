@@ -58,7 +58,7 @@ class AreaController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'name', 'activity']);
         if (isset($input['id'])) {
             $area = $this->areas->create($input);
         } else {
@@ -176,7 +176,7 @@ class AreaController extends Controller
      */
     public function deactivated()
     {
-        $areas = $this->areas->getAreasPaginated(25);
+        $areas = $this->areas->getAreasPaginated();
         $res = [
             'status' => $areas ? 'OK' : 'error',
             'result' => $areas,
@@ -189,7 +189,7 @@ class AreaController extends Controller
      */
     public function deleted()
     {
-        $areas = $this->areas->getDeletedAreasPaginated(25);
+        $areas = $this->areas->getDeletedAreasPaginated();
         $res = [
             'status' => $areas ? 'OK' : 'error',
             'result' => $areas,

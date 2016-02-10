@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\Business\Logistics\Storage;
+namespace App\Models\Business\Logistics;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Business\Logistics\Storage\StorageRelationship;
 
 class Storage extends Model
 {
-    use StorageRelationship;
-
     /**
      * The database table used by the model.
      * @var string

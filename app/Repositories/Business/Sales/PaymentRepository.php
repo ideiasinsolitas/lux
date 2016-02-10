@@ -1,9 +1,8 @@
 <?php
-namespace App\Repositories\Package\Payment;
+namespace App\Repositories\Business\Sales;
 
-use App\Models\Package\Payment\Payment;
+use App\Models\Business\Sales\Payment;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,14 +11,12 @@ use App\Exceptions\GeneralException;
  */
 class PaymentRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Payment\Payment';
+        $this->model = 'App\Models\Business\Sales\Payment';
     }
 
     /**

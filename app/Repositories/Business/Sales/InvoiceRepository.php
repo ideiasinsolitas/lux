@@ -1,9 +1,8 @@
 <?php
-namespace App\Repositories\Package\Invoice;
+namespace App\Repositories\Business\Sales;
 
-use App\Models\Package\Invoice\Invoice;
+use App\Models\Business\Sales\Invoice;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,14 +11,12 @@ use App\Exceptions\GeneralException;
  */
 class InvoiceRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Invoice\Invoice';
+        $this->model = 'App\Models\Business\Sales\Invoice';
     }
 
     /**

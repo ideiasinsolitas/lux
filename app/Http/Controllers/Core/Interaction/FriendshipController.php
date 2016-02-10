@@ -49,7 +49,7 @@ class FriendshipController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['source_id', 'target_id']);
         if (isset($input['id'])) {
             $friendship = $this->friendships->create($input);
         } else {
@@ -167,7 +167,7 @@ class FriendshipController extends Controller
      */
     public function deactivated()
     {
-        $friendships = $this->friendships->getFriendshipsPaginated(25);
+        $friendships = $this->friendships->getFriendshipsPaginated();
         $res = [
             'status' => $friendships ? 'OK' : 'error',
             'result' => $friendships,
@@ -180,7 +180,7 @@ class FriendshipController extends Controller
      */
     public function deleted()
     {
-        $friendships = $this->friendships->getDeletedFriendshipsPaginated(25);
+        $friendships = $this->friendships->getDeletedFriendshipsPaginated();
         $res = [
             'status' => $friendships ? 'OK' : 'error',
             'result' => $friendships,

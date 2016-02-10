@@ -1,5 +1,5 @@
 <?php
-namespace App\Repositories\Package\Node;
+namespace App\Repositories\Core\SiteBuilding\Node;
 
 use App\Models\Package\Node\Node;
 use App\Repositories\Repository;
@@ -43,7 +43,7 @@ class NodeRepository extends Repository
      */
     public function __construct()
     {
-        $this->modelNamespace = 'App\Models\Package\Node';
+        $this->modelNamespace = 'App\Models\SiteBuilding\Node\Node';
         $this->mainTable = 'publishing_nodes AS main';
         $this->type = 'Node';
     }

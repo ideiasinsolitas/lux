@@ -28,13 +28,13 @@ class Province extends Model
      */
     public function cities()
     {
-        return $this->hasMany('App\Models\Intel\GeoLocation\City\City');
+        return $this->hasMany('App\Models\Intel\GeoLocation\City');
     }
 
     /**
      */
     public function country()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\Country\Country');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\Country');
     }
 }

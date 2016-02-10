@@ -33,6 +33,6 @@ class Coordinate extends Model
      */
     public function addresses()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\Address\Address');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\Address');
     }
 }

@@ -62,7 +62,7 @@ class ProjectController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'node_id', 'name', 'description', 'activity']);
         $project = isset($input['id'])
             ? $this->projects->create($input)
             : $this->projects->update($input);
@@ -127,7 +127,7 @@ class ProjectController extends Controller
      */
     public function deactivated()
     {
-        $projects = $this->projects->getProjectsPaginated(25);
+        $projects = $this->projects->getProjectsPaginated();
     }
 
     /**
@@ -135,6 +135,6 @@ class ProjectController extends Controller
      */
     public function deleted()
     {
-        $projects = $this->projects->getDeletedProjectsPaginated(25);
+        $projects = $this->projects->getDeletedProjectsPaginated();
     }
 }

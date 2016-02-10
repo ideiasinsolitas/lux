@@ -58,7 +58,7 @@ class BlockController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'area_id', 'name']);
         if (isset($input['id'])) {
             $block = $this->blocks->create($input);
         } else {
@@ -176,7 +176,7 @@ class BlockController extends Controller
      */
     public function deactivated()
     {
-        $blocks = $this->blocks->getBlocksPaginated(25);
+        $blocks = $this->blocks->getBlocksPaginated();
         $res = [
             'status' => $blocks ? 'OK' : 'error',
             'result' => $blocks,
@@ -189,7 +189,7 @@ class BlockController extends Controller
      */
     public function deleted()
     {
-        $blocks = $this->blocks->getDeletedBlocksPaginated(25);
+        $blocks = $this->blocks->getDeletedBlocksPaginated();
         $res = [
             'status' => $blocks ? 'OK' : 'error',
             'result' => $blocks,

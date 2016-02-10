@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\Business\Logistics\Shipping;
+namespace App\Models\Business\Logistics;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Business\Logistics\Shipping\ShippingRelationship;
 
 class Shipping extends Model
 {
-    use ShippingRelationship;
-
     /**
      * The database table used by the model.
      * @var string

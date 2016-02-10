@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Package\Shop;
+namespace App\Repositories\Business\Store;
 
-use App\Models\Package\Shop\Shop;
+use App\Models\Business\Store\Shop;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -16,7 +16,7 @@ class ShopRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Shop\Shop';
+        $this->model = 'App\Models\Business\Store\Shop';
     }
 
     /**

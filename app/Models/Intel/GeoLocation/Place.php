@@ -29,6 +29,6 @@ class Place extends Model
      */
     public function address()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\Address\Address');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\Address');
     }
 }

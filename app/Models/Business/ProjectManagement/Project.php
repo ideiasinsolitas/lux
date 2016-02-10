@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Business\ProjectManagement\Project;
+namespace App\Models\Business\ProjectManagement;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +30,6 @@ class Project extends Model
      */
     public function tickets()
     {
-        return $this->hasMany('App\Models\Business\ProjectManagement\Ticket\Ticket');
+        return $this->hasMany('App\Models\Business\ProjectManagement\Ticket');
     }
 }

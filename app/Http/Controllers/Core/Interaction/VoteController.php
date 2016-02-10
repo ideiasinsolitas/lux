@@ -49,7 +49,7 @@ class VoteController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['user_id', 'votable_type', 'votable_id', 'vote']);
         if (isset($input['id'])) {
             $vote = $this->votes->create($input);
         } else {
@@ -167,7 +167,7 @@ class VoteController extends Controller
      */
     public function deactivated()
     {
-        $votes = $this->votes->getVotesPaginated(25);
+        $votes = $this->votes->getVotesPaginated();
         $res = [
             'status' => $votes ? 'OK' : 'error',
             'result' => $votes,
@@ -180,7 +180,7 @@ class VoteController extends Controller
      */
     public function deleted()
     {
-        $votes = $this->votes->getDeletedVotesPaginated(25);
+        $votes = $this->votes->getDeletedVotesPaginated();
         $res = [
             'status' => $votes ? 'OK' : 'error',
             'result' => $votes,

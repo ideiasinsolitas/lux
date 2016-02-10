@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\SiteBuilding\Area;
+namespace App\Repositories\Core\SiteBuilding;
 
-use App\Models\Core\SiteBuilding\Area\Area;
+use App\Models\Core\SiteBuilding\Area;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 

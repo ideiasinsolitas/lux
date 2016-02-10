@@ -49,7 +49,7 @@ class CommentController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'parent_id', 'user_id', 'commment']);
         if (isset($input['id'])) {
             $comment = $this->comments->create($input);
         } else {
@@ -173,7 +173,7 @@ class CommentController extends Controller
      */
     public function deactivated()
     {
-        $comments = $this->comments->getCommentsPaginated(25);
+        $comments = $this->comments->getCommentsPaginated();
         $res = [
             'status' => $comments ? 'OK' : 'error',
             'result' => $comments,
@@ -186,7 +186,7 @@ class CommentController extends Controller
      */
     public function deleted()
     {
-        $comments = $this->comments->getDeletedCommentsPaginated(25);
+        $comments = $this->comments->getDeletedCommentsPaginated();
         $res = [
             'status' => $comments ? 'OK' : 'error',
             'result' => $comments,

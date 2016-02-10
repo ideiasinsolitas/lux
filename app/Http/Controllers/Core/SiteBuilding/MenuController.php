@@ -58,7 +58,7 @@ class MenuController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'block_id', 'name']);
         if (isset($input['id'])) {
             $menu = $this->menus->create($input);
         } else {
@@ -176,7 +176,7 @@ class MenuController extends Controller
      */
     public function deactivated()
     {
-        $menus = $this->menus->getMenusPaginated(25);
+        $menus = $this->menus->getMenusPaginated();
         $res = [
             'status' => $menus ? 'OK' : 'error',
             'result' => $menus,
@@ -189,7 +189,7 @@ class MenuController extends Controller
      */
     public function deleted()
     {
-        $menus = $this->menus->getDeletedMenusPaginated(25);
+        $menus = $this->menus->getDeletedMenusPaginated();
         $res = [
             'status' => $menus ? 'OK' : 'error',
             'result' => $menus,

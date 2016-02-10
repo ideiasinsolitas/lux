@@ -58,7 +58,7 @@ class ShippingController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'order_id', 'type_id']);
         $shipping = isset($input['id'])
             ? $this->shippings->create($input)
             : $this->shippings->update($input);
@@ -129,7 +129,7 @@ class ShippingController extends Controller
      */
     public function deactivated()
     {
-        $shippings = $this->shippings->getShippingsPaginated(25);
+        $shippings = $this->shippings->getShippingsPaginated();
         return Format::apiResponse($shippings);
     }
 
@@ -138,7 +138,7 @@ class ShippingController extends Controller
      */
     public function deleted()
     {
-        $shippings = $this->shippings->getDeletedShippingsPaginated(25);
+        $shippings = $this->shippings->getDeletedShippingsPaginated();
         return Format::apiResponse($shippings);
     }
 }

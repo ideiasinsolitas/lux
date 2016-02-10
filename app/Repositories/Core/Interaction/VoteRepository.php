@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\Interaction\Vote;
+namespace App\Repositories\Core\Interaction;
 
-use App\Models\Core\Interaction\Vote\Vote;
+use App\Models\Core\Interaction\Vote;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 

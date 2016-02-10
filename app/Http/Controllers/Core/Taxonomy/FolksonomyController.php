@@ -49,7 +49,7 @@ class FolksonomyController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['term_id', 'user_id', 'usertaggable_type', 'usertaggable_id']);
         if (isset($input['id'])) {
             $folksonomy = $this->folksonomies->create($input);
         } else {
@@ -167,7 +167,7 @@ class FolksonomyController extends Controller
      */
     public function deactivated()
     {
-        $folksonomies = $this->folksonomies->getFolksonomysPaginated(25);
+        $folksonomies = $this->folksonomies->getFolksonomysPaginated();
         $res = [
             'status' => $folksonomies ? 'OK' : 'error',
             'result' => $folksonomies,
@@ -180,7 +180,7 @@ class FolksonomyController extends Controller
      */
     public function deleted()
     {
-        $folksonomies = $this->folksonomies->getDeletedFolksonomysPaginated(25);
+        $folksonomies = $this->folksonomies->getDeletedFolksonomysPaginated();
         $res = [
             'status' => $folksonomies ? 'OK' : 'error',
             'result' => $folksonomies,

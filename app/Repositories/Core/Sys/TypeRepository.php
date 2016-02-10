@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\Sys\Type;
+namespace App\Repositories\Core\Sys;
 
-use App\Models\Core\Sys\Type\Type;
+use App\Models\Core\Sys\Type;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -16,7 +16,7 @@ class TypeRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\Sys\Type\Type';
+        $this->model = 'App\Models\Core\Sys\Type';
     }
 
     /**

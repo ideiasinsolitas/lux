@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Business\Logistics\Storage;
+namespace App\Repositories\Business\Logistics;
 
-use App\Models\Business\Logistics\Storage\Storage;
+use App\Models\Business\Logistics\Storage;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -16,7 +16,7 @@ class StorageRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Logistics\Storage\Storage';
+        $this->model = 'App\Models\Business\Logistics\Storage';
     }
 
     /**

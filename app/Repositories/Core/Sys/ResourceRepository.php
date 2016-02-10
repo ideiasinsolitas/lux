@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Package\Resource;
+namespace App\Repositories\Core\Sys;
 
-use App\Models\Package\Resource\Resource;
+use App\Models\Core\Sys\Resource;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -110,41 +110,6 @@ class ResourceRepository extends Repository
 
     /**
      * /
-     * @param  string $key   [description]
-     * @param  string $order [description]
-     * @param  string $lang  [description]
-     * @return [type]        [description]
-     */
-    public function display($order_by = 'title', $sort = 'asc', $lang = 'pt-br')
-    {
-        return DB::table('publishing_resources')
-            ->join('translations', function ($q) {
-                $q->on('publishing_resources.id', '=', 'core_translations.translatable_id')
-                    ->where('core_translations.translatable_type', '=', 'Resource');
-            })
-            ->join()
-            ->select(
-                'publishing_resources.id',
-                'publishing_resources.url',
-                'publishing_resources.filepath',
-                'publishing_resources.filename',
-                'publishing_resources.extension',
-                'publishing_resources.embed',
-                'publishing_resources.activity',
-                'publishing_resources.created',
-                'publishing_resources.modified',
-                'core_translations.title',
-                'core_translations.description',
-                DB::raw('core_types.name AS type')
-            )
-            ->where('core_translations.language', $lang)
-            ->where('publishing_resources.activity', '>', 0)
-            ->orderBy($order_by, $sort)
-            ->get();
-    }
-
-    /**
-     * /
      * @param  integer $page     [description]
      * @param  integer $per_page [description]
      * @param  string  $key      [description]
@@ -193,11 +158,6 @@ class ResourceRepository extends Repository
     public function findByType($type, $per_page = 20, $order_by = 'title', $sort = 'asc', $lang = 'pt-br')
     {
         return DB::table('publishing_resources')
-            ->join('translations', function ($q) {
-                $q->on('publishing_resources.id', '=', 'core_translations.translatable_id')
-                    ->where('core_translations.translatable_type', '=', 'Resource');
-            })
-            ->join()
             ->select(
                 'publishing_resources.id',
                 'publishing_resources.url',

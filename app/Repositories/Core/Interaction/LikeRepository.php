@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\Interaction\Like;
+namespace App\Repositories\Core\Interaction;
 
-use App\Models\Core\Interaction\Like\Like;
+use App\Models\Core\Interaction\Like;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 

@@ -60,7 +60,7 @@ class InvoiceController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'hours', 'rate', 'total', 'activity']);
         if (isset($input['id'])) {
             $invoice = $this->invoices->create($input);
         } else {
@@ -162,7 +162,7 @@ class InvoiceController extends Controller
      */
     public function deactivated()
     {
-        $invoices = $this->invoices->getInvoicesPaginated(25);
+        $invoices = $this->invoices->getInvoicesPaginated();
         $res = [
             'status' => $invoices ? 'OK' : 'error',
             'result' => $invoices,
@@ -175,7 +175,7 @@ class InvoiceController extends Controller
      */
     public function deleted()
     {
-        $invoices = $this->invoices->getDeletedInvoicesPaginated(25);
+        $invoices = $this->invoices->getDeletedInvoicesPaginated();
         $res = [
             'status' => $invoices ? 'OK' : 'error',
             'result' => $invoices,

@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Models\Business\ProjectManagement\TimeTracking;
+namespace App\Models\Business\ProjectManagement;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Business\ProjectManagement\TimeTracking\TimeTrackingRelationship;
 
 class TimeTracking extends Model
 {
-    use TimeTrackingRelationship;
-
-    /**
+   /**
      * The database table used by the model.
      * @var string
      */
@@ -32,6 +28,6 @@ class TimeTracking extends Model
      */
     public function ticket()
     {
-        return $this->belongsTo('App\Models\Project\Ticket\Ticket');
+        return $this->belongsTo('App\Models\Project\Ticket');
     }
 }

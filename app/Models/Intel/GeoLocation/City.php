@@ -28,27 +28,27 @@ class City extends Model
      */
     public function district()
     {
-        return $this->hasMany('App\Models\Intel\GeoLocation\District\District');
+        return $this->hasMany('App\Models\Intel\GeoLocation\District');
     }
 
     /**
      */
     public function addresses()
     {
-        return $this->hasMany('App\Models\Intel\GeoLocation\Address\Address');
+        return $this->hasMany('App\Models\Intel\GeoLocation\Address');
     }
 
     /**
      */
     public function province()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\Province\Province');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\Province');
     }
 
     /**
      */
     public function country()
     {
-        return $this->belongsTo('App\Models\Intel\GeoLocation\Country\Country');
+        return $this->belongsTo('App\Models\Intel\GeoLocation\Country');
     }
 }

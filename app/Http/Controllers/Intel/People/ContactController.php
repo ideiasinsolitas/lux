@@ -176,7 +176,7 @@ class NameController extends Controller
      */
     public function deactivated()
     {
-        $names = $this->names->getNamesPaginated(25);
+        $names = $this->names->getNamesPaginated();
         $res = [
             'status' => $names ? 'OK' : 'error',
             'result' => $names,
@@ -189,7 +189,7 @@ class NameController extends Controller
      */
     public function deleted()
     {
-        $names = $this->names->getDeletedNamesPaginated(25);
+        $names = $this->names->getDeletedNamesPaginated();
         $res = [
             'status' => $names ? 'OK' : 'error',
             'result' => $names,

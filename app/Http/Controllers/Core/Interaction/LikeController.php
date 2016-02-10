@@ -51,7 +51,7 @@ class LikeController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['user_id', 'likeable_type', 'likeable_id']);
         if (isset($input['id'])) {
             $like = $this->likes->create($input);
         } else {
@@ -171,7 +171,7 @@ class LikeController extends Controller
      */
     public function deactivated()
     {
-        $likes = $this->likes->getLikesPaginated(25);
+        $likes = $this->likes->getLikesPaginated();
         $res = [
             'status' => $likes ? 'OK' : 'error',
             'result' => $likes,
@@ -184,7 +184,7 @@ class LikeController extends Controller
      */
     public function deleted()
     {
-        $likes = $this->likes->getDeletedLikesPaginated(25);
+        $likes = $this->likes->getDeletedLikesPaginated();
         $res = [
             'status' => $likes ? 'OK' : 'error',
             'result' => $likes,

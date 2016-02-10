@@ -10,7 +10,7 @@ class Node extends Model
      * The database table used by the model.
      * @var string
      */
-    protected $table = 'publishing_nodes';
+    protected $table = 'core_nodes';
 
     /**
      * The attributes that are not mass assignable.

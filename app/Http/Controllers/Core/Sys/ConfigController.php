@@ -58,7 +58,7 @@ class ConfigController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'key', 'value', 'format', 'activity']);
         if (isset($input['id'])) {
             $config = $this->configs->create($input);
         } else {
@@ -176,7 +176,7 @@ class ConfigController extends Controller
      */
     public function deactivated()
     {
-        $configs = $this->configs->getConfigsPaginated(25);
+        $configs = $this->configs->getConfigsPaginated();
         $res = [
             'status' => $configs ? 'OK' : 'error',
             'result' => $configs,
@@ -189,7 +189,7 @@ class ConfigController extends Controller
      */
     public function deleted()
     {
-        $configs = $this->configs->getDeletedConfigsPaginated(25);
+        $configs = $this->configs->getDeletedConfigsPaginated();
         $res = [
             'status' => $configs ? 'OK' : 'error',
             'result' => $configs,

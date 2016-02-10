@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Core\Sys\Config;
+namespace App\Repositories\Core\Sys;
 
-use App\Models\Core\Sys\Config\Config;
+use App\Models\Core\Sys\Config;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -16,7 +16,7 @@ class ConfigRepository extends Repository
      */
     public function __construct()
     {
-        $this->modelPath = 'App\Models\Core\Sys\Config\Config';
+        $this->modelPath = 'App\Models\Core\Sys\Config';
     }
 
     /**

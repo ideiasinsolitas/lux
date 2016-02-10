@@ -9,7 +9,7 @@ class TimeTrackingRepository
 {
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Project\TimeTracking\TimeTracking';
+        $this->model = 'App\Models\Business\ProjectManagement\TimeTracking';
     }
 
     /**
@@ -19,19 +19,13 @@ class TimeTrackingRepository
      */
     protected function getCurrentId($user_id)
     {
-        if (!is_int($user_id)) {
-            throw new \Exception("User_id must be integer.", 002);
-        }
-
-        $sql = "SELECT t1.ticket_id 
-        FROM ticket_time_tracking t1
-            JOIN tickets t2
-                ON t1.ticket_id=t2.id
-            JOIN users t3
-                ON t2.user_id=t3.id
-            WHERE stop=NULL
-            AND t2.user_id=:user_id";
-        return $this->db->run($sql, array('user_id' => $user_id));
+        return DB::table('business_time_tracking')
+            ->join('business_tickets', 'business_time_tracking.ticket_id', 'business_tickets.id')
+            ->join('core_users', 'business_tickets.user_id', 'core_users.id')
+            ->select()
+            ->where('business_time_tracking.stop', null)
+            ->where('core_users.user_id', $user_id)
+            ->get();
     }
 
     /**
@@ -42,16 +36,15 @@ class TimeTrackingRepository
      */
     public function start($ticket_id, $user_id)
     {
-        if (!is_int($ticket_id) || !is_int($user_id)) {
-            throw new \Exception("Invalid input type", 001);
-        }
-
-        if ($this->getCurrentId($user_id)->isSuccessful()) {
+        if ($this->getCurrentId($user_id)) {
             $this->stop($user_id);
         }
 
-        $sql = "INSERT INTO ticket_time_tracking ticket_id, (start) VALUES (:ticket_id, NOW())";
-        return $this->db->run($sql, array('ticket_id' => $ticket_id));
+        return DB::table('business_time_tracking')
+            ->insert([
+                'ticket_id' => $ticket_id,
+                'start' => DB::raw('NOW()')
+                ]);
     }
 
     /**
@@ -61,18 +54,14 @@ class TimeTrackingRepository
      */
     public function stop($user_id)
     {
-        if (!is_int($user_id)) {
-            throw new \Exception("User_id must be integer.", 003);
-        }
-
         $currentId = $this->getCurrentId($user_id);
 
-        if ($currentId->isSuccessful()) {
-            $id = $currentId->getFirstRecord()->get('id');
-            $sql = "UPDATE ticket_time_tracking SET stop=NOW() WHERE id=:id";
-            return $this->db->run($sql, array('id' => $id));
+        if ($currentId) {
+            $id = $currentId;
+            return DB::table('business_time_tracking')
+                ->update()
+                ->where('id', $id);
         }
-
         throw new \Exception("Nothing to stop.", 004);
     }
 }

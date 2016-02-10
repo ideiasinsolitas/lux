@@ -1,9 +1,9 @@
 <?php
-namespace App\Repositories\Business\Calendar\Calendar;
+namespace App\Repositories\Intel\Timeline;
 
 use Illuminate\Support\Facades\DB;
 
-use App\Models\Business\Calendar\Calendar\Calendar;
+use App\Models\Intel\Timeline\Calendar;
 use App\Repositories\Repository;
 
 use App\Exceptions\GeneralException;
@@ -19,7 +19,7 @@ class CalendarRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Calendar\Calendar\Calendar';
+        $this->model = 'App\Models\Intel\Timeline\Calendar';
     }
 
     /**

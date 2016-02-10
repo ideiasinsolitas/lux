@@ -62,7 +62,7 @@ class TimeTrackingController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'ticket_id', 'start', 'stop']);
         if (isset($input['id'])) {
             $timeTracking = $this->timeTracking->create($input);
         } else {
@@ -164,7 +164,7 @@ class TimeTrackingController extends Controller
      */
     public function deactivated()
     {
-        $timeTracking = $this->timeTracking->getTimeTrackingsPaginated(25);
+        $timeTracking = $this->timeTracking->getTimeTrackingsPaginated();
         $res = [
             'status' => $timeTracking ? 'OK' : 'error',
             'result' => $timeTracking,
@@ -177,7 +177,7 @@ class TimeTrackingController extends Controller
      */
     public function deleted()
     {
-        $timeTracking = $this->timeTracking->getDeletedTimeTrackingsPaginated(25);
+        $timeTracking = $this->timeTracking->getDeletedTimeTrackingsPaginated();
         $res = [
             'status' => $timeTracking ? 'OK' : 'error',
             'result' => $timeTracking,

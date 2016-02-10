@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\Core\SiteBuilding\Block;
+namespace App\Models\Core\SiteBuilding;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Package\Block\Relationship\BlockRelationship;
 
 class Block extends Model
 {
-    use BlockRelationship;
-
     /**
      * The database table used by the model.
      * @var string

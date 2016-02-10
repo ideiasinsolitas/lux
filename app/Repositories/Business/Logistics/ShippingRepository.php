@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Business\Logistics\Shipping;
+namespace App\Repositories\Business\Logistics;
 
-use App\Models\Business\Logistics\Shipping\Shipping;
+use App\Models\Business\Logistics\Shipping;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -16,7 +16,7 @@ class ShippingRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Logistics\Shipping\Shipping';
+        $this->model = 'App\Models\Business\Logistics\Shipping';
     }
 
     /**

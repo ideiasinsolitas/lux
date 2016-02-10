@@ -58,7 +58,19 @@ class NameController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only([
+            'translatable_type',
+            'translatable_id',
+            'language',
+            'slug',
+            'name',
+            'description',
+            'title',
+            'subtitle',
+            'tagline',
+            'excerpt',
+            'body'
+            ]);
         if (isset($input['id'])) {
             $name = $this->names->create($input);
         } else {
@@ -176,7 +188,7 @@ class NameController extends Controller
      */
     public function deactivated()
     {
-        $names = $this->names->getNamesPaginated(25);
+        $names = $this->names->getNamesPaginated();
         $res = [
             'status' => $names ? 'OK' : 'error',
             'result' => $names,
@@ -189,7 +201,7 @@ class NameController extends Controller
      */
     public function deleted()
     {
-        $names = $this->names->getDeletedNamesPaginated(25);
+        $names = $this->names->getDeletedNamesPaginated();
         $res = [
             'status' => $names ? 'OK' : 'error',
             'result' => $names,

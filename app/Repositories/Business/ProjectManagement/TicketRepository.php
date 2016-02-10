@@ -1,7 +1,7 @@
 <?php
-namespace App\Repositories\Package\Ticket;
+namespace App\Repositories\Business\ProjectManagement;
 
-use App\Models\Package\Ticket\Ticket;
+use App\Models\Business\ProjectManagement\Ticket;
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
 
@@ -16,7 +16,7 @@ class TicketRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Ticket\Ticket';
+        $this->model = 'App\Models\Business\ProjectManagement\Ticket';
     }
 
     /**

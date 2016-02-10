@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Business\Sales\Invoice;
+namespace App\Models\Business\Sales;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,7 +44,7 @@ class Invoice extends Model
      */
     public function payment()
     {
-        return $this->hasOne('App\Models\Business\Sales\Payment\Payment');
+        return $this->hasOne('App\Models\Business\Sales\Payment');
     }
     
     /**
@@ -53,7 +53,7 @@ class Invoice extends Model
      */
     public function orders()
     {
-        return $this->hasMany('App\Models\Business\Sales\Order\Order');
+        return $this->hasMany('App\Models\Business\Sales\Order');
     }
 
     /**
@@ -62,7 +62,7 @@ class Invoice extends Model
      */
     public function shop()
     {
-        return $this->belongsTo('App\Models\Business\Store\Shop\Shop');
+        return $this->belongsTo('App\Models\Business\Store\Shop');
     }
 
     /**
@@ -71,6 +71,6 @@ class Invoice extends Model
      */
     public function project()
     {
-        return $this->belongsTo('App\Models\Business\ProjectManagement\Project\Project');
+        return $this->belongsTo('App\Models\Business\ProjectManagement\Project');
     }
 }

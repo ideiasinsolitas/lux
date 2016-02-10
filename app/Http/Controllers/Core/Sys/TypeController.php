@@ -58,7 +58,7 @@ class TypeController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
+        $input = $request->only(['id', 'class', 'name']);
         if (isset($input['id'])) {
             $type = $this->types->create($input);
         } else {
@@ -176,7 +176,7 @@ class TypeController extends Controller
      */
     public function deactivated()
     {
-        $types = $this->types->getTypesPaginated(25);
+        $types = $this->types->getTypesPaginated();
         $res = [
             'status' => $types ? 'OK' : 'error',
             'result' => $types,
@@ -189,7 +189,7 @@ class TypeController extends Controller
      */
     public function deleted()
     {
-        $types = $this->types->getDeletedTypesPaginated(25);
+        $types = $this->types->getDeletedTypesPaginated();
         $res = [
             'status' => $types ? 'OK' : 'error',
             'result' => $types,
