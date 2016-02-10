@@ -41,7 +41,7 @@ class ConfigController extends Controller
      * @param  integer $page [description]
      * @return [config]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $configs = $this->configs->getConfigsPaginated(config('core.sys.config.default_per_page'))->items();
         $res = [
@@ -176,7 +176,7 @@ class ConfigController extends Controller
      */
     public function deactivated()
     {
-        $configs = $this->configs->getConfigsPaginated(25, 0);
+        $configs = $this->configs->getConfigsPaginated(25);
         $res = [
             'status' => $configs ? 'OK' : 'error',
             'result' => $configs,

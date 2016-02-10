@@ -16,7 +16,7 @@ class LikeRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\Interaction\Like\Like';
+        $this->modelPath = 'App\Models\Core\Interaction\Like';
     }
 
     /**
@@ -48,7 +48,7 @@ class LikeRepository extends Repository
      */
     public function getDeletedLikesPaginated($per_page = 20)
     {
-        return Like::onlyTrashed()->paginate($per_page);
+        return Like::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -78,96 +78,5 @@ class LikeRepository extends Repository
         }
 
         throw new GeneralException('There was a problem creating this like. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
-     */
-    public function update($id, $input)
-    {
-        $like = $this->findOrFail($id);
-
-        if ($like->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this like. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $like = $this->findOrFail($id);
-        if ($like->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this like. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $like = $this->findOrFail($id, true);
-
-        try {
-            $like->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $like = $this->findOrFail($id);
-
-        if ($like->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this like. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $like = $this->findOrFail($id);
-        $like->status = $status;
-
-        if ($like->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this like. Please try again.");
     }
 }

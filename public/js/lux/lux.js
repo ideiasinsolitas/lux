@@ -23,8 +23,17 @@ Lux.ElementMappings = {
  * @param {[type]} endpoint [description]
  */
 Lux.Router = function (routes) {
-    routie(routes);
+    this.routes = routes;
 };
+
+/**
+ * /
+ * @param  {[type]} route [description]
+ * @return {[type]}       [description]
+ */
+Lux.Router.prototype.dispatch = function (routes) {
+    routie(routes || this.routes);
+}
 
 /**
  * /
@@ -341,7 +350,7 @@ Lux.Controller = function (selector, model, routes, actions, templatePath) {
 };
 
 Lux.Controller.prototype.init = function () {
-    this.router.route();
+    this.router.dispatch();
     this.actionManager.bindAll();
     this.trigger('controller-routed');
 };
@@ -352,8 +361,7 @@ Lux.Controller.prototype.go = function (route) {
 };
 
 Lux.Controller.prototype.triggerGo = function (event, route) {
-    this.router.go(route);
-    this.trigger('route-changed');
+    this.go(route);
 };
 
 Lux.Controller.prototype.trigger = function (key, params, decorator) {
@@ -361,6 +369,8 @@ Lux.Controller.prototype.trigger = function (key, params, decorator) {
 };
 
 Lux.Controller.prototype.doNothing = function () {};
+
+
 
 /**
  * /
@@ -381,11 +391,22 @@ Lux.Controller.prototype.displayMessage = function (data, textStatus, jqXHR) {
     this.go(redirect);
 };
 
+
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.createForm = function (event) {
     var actions;
     this.view.render('#', 'comment-form', {}, actions);
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.storeForm = function (event) {
     var data = this.getFormInput();
     for (prop in data) {
@@ -398,6 +419,11 @@ Lux.Controller.prototype.storeForm = function (event) {
     this.router.go('/' + id + '/edit');
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.editForm = function (event) {
     var id = this.getFormItemId();
     var data = this.model.show(this.formHandler, id);
@@ -405,6 +431,11 @@ Lux.Controller.prototype.editForm = function (event) {
     this.view.render('#', 'edit-comment-form', data, actions);
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.updateForm = function (event) {
     var data = this.getFormInput();
     for (prop in data) {
@@ -420,6 +451,11 @@ Lux.Controller.prototype.updateForm = function (event) {
     this.router.go('/' + id + '/edit');
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.editRow = function (event) {
     var id = this.getRowId();
     var data = this.model.show(this.listHandler, id);
@@ -427,42 +463,64 @@ Lux.Controller.prototype.editRow = function (event) {
     this.view.render('#', 'edit-in-place-comment-list', data, actions);
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.updateRow = function (event) {
-    this.model.set('id', $(event.target).attr('data-id'));
+    var id = $(event.target).attr('data-id');
+    this.model.set('id', id);
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.confirmDelete = function (event) {
     var actions;
     this.view.render('#', 'confirm-delete', {}, actions);
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.delete = function (event) {
-    var id = this.getDeleteId();
-    this.model.delete(this.listHandler, id)
+    var id = $(event);
+    this.model.delete(this, id)
 };
 
+/**
+ * /
+ * @param  {[type]} event [description]
+ * @return {[type]}       [description]
+ */
 Lux.Controller.prototype.confirmDeleteMany = function (event) {
+    var actions;
     this.view.render('#', 'confirm-delete-many', {}, actions);
 };
 
 Lux.Controller.prototype.deleteMany = function (event) {
-    this.model.deleteMany(this);
+    var ids = $(event);
+    this.model.deleteMany(this, ids);
 };
 
 Lux.Controller.prototype.restore = function (event) {
-    this.model.deleteMany(this);
-};
-
-Lux.Controller.prototype.mark = function (event) {
-    this.model.deleteMany(this);
+    var id = $(event);
+    this.model.restore(this, id);
 };
 
 Lux.Controller.prototype.deleted = function (event) {
-    this.model.deleteMany(this);
+    var page = $(event);
+    this.model.deleted(this);
 };
 
 Lux.Controller.prototype.deactivated = function (event) {
-    this.model.deleteMany(this);
+    var page = $(event);
+    this.model.deactivated(this);
 };
 
 /**
@@ -503,61 +561,59 @@ Lux.DefaultAction = function (key, name, scope, selector, callback) {
 
 /**
  * /
- * @param {[type]}   name     [description]
- * @param {[type]}   scope    [description]
- * @param {[type]}   selector [description]
- * @param {Function} callback [description]
- */
-Lux.CustomAction = function (name, scope, selector, callback) {
-    this.key = name;
-    this.name = name;
-    this.scope = scope;
-    this.selector = selector;
-    this.callback = callback;
-};
-
-
-
-/**
- * /
  * @return {[type]} [description]
  */
-Lux.mixins.Action.bind = function () {
+Lux.DefaultAction.prototype.bind = function () {
     $(this.scope).on(this.name, this.selector, this.callback);
 };
 
 /**
  * /
  * @return {[type]} [description]
- */
-Lux.mixins.Action.unbind = function () {
+ *//
+Lux.DefaultAction.prototype.unbind = function () {
     $(this.selector).on(this.name);
 };
 
-
 /**
  * /
+ * @param {[type]}   params     [description]
  * @return {[type]} [description]
- */
-Lux.mixins.Action.trigger = function (params) {
+ *//
+Lux.DefaultAction.prototype.trigger = function (params) {
     $(this.selector).trigger(this.name, params);
 };
 
-Lux.augment(Lux.DefaultAction, Lux.mixins.Action);
-Lux.augment(Lux.CustomAction, Lux.mixins.Action);
+/**
+ * /
+ * @param {[type]}   name     [description]
+ * @param {[type]}   scope    [description]
+ * @param {[type]}   selector [description]
+ * @param {Function} callback [description]
+ */
+Lux.CustomAction = function (name, scope, selector, callback) {
+    Lux.DefaultAction.call(this, name, name, scope, selector, callback);
+};
+Lux.CustomAction.prototype = new Lux.DefaultAction();
+Lux.CustomAction.prototype.constructor = Lux.CustomAction;
+
 
 /**
  * /
  * @param {[type]} actions [description]
  */
 Lux.ActionManager = function (actions) {
-    this.registered = {};
     this.binded = {};
-    for (var i = actions.length - 1; i >= 0; i--) {
-        var action = actions[i];
-        this.register(action);
-    };
-    this.bindAll();
+    this.actions = {};
+    for (action in actions) {
+        if (actions.hasOwnProperty(action)) {
+            this.register(action);
+        }
+    }
+};
+
+Lux.ActionManager.prototype.init = function () {
+
 };
 
 /**
@@ -567,7 +623,7 @@ Lux.ActionManager = function (actions) {
  * @return {[type]}     [description]
  */
 Lux.ActionManager.prototype.register = function (action) {
-    this.registered[action.key] = action;
+    this.actions[action.key] = action;
 };
 
 /**
@@ -576,8 +632,8 @@ Lux.ActionManager.prototype.register = function (action) {
  * @param  {[type]} action  [description]
  * @return {[type]}     [description]
  */
-Lux.ActionManager.prototype.isRegistered = function (key) {
-    return this.registered.hasOwnProperty(key);
+Lux.ActionManager.prototype.hasAction = function (key) {
+    return this.actions.hasOwnProperty(key);
 };
 
 /**
@@ -586,9 +642,10 @@ Lux.ActionManager.prototype.isRegistered = function (key) {
  * @return {[type]}     [description]
  */
 Lux.ActionManager.prototype.bind = function (key) {
+    // if is string elseif is obj
     var action = this.registered[key];
     action.bind();
-    this.binded[key] = action;
+    this.binded[key] = true;
 };
 
 /**
@@ -597,9 +654,9 @@ Lux.ActionManager.prototype.bind = function (key) {
  * @return {[type]}     [description]
  */
 Lux.ActionManager.prototype.bindAll = function (actions) {
-    for (prop in this.registered) {
-        if (this.registered.hasOwnProperty(prop)) {
-            prop.bind();
+    for (action in actions || this.actions) {
+        if (this.actions.hasOwnProperty(action)) {
+            action.bind();
         }
     }
     action.bind();
@@ -611,9 +668,10 @@ Lux.ActionManager.prototype.bindAll = function (actions) {
  * @return {[type]}     [description]
  */
 Lux.ActionManager.prototype.unbind = function (key) {
-    var action = this.binded[key];
+    // if is string elseif is obj
+    var action = this.actions[key];
     action.unbind();
-    this.binded[key] = null;
+    this.binded[key] = false;
 };
 
 /**
@@ -622,8 +680,8 @@ Lux.ActionManager.prototype.unbind = function (key) {
  * @return {[type]}     [description]
  */
 Lux.ActionManager.prototype.unbindAll = function () {
-    for (prop in this.binded) {
-        if (this.binded.hasOwnProperty(prop)) {
+    for (prop in this.actions) {
+        if (this.actions.hasOwnProperty(prop)) {
             prop.unbind();
         }
     }
@@ -636,7 +694,7 @@ Lux.ActionManager.prototype.unbindAll = function () {
  * @return {[type]}     [description]
  */
 Lux.ActionManager.prototype.rebind = function (key) {
-    var action = this.binded[key];
+    var action = this.actions[key];
     action.unbind();
     action.bind();
 };
@@ -646,11 +704,11 @@ Lux.ActionManager.prototype.rebind = function (key) {
  * @param  {[type]} key [description]
  * @return {[type]}     [description]
  */
-Lux.ActionManager.prototype.rebindAll = function () {
-    for (prop in this.binded) {
-        if (this.binded.hasOwnProperty(prop)) {
-            prop.unbind();
-            prop.bind();
+Lux.ActionManager.prototype.rebindAll = function (actions) {
+    for (action in actions || this.actions) {
+        if (this.binded.hasOwnProperty(action)) {
+            action.unbind();
+            action.bind();
         }
     }
 };

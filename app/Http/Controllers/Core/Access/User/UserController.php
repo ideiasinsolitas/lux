@@ -167,7 +167,7 @@ class UserController extends Controller
     public function deactivated()
     {
         return view('backend.access.deactivated')
-            ->withUsers($this->users->getUsersPaginated(25, 0));
+            ->withUsers($this->users->getUsersPaginated(25));
     }
 
     /**

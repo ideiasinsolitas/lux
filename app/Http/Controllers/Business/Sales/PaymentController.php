@@ -10,6 +10,8 @@ use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
+use App\Services\Format;
+
 class PaymentController extends Controller
 {
     /**
@@ -41,7 +43,7 @@ class PaymentController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $payments = $this->payments->getPaymentsPaginated(config('business.sales.payment.default_per_page'))->items();
         $res = [
@@ -124,22 +126,6 @@ class PaymentController extends Controller
 
     /**
      * @param $id
-     * @param PermanentlyDeletePaymentRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->payments->delete($id);
-        $res = [
-            'status' => $payment ? 'OK' : 'error',
-            'message' => trans("alerts.payments.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
      * @param RestorePaymentRequest $request
      * @return mixed
      */
@@ -176,7 +162,7 @@ class PaymentController extends Controller
      */
     public function deactivated()
     {
-        $payments = $this->payments->getPaymentsPaginated(25, 0);
+        $payments = $this->payments->getPaymentsPaginated(25);
         $res = [
             'status' => $payments ? 'OK' : 'error',
             'result' => $payments,

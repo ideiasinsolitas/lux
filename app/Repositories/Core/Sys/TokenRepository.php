@@ -12,7 +12,7 @@ class TokenRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Token\Token';
+        $this->model = 'App\Models\Package\Token';
     }
 
 
@@ -22,21 +22,26 @@ class TokenRepository extends Repository
             throw new \Exception("User_id must be integer and type must be string.", 001);
         }
         
-        $sql = "DELETE FROM tokens WHERE type=:type AND user_id=:user_id";
-        $delete = $this->db->run($sql, array('type' => $type, 'user_id' => $user_id));
+        DB::table('core_tokens')
+            ->delete()
+            ->where('type', $type)
+            ->where('user_id', $user_id);
 
-        $sql = "INSERT INTO tokens (user_id, token, type) VALUES (:user_id, UUID(), :type)";
-        $insert = $this->db->run($sql, array('user_id'=> $user_id, 'type' => $type));
+        $id = DB::table('core_tokens')
+            ->insertGetId([
+                'user_id'=> $user_id,
+                'token' => DB::raw('UUID()'),
+                'type' => $type
+            ]);
         
-        if (!$insert->isSuccessful()) {
+        if ($id) {
             throw new \Exception("Unable to insert token", 001);
         }
 
-        $sql = "SELECT token 
-            FROM tokens 
-            WHERE id=:id";
-        $token = $this->db->run($sql, array('id' => $insert->getLastInsertId()));
-        return $token->getFirstRecord()->get('token');
+        return DB::table('core_tokens')
+            ->select('token')
+            ->where('id', $id)
+            ->first();
     }
 
     public function validate($token, $type)
@@ -51,5 +56,10 @@ class TokenRepository extends Repository
             AND token=:token";
         $record = $this->db->run($sql, array('type' => $type, 'token' => $token))->getFirstRecord();
         return $record->get('token');
+        DB::table('core_tokens')
+            ->select('token', 'user_id')
+            ->where('type', $type)
+            ->where('token', $token)
+            ->first();
     }
 }

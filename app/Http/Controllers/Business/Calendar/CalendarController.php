@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Business\Calendar\Calendar;
 
 use App\Repositories\Business\Calendar\CalendarRepository;
 
-use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
+
+use App\Services\ResponseHandler;
 
 class CalendarController extends Controller
 {
@@ -18,22 +18,16 @@ class CalendarController extends Controller
      */
     protected $calendars;
 
+    protected $handler;
     /**
      * /
      * @param CalendarRepository $calendars [description]
      */
-    public function __construct(CalendarRepository $calendars)
+    public function __construct(ResponseHandler $handler, CalendarRepository $calendars)
     {
+        $handler->setPrefix('business.calendar');
+        $this->handler = $handler;
         $this->calendars = $calendars;
-    }
-
-    /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('business.calendar.calendar');
     }
 
     /**
@@ -41,14 +35,13 @@ class CalendarController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
-        $calendars = $this->calendars->getCalendarsPaginated(config('business.calendar.calendar.default_per_page'))->items();
-        $res = [
-            'status' => $calendars ? 'OK' : 'error',
-            'result' => $calendars,
-        ];
-        return response()->json($res);
+        $calendars = $this->calendars
+            ->getCalendarsPaginated(config('business.calendar.calendar.default_per_page'))
+            ->items();
+        return $this->handler
+            ->apiResponse($calendars);
     }
 
     /**
@@ -58,18 +51,14 @@ class CalendarController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
-        if (isset($input['id'])) {
-            $calendar = $this->calendars->create($input);
-        } else {
-            $calendar = $this->calendars->update($input);
-        }
-        $res = [
-            'status' => $calendar ? 'OK' : 'error',
-            'message' => trans('alerts.calendar.stored'),
-            'result' => $calendar,
-        ];
-        return response()->json($res);
+        $calendar = $request->has('id')
+            ? $this->calendars
+                ->update($input)
+            : $this->calendars
+                ->create($input);
+
+        return $this->handler
+            ->apiResponse($calendar, 'stored');
     }
 
     /**
@@ -79,12 +68,11 @@ class CalendarController extends Controller
      */
     public function show($id)
     {
-        $calendar = $this->calendars->findOrFail($id, true);
-        $res = [
-            'status' => $calendar ? 'OK' : 'error',
-            'result' => $calendar,
-        ];
-        return response()->json($res);
+        $calendar = $this->calendars
+            ->findOrFail($id, true);
+
+        return $this->handler
+            ->apiResponse($calendar);
     }
 
     /**
@@ -95,13 +83,11 @@ class CalendarController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $calendar = $this->calendars->delete($id);
-        $res = [
-            'status' => $calendar ? 'OK' : 'error',
-            'message' => trans("alerts.calendars.deleted"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        $calendar = $this->calendars
+            ->delete($id);
+
+        return $this->handler
+            ->apiResponse($calendar, 'deleted');
     }
 
     /**
@@ -113,29 +99,11 @@ class CalendarController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $calendars = $this->calendars->deleteMany($var['ids']);
-        $res = [
-            'status' => $calendars ? 'OK' : 'error',
-            'message' => trans("alerts.calendars.deleted"),
-            'result' => ['ids' => $ids],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
-     * @param PermanentlyDeleteCalendarRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->calendars->delete($id);
-        $res = [
-            'status' => $calendar ? 'OK' : 'error',
-            'message' => trans("alerts.calendars.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        $calendars = $this->calendars
+            ->deleteMany($ids);
+            
+        return $this->handler
+            ->apiResponse($calendars, 'deleted_many');
     }
 
     /**
@@ -145,13 +113,11 @@ class CalendarController extends Controller
      */
     public function restore($id, UpdateRequest $request)
     {
-        $this->calendars->restore($id);
-        $res = [
-            'status' => $calendar ? 'OK' : 'error',
-            'message' => trans("alerts.calendars.restored"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        $calendar = $this->calendars
+            ->restore($id);
+            
+        return $this->handler
+            ->apiResponse($calendar, 'restored');
     }
 
     /**
@@ -162,13 +128,11 @@ class CalendarController extends Controller
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $this->calendars->mark($id, $status);
-        $res = [
-            'status' => $calendar ? 'OK' : 'error',
-            'message' => trans("alerts.calendars.updated"),
-            'result' => ['id' => $id, 'status' => $status],
-        ];
-        return response()->json($res);
+        $calendar = $this->calendars
+            ->mark($id, $status);
+            
+        return $this->handler
+            ->apiResponse($calendar, 'marked');
     }
 
     /**
@@ -176,12 +140,11 @@ class CalendarController extends Controller
      */
     public function deactivated()
     {
-        $calendars = $this->calendars->getCalendarsPaginated(25, 0);
-        $res = [
-            'status' => $calendars ? 'OK' : 'error',
-            'result' => $calendars,
-        ];
-        return response()->json($res);
+        $calendars = $this->calendars
+            ->getCalendarsPaginated(25);
+            
+        return $this->handler
+            ->apiResponse($calendar);
     }
 
     /**
@@ -189,11 +152,10 @@ class CalendarController extends Controller
      */
     public function deleted()
     {
-        $calendars = $this->calendars->getDeletedCalendarsPaginated(25);
-        $res = [
-            'status' => $calendars ? 'OK' : 'error',
-            'result' => $calendars,
-        ];
-        return response()->json($res);
+        $calendars = $this->calendars
+            ->getDeletedCalendarsPaginated(25);
+            
+        return $this->handler
+            ->apiResponse($calendar);
     }
 }

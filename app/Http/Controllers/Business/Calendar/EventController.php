@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Business\Calendar\Event;
 
 use App\Repositories\Business\Calendar\EventRepository;
 
-use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
+
+use App\Services\ResponseHandler;
 
 class EventController extends Controller
 {
@@ -18,37 +18,16 @@ class EventController extends Controller
      */
     protected $events;
 
+    protected $handler;
     /**
      * /
      * @param EventRepository $events [description]
      */
-    public function __construct(EventRepository $events)
+    public function __construct(ResponseHandler $handler, EventRepository $events)
     {
+        $handler->setPrefix('business.calendar.event');
+        $this->handler = $handler;
         $this->events = $events;
-    }
-
-    /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('business.event.event');
-    }
-
-    /**
-     * Display a listing of the resource.
-     * @param  integer $page [description]
-     * @return [type]        [description]
-     */
-    public function index($page = 1)
-    {
-        $events = $this->events->getEventsPaginated(config('business.event.event.default_per_page'))->items();
-        $res = [
-            'status' => $events ? 'OK' : 'error',
-            'result' => $events,
-        ];
-        return response()->json($res);
     }
 
     /**
@@ -58,18 +37,52 @@ class EventController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['']);
-        if (isset($input['id'])) {
-            $event = $this->events->create($input);
-        } else {
-            $event = $this->events->update($input);
-        }
-        $res = [
-            'status' => $event ? 'OK' : 'error',
-            'message' => trans('alerts.event.stored'),
-            'result' => $event,
-        ];
-        return response()->json($res);
+        $calendar = $request->has('id')
+            ? $this->events
+                ->update($input)
+            : $this->events
+                ->create($input);
+
+        return $this->handler
+            ->apiResponse($calendar, 'stored');
+    }
+    
+    /**
+     * Display a listing of the resource.
+     * @param  integer $page [description]
+     * @return [type]        [description]
+     */
+    public function index()
+    {
+        $events = $this->events
+            ->getEventsPaginated(config('business.calendar.event.default_per_page'));
+            
+        return $this->handler
+            ->apiResponse($events);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function deactivated()
+    {
+        $events = $this->events
+            ->getDeactivatedEventsPaginated(config('business.calendar.event.default_per_page'));
+            
+        return $this->handler
+            ->apiResponse($calendar);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function deleted()
+    {
+        $events = $this->events
+            ->getDeletedEventsPaginated(config('business.calendar.event.default_per_page'));
+            
+        return $this->handler
+            ->apiResponse($calendar);
     }
 
     /**
@@ -79,12 +92,11 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        $event = $this->events->findOrFail($id, true);
-        $res = [
-            'status' => $event ? 'OK' : 'error',
-            'result' => $event,
-        ];
-        return response()->json($res);
+        $calendar = $this->events
+            ->findOrFail($id, true);
+
+        return $this->handler
+            ->apiResponse($calendar);
     }
 
     /**
@@ -95,13 +107,11 @@ class EventController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $event = $this->events->delete($id);
-        $res = [
-            'status' => $event ? 'OK' : 'error',
-            'message' => trans("alerts.events.deleted"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        $calendar = $this->events
+            ->delete($id);
+
+        return $this->handler
+            ->apiResponse($calendar, 'deleted');
     }
 
     /**
@@ -113,29 +123,11 @@ class EventController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $events = $this->events->deleteMany($var['ids']);
-        $res = [
-            'status' => $events ? 'OK' : 'error',
-            'message' => trans("alerts.events.deleted"),
-            'result' => ['ids' => $ids],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
-     * @param PermanentlyDeleteEventRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->events->delete($id);
-        $res = [
-            'status' => $event ? 'OK' : 'error',
-            'message' => trans("alerts.events.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        $events = $this->events
+            ->deleteMany($ids);
+            
+        return $this->handler
+            ->apiResponse($events, 'deleted_many');
     }
 
     /**
@@ -145,13 +137,11 @@ class EventController extends Controller
      */
     public function restore($id, UpdateRequest $request)
     {
-        $this->events->restore($id);
-        $res = [
-            'status' => $event ? 'OK' : 'error',
-            'message' => trans("alerts.events.restored"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        $calendar = $this->events
+            ->restore($id);
+            
+        return $this->handler
+            ->apiResponse($calendar, 'restored');
     }
 
     /**
@@ -162,38 +152,10 @@ class EventController extends Controller
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $this->events->mark($id, $status);
-        $res = [
-            'status' => $event ? 'OK' : 'error',
-            'message' => trans("alerts.events.updated"),
-            'result' => ['id' => $id, 'status' => $status],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function deactivated()
-    {
-        $events = $this->events->getEventsPaginated(25, 0);
-        $res = [
-            'status' => $events ? 'OK' : 'error',
-            'result' => $events,
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function deleted()
-    {
-        $events = $this->events->getDeletedEventsPaginated(25);
-        $res = [
-            'status' => $events ? 'OK' : 'error',
-            'result' => $events,
-        ];
-        return response()->json($res);
+        $calendar = $this->events
+            ->mark($id, $status);
+            
+        return $this->handler
+            ->apiResponse($calendar, 'marked');
     }
 }

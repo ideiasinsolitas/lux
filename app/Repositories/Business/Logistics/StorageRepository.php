@@ -3,7 +3,6 @@ namespace App\Repositories\Business\Logistics\Storage;
 
 use App\Models\Business\Logistics\Storage\Storage;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +11,6 @@ use App\Exceptions\GeneralException;
  */
 class StorageRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -51,7 +48,7 @@ class StorageRepository extends Repository
      */
     public function getDeletedStoragesPaginated($per_page = 20)
     {
-        return Storage::onlyTrashed()->paginate($per_page);
+        return Storage::where('activity', 0)->paginate($per_page);
     }
 
     /**

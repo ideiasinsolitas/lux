@@ -3,7 +3,6 @@ namespace App\Repositories\Business\Logistics\Shipping;
 
 use App\Models\Business\Logistics\Shipping\Shipping;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +11,6 @@ use App\Exceptions\GeneralException;
  */
 class ShippingRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -51,7 +48,7 @@ class ShippingRepository extends Repository
      */
     public function getDeletedShippingsPaginated($per_page = 20)
     {
-        return Shipping::onlyTrashed()->paginate($per_page);
+        return Shipping::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -99,78 +96,5 @@ class ShippingRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this shipping. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $shipping = $this->findOrFail($id);
-        if ($shipping->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this shipping. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $shipping = $this->findOrFail($id, true);
-
-        try {
-            $shipping->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $shipping = $this->findOrFail($id);
-
-        if ($shipping->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this shipping. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $shipping = $this->findOrFail($id);
-        $shipping->status = $status;
-
-        if ($shipping->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this shipping. Please try again.");
     }
 }

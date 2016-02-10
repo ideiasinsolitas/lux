@@ -10,6 +10,8 @@ use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
+use App\Services\Format;
+
 class TimeTrackingController extends Controller
 {
     /**
@@ -41,9 +43,11 @@ class TimeTrackingController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
-        $timeTracking = $this->timeTracking->getTimeTrackingsPaginated(config('business.project_management.time_tracking.default_per_page'))->items();
+        $timeTracking = $this->timeTracking
+            ->getTimeTrackingsPaginated(config('business.project_management.time_tracking.default_per_page'))
+            ->items();
         $res = [
             'status' => $timeTracking ? 'OK' : 'error',
             'result' => $timeTracking,
@@ -124,22 +128,6 @@ class TimeTrackingController extends Controller
 
     /**
      * @param $id
-     * @param PermanentlyDeleteTimeTrackingRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->timeTracking->delete($id);
-        $res = [
-            'status' => $timeTracking ? 'OK' : 'error',
-            'message' => trans("alerts.time_trackings.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
      * @param RestoreTimeTrackingRequest $request
      * @return mixed
      */
@@ -176,7 +164,7 @@ class TimeTrackingController extends Controller
      */
     public function deactivated()
     {
-        $timeTracking = $this->timeTracking->getTimeTrackingsPaginated(25, 0);
+        $timeTracking = $this->timeTracking->getTimeTrackingsPaginated(25);
         $res = [
             'status' => $timeTracking ? 'OK' : 'error',
             'result' => $timeTracking,

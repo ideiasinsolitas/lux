@@ -32,7 +32,7 @@ class FriendshipController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $friendships = $this->friendships->getFriendshipsPaginated(config('core.interaction.friendship.default_per_page'))->items();
         $res = [
@@ -167,7 +167,7 @@ class FriendshipController extends Controller
      */
     public function deactivated()
     {
-        $friendships = $this->friendships->getFriendshipsPaginated(25, 0);
+        $friendships = $this->friendships->getFriendshipsPaginated(25);
         $res = [
             'status' => $friendships ? 'OK' : 'error',
             'result' => $friendships,

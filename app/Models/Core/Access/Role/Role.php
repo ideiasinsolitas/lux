@@ -9,29 +9,30 @@ use App\Models\Access\Role\Relationship\RoleRelationship;
  * Class Role
  * @package App\Models\Access\Role
  */
-class Role extends Model {
+class Role extends Model
+{
 
-	use RoleAccess, RoleAttribute, RoleRelationship;
+    use RoleAccess, RoleAttribute, RoleRelationship;
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table;
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table;
 
-	/**
-	 * The attributes that are not mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $guarded = ['id'];
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
 
-	/**
-	 *
-	 */
-	public function __construct()
-	{
-		$this->table = config('access.roles_table');
-	}
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->table = config('access.roles_table');
+    }
 }

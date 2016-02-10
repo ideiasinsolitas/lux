@@ -51,7 +51,7 @@ class OrderRepository extends Repository
      */
     public function getDeletedOrdersPaginated($per_page = 20)
     {
-        return Order::onlyTrashed()->paginate($per_page);
+        return Order::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -99,79 +99,6 @@ class OrderRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this order. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $order = $this->findOrFail($id);
-        if ($order->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this order. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $order = $this->findOrFail($id, true);
-
-        try {
-            $order->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $order = $this->findOrFail($id);
-
-        if ($order->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this order. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $order = $this->findOrFail($id);
-        $order->status = $status;
-
-        if ($order->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this order. Please try again.");
     }
 
 

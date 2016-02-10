@@ -11,13 +11,12 @@ use App\Exceptions\GeneralException;
  */
 class AreaRepository extends Repository
 {
-
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\SiteBuilding\Area\Area';
+        $this->model = 'App\Models\Core\SiteBuilding\Area';
     }
 
     /**
@@ -49,7 +48,7 @@ class AreaRepository extends Repository
      */
     public function getDeletedAreasPaginated($per_page = 20)
     {
-        return Area::onlyTrashed()->paginate($per_page);
+        return Area::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -97,78 +96,5 @@ class AreaRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this area. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $area = $this->findOrFail($id);
-        if ($area->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this area. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $area = $this->findOrFail($id, true);
-
-        try {
-            $area->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $area = $this->findOrFail($id);
-
-        if ($area->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this area. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $area = $this->findOrFail($id);
-        $area->status = $status;
-
-        if ($area->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this area. Please try again.");
     }
 }

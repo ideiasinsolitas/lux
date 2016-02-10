@@ -41,7 +41,7 @@ class MenuController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $menus = $this->menus->getMenusPaginated(config('core.site_building.menu.default_per_page'))->items();
         $res = [
@@ -176,7 +176,7 @@ class MenuController extends Controller
      */
     public function deactivated()
     {
-        $menus = $this->menus->getMenusPaginated(25, 0);
+        $menus = $this->menus->getMenusPaginated(25);
         $res = [
             'status' => $menus ? 'OK' : 'error',
             'result' => $menus,

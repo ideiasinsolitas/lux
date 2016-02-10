@@ -53,7 +53,7 @@ class PlaceRepository
      */
     public function getDeletedPlacesPaginated($per_page = 20)
     {
-        return Place::onlyTrashed()->paginate($per_page);
+        return Place::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -103,70 +103,6 @@ class PlaceRepository
         if ($place->update($placeInput, $id)) {
             return true;
         }
-        throw new GeneralException("There was a problem updating this place. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        $place = $this->findOrFail($id);
-
-        if ($place->delete()) {
-            return true;
-        }
-        throw new GeneralException("There was a problem deleting this place. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function deleteMany($ids)
-    {
-        $place = Place::whereIn('id', $ids)->delete();
-
-        if ($place) {
-            return true;
-        }
-        throw new GeneralException("There was a problem deleting this place. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $place = $this->findOrFail($id);
-
-        if ($place->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this place. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        $place = $this->findOrFail($id);
-        $place->status = $status;
-
-        if ($place->save()) {
-            return true;
-        }
-
         throw new GeneralException("There was a problem updating this place. Please try again.");
     }
 }

@@ -3,7 +3,6 @@ namespace App\Repositories\Package\Product;
 
 use App\Models\Package\Product\Product;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +11,6 @@ use App\Exceptions\GeneralException;
  */
 class ProductRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -51,7 +48,7 @@ class ProductRepository extends Repository
      */
     public function getDeletedProductsPaginated($per_page = 20)
     {
-        return Product::onlyTrashed()->paginate($per_page);
+        return Product::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -99,78 +96,5 @@ class ProductRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this name. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $product = $this->findOrFail($id);
-        if ($product->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this name. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $product = $this->findOrFail($id, true);
-
-        try {
-            $product->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $product = $this->findOrFail($id);
-
-        if ($product->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this name. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $product = $this->findOrFail($id);
-        $product->status = $status;
-
-        if ($product->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this name. Please try again.");
     }
 }

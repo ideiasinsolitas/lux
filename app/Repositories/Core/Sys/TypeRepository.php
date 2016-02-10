@@ -48,7 +48,7 @@ class TypeRepository extends Repository
      */
     public function getDeletedTypesPaginated($per_page = 20)
     {
-        return Type::onlyTrashed()->paginate($per_page);
+        return Type::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -61,113 +61,16 @@ class TypeRepository extends Repository
         return Type::orderBy($order_by, $sort)->get();
     }
 
-    /**
-     * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws TypeNeedsRolesException
-     */
     public function create($input)
     {
-        $type = Type::create($input);
-
-        if ($type->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this type. Please try again.');
+        return DB::table('core_types')
+            ->insertGetId($input);
     }
 
-    /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
-     */
-    public function update($id, $input)
+    public function update($input)
     {
-        $type = $this->findOrFail($id);
-
-        if ($type->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this type. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $type = $this->findOrFail($id);
-        if ($type->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this type. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $type = $this->findOrFail($id, true);
-
-        try {
-            $type->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $type = $this->findOrFail($id);
-
-        if ($type->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this type. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $type = $this->findOrFail($id);
-        $type->status = $status;
-
-        if ($type->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this type. Please try again.");
+        return DB::table('core_types')
+            ->update($input)
+            ->where('id', $input['id']);
     }
 }

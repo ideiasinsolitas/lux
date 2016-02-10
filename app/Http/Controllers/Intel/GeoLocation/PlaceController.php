@@ -9,10 +9,12 @@ use App\Http\Requests\Core\GeoLocation\UpdatePlaceRequest;
 use App\Http\Requests\Core\GeoLocation\DeletePlaceRequest;
 use App\Http\Requests\Core\GeoLocation\StorePlaceRequest;
 use App\Http\Controllers\Controller;
-use App\Services\LocationConverter;
 
 use App\Repositories\Core\GeoLocation\PlaceRepository;
 use App\Repositories\Core\GeoLocation\AddressRepository;
+
+use App\Services\LocationConverter;
+use App\Services\ResponseHandler;
 
 class PlaceController extends Controller
 {
@@ -40,8 +42,10 @@ class PlaceController extends Controller
      * @param AddressRepository $addresses [description]
      * @param LocationConverter $location  [description]
      */
-    public function __construct(PlaceRepository $places, AddressRepository $addresses, LocationConverter $location)
+    public function __construct(ResponseHandler $handler, PlaceRepository $places, AddressRepository $addresses, LocationConverter $location)
     {
+        $handler->setPrefix('intel.geolocation');
+        $this->handler = $handler;
         $this->places = $places;
         $this->addresses = $addresses;
         $this->location = $location;
@@ -53,7 +57,7 @@ class PlaceController extends Controller
      */
     public function app()
     {
-        return view('backend.geolocation.app');
+        return view('intel.geolocation.app');
     }
 
     /**
@@ -61,12 +65,11 @@ class PlaceController extends Controller
      *
      * @return Response
      */
-    public function index($page = 1)
+    public function index()
     {
-        $result = [];
-        $result['result'] = $this->places->getPlacesPaginated(config('geolocation.address.default_per_page'))->items();
-        $result['status'] = 'OK';
-        return response()->json($result);
+        $place = $this->places->getPlacesPaginated(config('geolocation.address.default_per_page'))->items();
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -77,12 +80,9 @@ class PlaceController extends Controller
      */
     public function show($id)
     {
-        $result = [];
         $place = $this->places->findOrFail($id, true);
-        $result['result'] = $place;
-        $result['result']['user_name'] = isset($place->user) ? $place->user->name : null;
-        $result['status'] = 'OK';
-        return response()->json($result);
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -90,7 +90,7 @@ class PlaceController extends Controller
      * @param  [type] $request [description]
      * @return Response          [description]
      */
-    private function handleInsertUpdateRequests($request)
+    private function handleFormInput($request)
     {
         $placeKeys = [
             'name',
@@ -119,33 +119,8 @@ class PlaceController extends Controller
      */
     public function store(StorePlaceRequest $request)
     {
-        list($placeInput, $addressInput) = $this->handleInsertUpdateRequests($request);
-        $address = $this->addresses->getOrCreate($addressInput);
-        $placeInput['address_id'] = $address->id;
-        $placeInput['user_id'] = 1;
+        list($placeInput, $addressInput) = $this->handleFormInput($request);
 
-        $place = $this->places->create($placeInput);
-
-        $result = ['message' => trans("alerts.place.created"), 'status' => 'OK', 'id' => $place->id];
-        return response()->json($result);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id, UpdatePlaceRequest $request)
-    {
-        list($placeInput, $addressInput) = $this->handleInsertUpdateRequests($request);
-        $address = $this->addresses->getOrCreate($addressInput);
-        $placeInput['address_id'] = $address->id;
-
-        $this->places->update($id, $placeInput);
-
-        $result = ['message' => trans("alerts.place.updated"), 'status' => 'OK', 'id' => $id];
-        return response()->json($result);
     }
 
     /**
@@ -157,8 +132,8 @@ class PlaceController extends Controller
     public function destroy($id, DeletePlaceRequest $request)
     {
         $this->places->delete($id);
-        $result = ['message' => trans("alerts.place.deleted"), 'status' => 'OK', 'id' => $id];
-        return response()->json($result);
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -170,9 +145,34 @@ class PlaceController extends Controller
     {
         $var = $request->only('ids');
         $ids = $var['ids'];
-        $this->places->deleteMany($ids);
-        $result = ['message' => trans("alerts.place.deleted"), 'status' => 'OK', 'id' => $ids];
-        return response()->json($result);
+        $place = $this->places->deleteMany($ids);
+        return $this->handler
+            ->apiResponse($place);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function getAddressesPaginated()
+    {
+        $place = $this->addresses->getAddressesPaginated(config('geolocation.address.default_per_page'))->items();
+        return $this->handler
+            ->apiResponse($place);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function getAddress($id)
+    {
+        $place = $this->addresses->findOrFail($id, true);
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -181,10 +181,9 @@ class PlaceController extends Controller
      */
     public function getAllCountries()
     {
-        $result = [];
-        $result['result'] = $this->addresses->getAllCountries();
-        $result['status'] = 'OK';
-        return response()->json($result);
+        $place = $this->addresses->getAllCountries();
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -194,10 +193,9 @@ class PlaceController extends Controller
      */
     public function getProvinces($country_id)
     {
-        $result = [];
-        $result['result'] = $this->addresses->getProvincesByCountryId($country_id);
-        $result['status'] = 'OK';
-        return response()->json($result);
+        $place = $this->addresses->getProvincesByCountryId($country_id);
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -207,10 +205,9 @@ class PlaceController extends Controller
      */
     public function getCities($province_id)
     {
-        $result = [];
-        $result['result'] = $this->addresses->getCitiesByProvinceId($province_id);
-        $result['status'] = 'OK';
-        return response()->json($result);
+        $place = $this->addresses->getCitiesByProvinceId($province_id);
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -220,10 +217,9 @@ class PlaceController extends Controller
      */
     public function getCitiesByCountry($country_id)
     {
-        $result = [];
-        $result['result'] = $this->addresses->getCitiesByCountryId($country_id);
-        $result['status'] = 'OK';
-        return response()->json($result);
+        $place = $this->addresses->getCitiesByCountryId($country_id);
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -233,10 +229,9 @@ class PlaceController extends Controller
      */
     public function getDistricts($city_id)
     {
-        $result = [];
-        $result['result'] = $this->addresses->getDistrictsByCityId($city_id);
-        $result['status'] = 'OK';
-        return response()->json($result);
+        $place = $this->addresses->getDistrictsByCityId($city_id);
+        return $this->handler
+            ->apiResponse($place);
     }
 
     /**
@@ -246,9 +241,7 @@ class PlaceController extends Controller
      */
     public function completeAddress($address)
     {
-        $result = [];
-        $result['status'] = 'OK';
-        $result['result'] = $this->location->completeAdress($address);
-        return response()->json($result);
+        return $this->handler
+            ->apiResponse($place);
     }
 }

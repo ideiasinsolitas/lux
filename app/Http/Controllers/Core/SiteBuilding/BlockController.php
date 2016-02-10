@@ -41,7 +41,7 @@ class BlockController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $blocks = $this->blocks->getBlocksPaginated(config('core.site_building.block.default_per_page'))->items();
         $res = [
@@ -176,7 +176,7 @@ class BlockController extends Controller
      */
     public function deactivated()
     {
-        $blocks = $this->blocks->getBlocksPaginated(25, 0);
+        $blocks = $this->blocks->getBlocksPaginated(25);
         $res = [
             'status' => $blocks ? 'OK' : 'error',
             'result' => $blocks,

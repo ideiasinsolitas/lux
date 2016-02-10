@@ -16,7 +16,7 @@ class VoteRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\Interaction\Vote\Vote';
+        $this->model = 'App\Models\Core\Interaction\Vote';
     }
 
     /**
@@ -48,7 +48,7 @@ class VoteRepository extends Repository
      */
     public function getDeletedVotesPaginated($per_page = 20)
     {
-        return Vote::onlyTrashed()->paginate($per_page);
+        return Vote::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -78,96 +78,5 @@ class VoteRepository extends Repository
         }
 
         throw new GeneralException('There was a problem creating this vote. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
-     */
-    public function update($id, $input)
-    {
-        $vote = $this->findOrFail($id);
-
-        if ($vote->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this vote. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $vote = $this->findOrFail($id);
-        if ($vote->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this vote. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $vote = $this->findOrFail($id, true);
-
-        try {
-            $vote->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $vote = $this->findOrFail($id);
-
-        if ($vote->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this vote. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $vote = $this->findOrFail($id);
-        $vote->status = $status;
-
-        if ($vote->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this vote. Please try again.");
     }
 }

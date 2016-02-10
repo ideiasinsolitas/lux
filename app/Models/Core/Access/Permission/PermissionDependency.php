@@ -24,7 +24,7 @@ class PermissionDependency extends Model
      *
      * @var array
      */
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     /**
      *

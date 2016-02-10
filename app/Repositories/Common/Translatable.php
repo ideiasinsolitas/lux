@@ -12,18 +12,31 @@ trait Translatable
 {
     /**
      * /
+     * @param  [type] $builder [description]
+     * @return [type]          [description]
+     */
+    public function buildTranslatable($builder = null)
+    {
+        $builder = $builder || $this->getBuilder();
+        $type = DB::raw($this->type);
+        return $builder
+            ->join('core_translations', function ($q) use ($type) {
+                return $q->on('core_translations.translatable_id', 'main.id')
+                    ->where('core_translations.translatable_type', $type);
+            });
+    }
+
+    /**
+     * /
      * @param  [type] $item_id [description]
      * @return [type]          [description]
      */
     public function getTranslations($item_id)
     {
-        if (!is_int($item_id)) {
-            throw new \Exception("Invalid input type", 1);
-        }
-
-        return DB::table('translations')
+        $type = DB::raw($this->type);
+        return DB::table('core_translations')
             ->select('id', 'slug', 'name', 'title', 'subtitle', 'tagline', 'excerpt', 'description', 'body', 'language')
-            ->where('translatable_type', $this->slug)
+            ->where('translatable_type', $type)
             ->where('translatable_id', $item_id)
             ->get();
     }
@@ -32,9 +45,12 @@ trait Translatable
      * /
      * @param Record $record [description]
      */
-    public function addTranslation($id, $input)
+    public function addTranslation($item_id, $translationInput)
     {
-        return $result;
+        return DB::table('core_translations')
+            ->update($translationInput)
+            ->where('translatable_type', $this->type)
+            ->where('translatable_id', $item_id);
     }
 
     /**
@@ -44,13 +60,10 @@ trait Translatable
      */
     public function removeTranslation($item_id)
     {
-        if (!is_int($item_id)) {
-            throw new \Exception("Invalid input type", 1);
-        }
-
-        $sql = "DELETE FROM translations WHERE item_name=:item_name, item_id=:item_id";
-        $result = $this->db->run($sql, array('item_name' => $this->slug,'item_id' => $item_id));
-        return $result;
+        return DB::table('core_translations')
+            ->where('tranlatable_type', $this->type)
+            ->where('translatable_id', $item_id)
+            ->delete();
     }
 
     /**
@@ -77,7 +90,7 @@ trait Translatable
         $slug = $string;
         $i = 1;
         $slugTpl = $slug . '-';
-        while ($this->slugNotUnique($slug)) {
+        while ($this->typeNotUnique($slug)) {
             $slug = $slugTpl . $i;
             $i++;
         }
@@ -89,7 +102,7 @@ trait Translatable
      * @param  [type] $slug [description]
      * @return [type]       [description]
      */
-    private function isSlugUnique($slug)
+    public function isSlugUnique($slug)
     {
         if (!is_string($slug)) {
             throw new \Exception("Invalid input type", 1);

@@ -41,7 +41,7 @@ class AreaController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $areas = $this->areas->getAreasPaginated(config('core.site_building.area.default_per_page'))->items();
         $res = [
@@ -176,7 +176,7 @@ class AreaController extends Controller
      */
     public function deactivated()
     {
-        $areas = $this->areas->getAreasPaginated(25, 0);
+        $areas = $this->areas->getAreasPaginated(25);
         $res = [
             'status' => $areas ? 'OK' : 'error',
             'result' => $areas,

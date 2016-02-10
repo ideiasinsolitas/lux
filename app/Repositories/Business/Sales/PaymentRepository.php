@@ -51,7 +51,7 @@ class PaymentRepository extends Repository
      */
     public function getDeletedPaymentsPaginated($per_page = 20)
     {
-        return Payment::onlyTrashed()->paginate($per_page);
+        return Payment::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -99,78 +99,5 @@ class PaymentRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this payment. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $payment = $this->findOrFail($id);
-        if ($payment->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this payment. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $payment = $this->findOrFail($id, true);
-
-        try {
-            $payment->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $payment = $this->findOrFail($id);
-
-        if ($payment->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this payment. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $payment = $this->findOrFail($id);
-        $payment->status = $status;
-
-        if ($payment->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this payment. Please try again.");
     }
 }

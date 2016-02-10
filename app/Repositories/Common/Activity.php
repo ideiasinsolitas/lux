@@ -17,6 +17,19 @@ trait Activity
      */
     public function delete($id)
     {
+        $this->mark($id, 0);
+    }
+
+    /**
+     * /
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function deleteMany($ids)
+    {
+        return DB::table($this->mainTable)
+            ->update(['activity' => $activity])
+            ->whereIn('id', $ids);
     }
 
     /**
@@ -26,6 +39,7 @@ trait Activity
      */
     public function deactivate($id)
     {
+        $this->mark($id, 1);
     }
 
     /**
@@ -35,6 +49,7 @@ trait Activity
      */
     public function activate($id)
     {
+        $this->mark($id, 2);
     }
 
     /**
@@ -44,6 +59,7 @@ trait Activity
      */
     public function promote($id)
     {
+        DB::table($this->mainTable)->increment('activity');
     }
 
     /**
@@ -53,6 +69,7 @@ trait Activity
      */
     public function demote($id)
     {
+        DB::table($this->mainTable)->decrement('activity');
     }
 
     /**
@@ -60,10 +77,11 @@ trait Activity
      * @param [type] $id       [description]
      * @param [type] $activity [description]
      */
-    public function setActivity($id, $activity)
+    public function mark($id, $activity)
     {
-        $sql = "UPDATE $this->table SET activity=:activity WHERE id=:id";
-        return $this->db->run($sql, array('id' => $id, 'activity' => $activity));
+        return DB::table($this->mainTable)
+            ->update(['activity' => $activity])
+            ->where('id', $id);
     }
 
     /**
@@ -73,7 +91,28 @@ trait Activity
      */
     public function getActivity($id)
     {
-        $sql = "SELECT activity FROM $this->table WHERE id=:id";
-        return $this->db->run($sql, array('id' => $id));
+        return DB::table($this->mainTable)
+            ->select('activity')
+            ->where('id', $id)
+            ->get();
+    }
+
+    /**
+     * /
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function created($object)
+    {
+        $object->activity = 2;
+        $object->created = '';
+        $object->modified = '';
+        return $object;
+    }
+
+    public function modified($object)
+    {
+        $object->modified = '';
+        return $object;
     }
 }

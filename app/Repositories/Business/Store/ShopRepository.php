@@ -3,7 +3,6 @@ namespace App\Repositories\Package\Shop;
 
 use App\Models\Package\Shop\Shop;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +11,6 @@ use App\Exceptions\GeneralException;
  */
 class ShopRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -51,7 +48,7 @@ class ShopRepository extends Repository
      */
     public function getDeletedShopsPaginated($per_page = 20)
     {
-        return Shop::onlyTrashed()->paginate($per_page);
+        return Shop::where('activity', 0)->paginate($per_page);
     }
 
     /**

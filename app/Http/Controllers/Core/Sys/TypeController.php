@@ -41,7 +41,7 @@ class TypeController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $types = $this->types->getTypesPaginated(config('core.sys.type.default_per_page'))->items();
         $res = [
@@ -176,7 +176,7 @@ class TypeController extends Controller
      */
     public function deactivated()
     {
-        $types = $this->types->getTypesPaginated(25, 0);
+        $types = $this->types->getTypesPaginated(25);
         $res = [
             'status' => $types ? 'OK' : 'error',
             'result' => $types,

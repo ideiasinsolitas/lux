@@ -3,7 +3,6 @@ namespace App\Repositories\Package\ShoppingCart;
 
 use App\Models\Package\ShoppingCart\ShoppingCart;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +11,6 @@ use App\Exceptions\GeneralException;
  */
 class ShoppingCartRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -51,7 +48,7 @@ class ShoppingCartRepository extends Repository
      */
     public function getDeletedShoppingCartsPaginated($per_page = 20)
     {
-        return ShoppingCart::onlyTrashed()->paginate($per_page);
+        return ShoppingCart::where('activity', 0)->paginate($per_page);
     }
 
     /**

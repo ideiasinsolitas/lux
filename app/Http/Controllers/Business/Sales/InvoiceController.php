@@ -10,6 +10,8 @@ use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
+use App\Services\Format;
+
 class InvoiceController extends Controller
 {
     /**
@@ -41,7 +43,7 @@ class InvoiceController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $invoices = $this->invoices->getInvoicesPaginated(config('business.sales.invoice.default_per_page'))->items();
         $res = [
@@ -124,22 +126,6 @@ class InvoiceController extends Controller
 
     /**
      * @param $id
-     * @param PermanentlyDeleteInvoiceRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->invoices->delete($id);
-        $res = [
-            'status' => $invoice ? 'OK' : 'error',
-            'message' => trans("alerts.invoices.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
      * @param RestoreInvoiceRequest $request
      * @return mixed
      */
@@ -176,7 +162,7 @@ class InvoiceController extends Controller
      */
     public function deactivated()
     {
-        $invoices = $this->invoices->getInvoicesPaginated(25, 0);
+        $invoices = $this->invoices->getInvoicesPaginated(25);
         $res = [
             'status' => $invoices ? 'OK' : 'error',
             'result' => $invoices,

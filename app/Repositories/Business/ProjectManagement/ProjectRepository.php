@@ -48,7 +48,7 @@ class ProjectRepository extends Repository
      */
     public function getDeletedProjectsPaginated($per_page = 20)
     {
-        return Project::onlyTrashed()->paginate($per_page);
+        return Project::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -61,124 +61,13 @@ class ProjectRepository extends Repository
         return Project::orderBy($order_by, $sort)->get();
     }
 
-    /**
-     * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws ProjectNeedsRolesException
-     */
-    public function create($input)
-    {
-        $project = Project::create($input);
-
-        if ($project->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this project. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
-     */
-    public function update($id, $input)
-    {
-        $project = $this->findOrFail($id);
-
-        if ($project->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this project. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $project = $this->findOrFail($id);
-        if ($project->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this project. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $project = $this->findOrFail($id, true);
-
-        try {
-            $project->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $project = $this->findOrFail($id);
-
-        if ($project->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this project. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $project = $this->findOrFail($id);
-        $project->status = $status;
-
-        if ($project->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this project. Please try again.");
-    }
-
-
 
     /**
      * /
      * @param  Request $request [description]
      * @return [type]         [description]
      */
-    public function insert(Request $request)
+    public function create(Request $request)
     {
         $sql = "INSERT INTO projects (title, description, activity) VALUES (:title, :description, :activity)";
         $result = $this->db->run($sql, $request->toArray());
@@ -202,7 +91,7 @@ class ProjectRepository extends Repository
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
-    public function show($id)
+    public function findOne($id)
     {
         if (!is_int($id)) {
             throw new \Exception("Id must be integer.", 001);
@@ -221,7 +110,7 @@ class ProjectRepository extends Repository
      * @param  string  $order    [description]
      * @return [type]            [description]
      */
-    public function find($pg = 1, $per_page = 12, $key = 'title', $order = 'asc')
+    public function findAll($pg = 1, $per_page = 12, $key = 'title', $order = 'asc')
     {
         if (!is_int($pg) || !is_int($per_page) || !is_string($key) || !is_string($order)) {
             throw new \Exception("Page and per_page must be integers, key and order must be strings.", 002);

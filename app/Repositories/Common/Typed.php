@@ -2,13 +2,12 @@
 
 namespace App\Repositories\Common;
 
-/**
- * @author Pedro Koblitz
- * @package Maltz
- * @subpackage Http
- */
-
 trait Typed
 {
-
+    public function buildTyped($builder)
+    {
+        $type = $this->mainTable . '.type_id';
+        return $builder
+            ->join('core_types', $type, 'core_types.id');
+    }
 }

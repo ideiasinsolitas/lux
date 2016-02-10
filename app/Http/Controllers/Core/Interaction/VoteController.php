@@ -32,7 +32,7 @@ class VoteController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $votes = $this->votes->getVotesPaginated(config('core.interaction.vote.default_per_page'))->items();
         $res = [
@@ -167,7 +167,7 @@ class VoteController extends Controller
      */
     public function deactivated()
     {
-        $votes = $this->votes->getVotesPaginated(25, 0);
+        $votes = $this->votes->getVotesPaginated(25);
         $res = [
             'status' => $votes ? 'OK' : 'error',
             'result' => $votes,

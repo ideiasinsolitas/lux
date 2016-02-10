@@ -32,7 +32,7 @@ class CommentController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $comments = $this->comments->getCommentsPaginated(config('core.interaction.comment.default_per_page'))->items();
         $res = [
@@ -173,7 +173,7 @@ class CommentController extends Controller
      */
     public function deactivated()
     {
-        $comments = $this->comments->getCommentsPaginated(25, 0);
+        $comments = $this->comments->getCommentsPaginated(25);
         $res = [
             'status' => $comments ? 'OK' : 'error',
             'result' => $comments,

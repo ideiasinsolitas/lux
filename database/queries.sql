@@ -12,7 +12,7 @@ SELECT id, name, type, date_pub, url, filepath, filename, extension, slug, title
     (
       SELECT 
         t1.id AS id,
-        "content" AS name,
+        "Node" AS name,
         t3.name AS type,
         t1.date_pub AS date_pub,
         null AS url,
@@ -31,7 +31,7 @@ SELECT id, name, type, date_pub, url, filepath, filename, extension, slug, title
       FROM nodes t1
       JOIN translations t2 
         ON t1.id=t2.item_id
-        AND t2.item_name="content"
+        AND t2.item_name="Node"
       JOIN types t3 
         ON t1.type_id=t3.id
       LIMIT 0,10
@@ -40,7 +40,7 @@ SELECT id, name, type, date_pub, url, filepath, filename, extension, slug, title
     (
       SELECT 
         t1.id AS id, 
-        "resource" AS name,
+        "Resource" AS name,
         t3.name AS type,
         null AS date_pub,
         t1.url AS url,
@@ -59,7 +59,7 @@ SELECT id, name, type, date_pub, url, filepath, filename, extension, slug, title
       FROM resources t1
       JOIN translations t2 
         ON t1.id=t2.item_id
-        AND t2.item_name="resource"
+        AND t2.item_name="Resource"
       JOIN types t3 
         ON t1.type_id=t3.id
       LIMIT 0,10
@@ -68,7 +68,7 @@ SELECT id, name, type, date_pub, url, filepath, filename, extension, slug, title
     (
       SELECT 
         t1.id AS id,
-        "collection" AS name,
+        "Collection" AS name,
         t3.name AS type,
         null AS date_pub,
         null AS url,
@@ -96,7 +96,7 @@ SELECT id, name, type, date_pub, url, filepath, filename, extension, slug, title
     (
       SELECT 
         t1.id AS id,
-        "term" AS name,
+        "Term" AS name,
         t3.name AS type,
         null AS date_pub,
         null AS url,
@@ -123,10 +123,10 @@ SELECT id, name, type, date_pub, url, filepath, filename, extension, slug, title
   ) master
 ORDER BY master.type ASC, master.activity DESC, master.modified DESC;
 
-SELECT id, item_name, name FROM types WHERE item_name="content";
-SELECT id, item_name, name FROM types WHERE item_name="resource";
-SELECT id, item_name, name FROM types WHERE item_name="term";
-SELECT id, item_name, name FROM types WHERE item_name="collection";
+SELECT id, item_name, name FROM types WHERE item_name="Content";
+SELECT id, item_name, name FROM types WHERE item_name="Resource";
+SELECT id, item_name, name FROM types WHERE item_name="Term";
+SELECT id, item_name, name FROM types WHERE item_name="Collection";
 
 --log
 SELECT id, user_id, action, item_name, item_id, created FROM log;

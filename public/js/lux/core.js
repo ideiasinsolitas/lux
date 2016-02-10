@@ -20,7 +20,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Folksonomy = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -30,7 +32,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Like = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -40,7 +44,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Vote = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -50,7 +56,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Area = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -60,7 +68,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Block = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -70,7 +80,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Menu = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -80,8 +92,10 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Collaboration = function (properties) {
-
-};
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
+};  
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
 
@@ -90,7 +104,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Collection = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -100,7 +116,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Config = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Comment.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.Interaction.models.Comment;
@@ -110,7 +128,9 @@ CoreComponent.Interaction.models.Comment.prototype.constructor = CoreComponent.I
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Ownership = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Ownership.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Ownership.prototype.constructor = CoreComponent.Interaction.models.Ownership;
@@ -120,7 +140,9 @@ CoreComponent.Interaction.models.Ownership.prototype.constructor = CoreComponent
  * @param {[type]} properties [description]
  */
 CoreComponent.Interaction.models.Type = function (properties) {
-
+    var endpoint = endpoint || '/core/interaction/';
+    var storage = new Storage();
+    Lux.Model.call(this, endpoint, storage, properties); 
 };
 CoreComponent.Interaction.models.Type.prototype = new Lux.Model();
 CoreComponent.Interaction.models.Type.prototype.constructor = CoreComponent.Interaction.models.Type;

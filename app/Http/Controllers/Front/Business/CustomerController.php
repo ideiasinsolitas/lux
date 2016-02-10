@@ -41,7 +41,7 @@ class NameController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $names = $this->names->getNamesPaginated(config('package.name.default_per_page'))->items();
         $res = [

@@ -16,7 +16,7 @@ class CommentRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\Interaction\Comment\Comment';
+        $this->modelPath = 'App\Models\Core\Interaction\Comment';
     }
 
     /**
@@ -48,7 +48,7 @@ class CommentRepository extends Repository
      */
     public function getDeletedCommentsPaginated($per_page = 20)
     {
-        return Comment::onlyTrashed()->paginate($per_page);
+        return Comment::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -78,96 +78,5 @@ class CommentRepository extends Repository
         }
 
         throw new GeneralException('There was a problem creating this comment. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
-     */
-    public function update($id, $input)
-    {
-        $comment = $this->findOrFail($id);
-
-        if ($comment->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this comment. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $comment = $this->findOrFail($id);
-        if ($comment->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this comment. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $comment = $this->findOrFail($id, true);
-
-        try {
-            $comment->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $comment = $this->findOrFail($id);
-
-        if ($comment->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this comment. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $comment = $this->findOrFail($id);
-        $comment->status = $status;
-
-        if ($comment->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this comment. Please try again.");
     }
 }

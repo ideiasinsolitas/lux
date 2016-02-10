@@ -10,6 +10,8 @@ use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
+use App\Services\Format;
+
 class ProjectController extends Controller
 {
     /**
@@ -41,9 +43,11 @@ class ProjectController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
-        $projects = $this->projects->getProjectsPaginated(config('business.project_management.project.default_per_page'))->items();
+        $projects = $this->projects
+            ->getProjectsPaginated(config('business.project_management.project.default_per_page'))
+            ->items();
         $res = [
             'status' => $projects ? 'OK' : 'error',
             'result' => $projects,
@@ -59,17 +63,9 @@ class ProjectController extends Controller
     public function store(StoreRequest $request)
     {
         $input = $request->only(['']);
-        if (isset($input['id'])) {
-            $project = $this->projects->create($input);
-        } else {
-            $project = $this->projects->update($input);
-        }
-        $res = [
-            'status' => $project ? 'OK' : 'error',
-            'message' => trans('alerts.project.stored'),
-            'result' => $project,
-        ];
-        return response()->json($res);
+        $project = isset($input['id'])
+            ? $this->projects->create($input)
+            : $this->projects->update($input);
     }
 
     /**
@@ -80,11 +76,6 @@ class ProjectController extends Controller
     public function show($id)
     {
         $project = $this->projects->findOrFail($id, true);
-        $res = [
-            'status' => $project ? 'OK' : 'error',
-            'result' => $project,
-        ];
-        return response()->json($res);
     }
 
     /**
@@ -96,12 +87,6 @@ class ProjectController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $project = $this->projects->delete($id);
-        $res = [
-            'status' => $project ? 'OK' : 'error',
-            'message' => trans("alerts.projects.deleted"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
     }
 
     /**
@@ -113,29 +98,7 @@ class ProjectController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $projects = $this->projects->deleteMany($var['ids']);
-        $res = [
-            'status' => $projects ? 'OK' : 'error',
-            'message' => trans("alerts.projects.deleted"),
-            'result' => ['ids' => $ids],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
-     * @param PermanentlyDeleteProjectRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->projects->delete($id);
-        $res = [
-            'status' => $project ? 'OK' : 'error',
-            'message' => trans("alerts.projects.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        $projects = $this->projects->deleteMany($ids['ids']);
     }
 
     /**
@@ -146,12 +109,6 @@ class ProjectController extends Controller
     public function restore($id, UpdateRequest $request)
     {
         $this->projects->restore($id);
-        $res = [
-            'status' => $project ? 'OK' : 'error',
-            'message' => trans("alerts.projects.restored"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
     }
 
     /**
@@ -163,12 +120,6 @@ class ProjectController extends Controller
     public function mark($id, $status, UpdateRequest $request)
     {
         $this->projects->mark($id, $status);
-        $res = [
-            'status' => $project ? 'OK' : 'error',
-            'message' => trans("alerts.projects.updated"),
-            'result' => ['id' => $id, 'status' => $status],
-        ];
-        return response()->json($res);
     }
 
     /**
@@ -176,12 +127,7 @@ class ProjectController extends Controller
      */
     public function deactivated()
     {
-        $projects = $this->projects->getProjectsPaginated(25, 0);
-        $res = [
-            'status' => $projects ? 'OK' : 'error',
-            'result' => $projects,
-        ];
-        return response()->json($res);
+        $projects = $this->projects->getProjectsPaginated(25);
     }
 
     /**
@@ -190,10 +136,5 @@ class ProjectController extends Controller
     public function deleted()
     {
         $projects = $this->projects->getDeletedProjectsPaginated(25);
-        $res = [
-            'status' => $projects ? 'OK' : 'error',
-            'result' => $projects,
-        ];
-        return response()->json($res);
     }
 }

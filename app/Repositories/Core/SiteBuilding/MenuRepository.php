@@ -16,7 +16,7 @@ class MenuRepository extends Repository
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\SiteBuilding\Menu\Menu';
+        $this->model = 'App\Models\Core\SiteBuilding\Menu';
     }
 
     /**
@@ -48,7 +48,7 @@ class MenuRepository extends Repository
      */
     public function getDeletedMenusPaginated($per_page = 20)
     {
-        return Menu::onlyTrashed()->paginate($per_page);
+        return Menu::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -96,78 +96,5 @@ class MenuRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this menu. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $menu = $this->findOrFail($id);
-        if ($menu->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this menu. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $menu = $this->findOrFail($id, true);
-
-        try {
-            $menu->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $menu = $this->findOrFail($id);
-
-        if ($menu->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this menu. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $menu = $this->findOrFail($id);
-        $menu->status = $status;
-
-        if ($menu->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this menu. Please try again.");
     }
 }

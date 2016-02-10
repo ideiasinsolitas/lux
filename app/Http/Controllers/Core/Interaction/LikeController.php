@@ -32,7 +32,7 @@ class LikeController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $likes = $this->likes->getLikesPaginated(config('core.interaction.like.default_per_page'))->items();
         
@@ -171,7 +171,7 @@ class LikeController extends Controller
      */
     public function deactivated()
     {
-        $likes = $this->likes->getLikesPaginated(25, 0);
+        $likes = $this->likes->getLikesPaginated(25);
         $res = [
             'status' => $likes ? 'OK' : 'error',
             'result' => $likes,

@@ -32,7 +32,7 @@ class FolksonomyController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $folksonomies = $this->folksonomies->getFolksonomysPaginated(config('core.interaction.folksonomy.default_per_page'))->items();
         $res = [
@@ -167,7 +167,7 @@ class FolksonomyController extends Controller
      */
     public function deactivated()
     {
-        $folksonomies = $this->folksonomies->getFolksonomysPaginated(25, 0);
+        $folksonomies = $this->folksonomies->getFolksonomysPaginated(25);
         $res = [
             'status' => $folksonomies ? 'OK' : 'error',
             'result' => $folksonomies,

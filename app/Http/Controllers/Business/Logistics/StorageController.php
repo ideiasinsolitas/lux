@@ -10,6 +10,8 @@ use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
+use App\Services\Format;
+
 class StorageController extends Controller
 {
     /**
@@ -41,7 +43,7 @@ class StorageController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $storages = $this->storages->getStoragesPaginated(config('businnes.logistics.storage.default_per_page'))->items();
         $res = [
@@ -124,22 +126,6 @@ class StorageController extends Controller
 
     /**
      * @param $id
-     * @param PermanentlyDeleteStorageRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->storages->delete($id);
-        $res = [
-            'status' => $storage ? 'OK' : 'error',
-            'message' => trans("alerts.storages.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
      * @param RestoreStorageRequest $request
      * @return mixed
      */
@@ -176,7 +162,7 @@ class StorageController extends Controller
      */
     public function deactivated()
     {
-        $storages = $this->storages->getStoragesPaginated(25, 0);
+        $storages = $this->storages->getStoragesPaginated(25);
         $res = [
             'status' => $storages ? 'OK' : 'error',
             'result' => $storages,

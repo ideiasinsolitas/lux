@@ -3,7 +3,6 @@ namespace App\Repositories\Package\Ticket;
 
 use App\Models\Package\Ticket\Ticket;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +11,6 @@ use App\Exceptions\GeneralException;
  */
 class TicketRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -51,7 +48,7 @@ class TicketRepository extends Repository
      */
     public function getDeletedTicketsPaginated($per_page = 20)
     {
-        return Ticket::onlyTrashed()->paginate($per_page);
+        return Ticket::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -101,78 +98,6 @@ class TicketRepository extends Repository
         throw new GeneralException('There was a problem updating this ticket. Please try again.');
     }
 
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $ticket = $this->findOrFail($id);
-        if ($ticket->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this ticket. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $ticket = $this->findOrFail($id, true);
-
-        try {
-            $ticket->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $ticket = $this->findOrFail($id);
-
-        if ($ticket->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this ticket. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $ticket = $this->findOrFail($id);
-        $ticket->status = $status;
-
-        if ($ticket->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this ticket. Please try again.");
-    }
 
 
 

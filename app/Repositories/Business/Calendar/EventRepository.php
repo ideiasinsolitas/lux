@@ -1,9 +1,22 @@
 <?php
 namespace App\Repositories\Business\Calendar\Event;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Business\Calendar\Event\Event;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
+
+use App\Repositories\Common\Activity;
+use App\Repositories\Common\Collaborative;
+use App\Repositories\Common\Collectable;
+use App\Repositories\Common\Commentable;
+use App\Repositories\Common\Likeable;
+use App\Repositories\Common\OwnerTaggable;
+use App\Repositories\Common\Ownable;
+use App\Repositories\Common\Typed;
+use App\Repositories\Common\UserTaggable;
+use App\Repositories\Common\Votable;
+
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,14 +25,53 @@ use App\Exceptions\GeneralException;
  */
 class EventRepository extends Repository
 {
-    use trait;
+    use Activity,
+        Builder,
+        Collaborative,
+        Collectable,
+        Likeable,
+        OwnerTaggable,
+        Ownable,
+        Typed,
+        UserTaggable,
+        Votable;
 
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Calendar\Event\Event';
+        $this->mainTable = 'business_events';
+        $this->modelPath = 'App\Models\Business\Calendar\Event';
+        $this->type = 'Event';
+    }
+
+    /**
+     * @param $input
+     * @param $roles
+     * @param $permissions
+     * @return bool
+     * @throws GeneralException
+     * @throws EventNeedsRolesException
+     */
+    public function create($input)
+    {
+        return DB::table('core_events')
+            ->insertGetId($input);
+    }
+
+    /**
+     * @param $id
+     * @param $input
+     * @param $roles
+     * @return bool
+     * @throws GeneralException
+     */
+    public function update($id, $input)
+    {
+        return DB::table('core_events')
+            ->update($input)
+            ->where('id', $id);
     }
 
     /**
@@ -42,7 +94,16 @@ class EventRepository extends Repository
      */
     public function getEventsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
     {
-        return Event::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
+        return Event::where('status', '>', $status)->orderBy($order_by, $sort)->paginate($per_page)->items();
+    }
+
+    /**
+     * @param $per_page
+     * @return \Illuminate\Pagination\Paginator
+     */
+    public function getDeactivatedEventsPaginated($per_page = 20)
+    {
+        return Event::where('activity', 1)->paginate($per_page)->items();
     }
 
     /**
@@ -51,7 +112,7 @@ class EventRepository extends Repository
      */
     public function getDeletedEventsPaginated($per_page = 20)
     {
-        return Event::onlyTrashed()->paginate($per_page);
+        return Event::where('activity', 0)->paginate($per_page)->items();
     }
 
     /**
@@ -62,115 +123,5 @@ class EventRepository extends Repository
     public function getAllEvents($order_by = 'id', $sort = 'asc')
     {
         return Event::orderBy($order_by, $sort)->get();
-    }
-
-    /**
-     * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws EventNeedsRolesException
-     */
-    public function create($input)
-    {
-        $event = Event::create($input);
-
-        if ($event->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this name. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
-     */
-    public function update($id, $input)
-    {
-        $event = $this->findOrFail($id);
-
-        if ($event->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this name. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $event = $this->findOrFail($id);
-        if ($event->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this name. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $event = $this->findOrFail($id, true);
-
-        try {
-            $event->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $event = $this->findOrFail($id);
-
-        if ($event->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this name. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $event = $this->findOrFail($id);
-        $event->status = $status;
-
-        if ($event->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this name. Please try again.");
     }
 }

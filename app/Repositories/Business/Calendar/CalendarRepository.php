@@ -1,9 +1,11 @@
 <?php
 namespace App\Repositories\Business\Calendar\Calendar;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Business\Calendar\Calendar\Calendar;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
+
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +14,6 @@ use App\Exceptions\GeneralException;
  */
 class CalendarRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -47,11 +47,28 @@ class CalendarRepository extends Repository
 
     /**
      * @param $per_page
+     * @param string $order_by
+     * @param string $sort
+     * @param int $status
+     * @return mixed
+     */
+    public function getEventsPaginated($calendar_id, $per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    {
+        return DB::table('business_events')
+            ->select('')
+            ->where('calendar_id', $calendar_id)
+            ->where('status', '>', $status)
+            ->orderBy($order_by, $sort)
+            ->paginate($per_page);
+    }
+
+    /**
+     * @param $per_page
      * @return \Illuminate\Pagination\Paginator
      */
     public function getDeletedCalendarsPaginated($per_page = 20)
     {
-        return Calendar::onlyTrashed()->paginate($per_page);
+        return Calendar::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -99,78 +116,5 @@ class CalendarRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this calendar. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $calendar = $this->findOrFail($id);
-        if ($calendar->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this calendar. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $calendar = $this->findOrFail($id, true);
-
-        try {
-            $calendar->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $calendar = $this->findOrFail($id);
-
-        if ($calendar->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this calendar. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $calendar = $this->findOrFail($id);
-        $calendar->status = $status;
-
-        if ($calendar->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this calendar. Please try again.");
     }
 }

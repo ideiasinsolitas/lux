@@ -10,6 +10,8 @@ use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
+use App\Services\Format;
+
 class NameController extends Controller
 {
     /**
@@ -41,7 +43,7 @@ class NameController extends Controller
      * @param  integer $page [description]
      * @return [type]        [description]
      */
-    public function index($page = 1)
+    public function index()
     {
         $names = $this->names->getNamesPaginated(config('package.name.default_per_page'))->items();
         $res = [
@@ -124,22 +126,6 @@ class NameController extends Controller
 
     /**
      * @param $id
-     * @param PermanentlyDeleteNameRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->names->delete($id);
-        $res = [
-            'status' => $name ? 'OK' : 'error',
-            'message' => trans("alerts.names.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
      * @param RestoreNameRequest $request
      * @return mixed
      */
@@ -176,7 +162,7 @@ class NameController extends Controller
      */
     public function deactivated()
     {
-        $names = $this->names->getNamesPaginated(25, 0);
+        $names = $this->names->getNamesPaginated(25);
         $res = [
             'status' => $names ? 'OK' : 'error',
             'result' => $names,

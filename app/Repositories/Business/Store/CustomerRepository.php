@@ -51,7 +51,7 @@ class CustomerRepository extends Repository
      */
     public function getDeletedCustomersPaginated($per_page = 20)
     {
-        return Customer::onlyTrashed()->paginate($per_page);
+        return Customer::where('activity', 0)->paginate($per_page);
     }
 
     /**

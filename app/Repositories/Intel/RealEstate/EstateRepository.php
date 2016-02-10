@@ -3,7 +3,6 @@ namespace App\Repositories\Package\Estate;
 
 use App\Models\Package\Estate\Estate;
 use App\Repositories\Repository;
-use App\Repositories\Common\trait;
 use App\Exceptions\GeneralException;
 
 /**
@@ -12,8 +11,6 @@ use App\Exceptions\GeneralException;
  */
 class EstateRepository extends Repository
 {
-    use trait;
-
     /**
      * /
      */
@@ -51,7 +48,7 @@ class EstateRepository extends Repository
      */
     public function getDeletedEstatesPaginated($per_page = 20)
     {
-        return Estate::onlyTrashed()->paginate($per_page);
+        return Estate::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -99,78 +96,5 @@ class EstateRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this estate. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $estate = $this->findOrFail($id);
-        if ($estate->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this estate. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $estate = $this->findOrFail($id, true);
-
-        try {
-            $estate->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $estate = $this->findOrFail($id);
-
-        if ($estate->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this estate. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $estate = $this->findOrFail($id);
-        $estate->status = $status;
-
-        if ($estate->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this estate. Please try again.");
     }
 }

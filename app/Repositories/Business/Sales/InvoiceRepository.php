@@ -51,7 +51,7 @@ class InvoiceRepository extends Repository
      */
     public function getDeletedInvoicesPaginated($per_page = 20)
     {
-        return Invoice::onlyTrashed()->paginate($per_page);
+        return Invoice::where('activity', 0)->paginate($per_page);
     }
 
     /**
@@ -99,78 +99,5 @@ class InvoiceRepository extends Repository
         }
 
         throw new GeneralException('There was a problem updating this invoice. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $invoice = $this->findOrFail($id);
-        if ($invoice->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this invoice. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $invoice = $this->findOrFail($id, true);
-
-        try {
-            $invoice->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $invoice = $this->findOrFail($id);
-
-        if ($invoice->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this invoice. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $invoice = $this->findOrFail($id);
-        $invoice->status = $status;
-
-        if ($invoice->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this invoice. Please try again.");
     }
 }
