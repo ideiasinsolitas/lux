@@ -43,8 +43,7 @@ class NodeRepository extends Repository
      */
     public function __construct()
     {
-        $this->modelNamespace = 'App\Models\SiteBuilding\Node\Node';
-        $this->mainTable = 'publishing_nodes AS main';
+        $this->table = 'publishing_nodes';
         $this->type = 'Node';
     }
 
@@ -63,7 +62,7 @@ class NodeRepository extends Repository
      */
     public function create($nodeInput, $translationInput)
     {
-        $id = DB::table($this->mainTable)->insertGetId($nodeInput);
+        $id = DB::table($this->table)->insertGetId($nodeInput);
         $translationInput['translatable_id'] = $id;
         $translationInput['translatable_type'] = $this->modelSlug;
         DB::table('core_translations')->insert($translationInput);
@@ -77,7 +76,7 @@ class NodeRepository extends Repository
      */
     public function update($nodeInput, $translationInput)
     {
-        DB::table($this->mainTable)
+        DB::table($this->table)
             ->where('id', $nodeInput['id'])
             ->update($nodeInput);
         DB::table('core_translations')
@@ -94,7 +93,7 @@ class NodeRepository extends Repository
      */
     public function getNode($id, $lang = 'pt-br')
     {
-        $result = DB::table($this->mainTable)
+        $result = DB::table($this->table)
             ->join('translations t2', 'publishing_nodes..id', '=', 'core_translations.translatable_id')
             ->join('types t3', 'publishing_nodes..type_id', '=', 't3.id')
             ->select(
@@ -123,7 +122,7 @@ class NodeRepository extends Repository
      */
     public function getNodesPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc', $lang = 'pt-br')
     {
-        $builder = DB::table($this->mainTable);
+        $builder = DB::table($this->table);
         $builder = $this->build($builder);
         return $builder
             ->select(
@@ -158,7 +157,7 @@ class NodeRepository extends Repository
      */
     public function getNodesByTypePaginated($type, $per_page = 12, $order_by = 'modified', $sort = 'asc', $lang = 'pt-br')
     {
-        $builder = DB::table($this->mainTable);
+        $builder = DB::table($this->table);
         $builder = $this->build($builder);
         return $builder
             ->select(
@@ -188,7 +187,7 @@ class NodeRepository extends Repository
      */
     public function markDraft($id)
     {
-        return DB::table($this->mainTable)->update(['status' => 3])->where('id', $id);
+        return DB::table($this->table)->update(['status' => 3])->where('id', $id);
     }
 
     /**
@@ -197,7 +196,7 @@ class NodeRepository extends Repository
      */
     public function markPending($id)
     {
-        return DB::table($this->mainTable)->update(['status' => 4])->where('id', $id);
+        return DB::table($this->table)->update(['status' => 4])->where('id', $id);
     }
 
     /**
@@ -207,6 +206,6 @@ class NodeRepository extends Repository
      */
     public function publish($id)
     {
-        return DB::table($this->mainTable)->update(['status' => 5])->where('id', $id);
+        return DB::table($this->table)->update(['status' => 5])->where('id', $id);
     }
 }

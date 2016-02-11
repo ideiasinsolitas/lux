@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\_Component\_Package\_Name;
+namespace App\Http\Controllers\Core\Taxonomy\Taxonomy;
 
-use App\Repositories\_Component\_Package\_NameRepository;
+use App\Repositories\Core\Taxonomy\TaxonomyRepository;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -10,24 +10,24 @@ use App\Http\Requests\Generic\DeleteRequest;
 
 use App\Services\ResponseHandler;
 
-class _NameController extends Controller
+class TaxonomyController extends Controller
 {
     /**
-     * [$_names description]
+     * [$taxonomys description]
      * @var [type]
      */
-    protected $_names;
+    protected $taxonomys;
 
     protected $handler;
     /**
      * /
-     * @param _NameRepository $_names [description]
+     * @param TaxonomyRepository $taxonomys [description]
      */
-    public function __construct(ResponseHandler $handler, _NameRepository $_names)
+    public function __construct(ResponseHandler $handler, TaxonomyRepository $taxonomys)
     {
-        $handler->setPrefix('_component._package');
+        $handler->setPrefix('core.taxonomy');
         $this->handler = $handler;
-        $this->_names = $_names;
+        $this->taxonomys = $taxonomys;
     }
 
     /**
@@ -39,9 +39,9 @@ class _NameController extends Controller
     {
         $input = $request->only(['term_id', 'user_id', 'ownertaggable_type', 'ownertaggable_id']);
         $calendar = $request->has('id')
-            ? $this->_names
+            ? $this->taxonomys
                 ->update($input)
-            : $this->_names
+            : $this->taxonomys
                 ->create($input);
 
         return $this->handler
@@ -55,11 +55,11 @@ class _NameController extends Controller
      */
     public function index()
     {
-        $_names = $this->_names
-            ->get_NamesPaginated(config('_component._package._name.default_per_page'))
+        $taxonomys = $this->taxonomys
+            ->getTaxonomysPaginated(config('core.taxonomy.taxonomy.default_per_page'))
             ->items();
         return $this->handler
-            ->apiResponse($_names);
+            ->apiResponse($taxonomys);
     }
 
     /**
@@ -67,8 +67,8 @@ class _NameController extends Controller
      */
     public function deactivated()
     {
-        $_names = $this->_names
-            ->getDeactivated_NamesPaginated(config('_component._package._name.default_per_page'));
+        $taxonomys = $this->taxonomys
+            ->getDeactivatedTaxonomysPaginated(config('core.taxonomy.taxonomy.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -79,8 +79,8 @@ class _NameController extends Controller
      */
     public function deleted()
     {
-        $_names = $this->_names
-            ->getDeleted_NamesPaginated(config('_component._package._name.default_per_page'));
+        $taxonomys = $this->taxonomys
+            ->getDeletedTaxonomysPaginated(config('core.taxonomy.taxonomy.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -93,7 +93,7 @@ class _NameController extends Controller
      */
     public function show($id)
     {
-        $calendar = $this->_names
+        $calendar = $this->taxonomys
             ->findOrFail($id, true);
 
         return $this->handler
@@ -108,7 +108,7 @@ class _NameController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->taxonomys
             ->delete($id);
 
         return $this->handler
@@ -124,21 +124,21 @@ class _NameController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $_names = $this->_names
+        $taxonomys = $this->taxonomys
             ->deleteMany($ids);
             
         return $this->handler
-            ->apiResponse($_names, 'deleted_many');
+            ->apiResponse($taxonomys, 'deleted_many');
     }
 
     /**
      * @param $id
-     * @param Restore_NameRequest $request
+     * @param RestoreTaxonomyRequest $request
      * @return mixed
      */
     public function restore($id, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->taxonomys
             ->restore($id);
             
         return $this->handler
@@ -148,12 +148,12 @@ class _NameController extends Controller
     /**
      * @param $id
      * @param $status
-     * @param Mark_NameRequest $request
+     * @param MarkTaxonomyRequest $request
      * @return mixed
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->taxonomys
             ->mark($id, $status);
             
         return $this->handler

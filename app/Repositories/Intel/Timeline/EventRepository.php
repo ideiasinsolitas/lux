@@ -41,8 +41,7 @@ class EventRepository extends Repository
      */
     public function __construct()
     {
-        $this->mainTable = 'business_events';
-        $this->modelPath = 'App\Models\Business\Calendar\Event';
+        $this->table = 'business_events';
         $this->type = 'Event';
     }
 
@@ -94,7 +93,7 @@ class EventRepository extends Repository
      */
     public function getEventsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
     {
-        return Event::where('status', '>', $status)->orderBy($order_by, $sort)->paginate($per_page)->items();
+        return Event::where('activity', '>', $status)->orderBy($order_by, $sort)->paginate($per_page)->items();
     }
 
     /**

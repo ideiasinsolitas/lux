@@ -4,8 +4,10 @@ namespace App\Repositories\Common;
 
 trait Commentable
 {
-    public function handleCommnetInput($input)
+    public function handleCommentInput($input)
     {
+        $commentInput = ['' => $input[''], '' => $input[''], '' => $input['']];
+        $commentingInput = ['' => $input[''], '' => $input[''], '' => $input['']];
         return [$commentInput, $commentingInput];
     }
 

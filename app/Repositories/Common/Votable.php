@@ -4,15 +4,6 @@ namespace App\Repositories\Common;
 
 trait Votable
 {
-    public function buildVotable($builder)
-    {
-        return $builder
-            ->join('core_votes', function ($q) {
-                return $q->on('core_votes.votable_id', 'main.id')
-                    ->where('core_votes.votable_type', '\"' . $this->type . '\"');
-            });
-    }
-
     public function vote($user_id, $item_id, $vote)
     {
         return DB::table('core_votes')

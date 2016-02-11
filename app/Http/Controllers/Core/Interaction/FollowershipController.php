@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\_Component\_Package\_Name;
+namespace App\Http\Controllers\Core\Interaction\Followership;
 
-use App\Repositories\_Component\_Package\_NameRepository;
+use App\Repositories\Core\Interaction\FollowershipRepository;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -10,24 +10,24 @@ use App\Http\Requests\Generic\DeleteRequest;
 
 use App\Services\ResponseHandler;
 
-class _NameController extends Controller
+class FollowershipController extends Controller
 {
     /**
-     * [$_names description]
+     * [$followerships description]
      * @var [type]
      */
-    protected $_names;
+    protected $followerships;
 
     protected $handler;
     /**
      * /
-     * @param _NameRepository $_names [description]
+     * @param FollowershipRepository $followerships [description]
      */
-    public function __construct(ResponseHandler $handler, _NameRepository $_names)
+    public function __construct(ResponseHandler $handler, FollowershipRepository $followerships)
     {
-        $handler->setPrefix('_component._package');
+        $handler->setPrefix('core.interaction');
         $this->handler = $handler;
-        $this->_names = $_names;
+        $this->followerships = $followerships;
     }
 
     /**
@@ -38,9 +38,9 @@ class _NameController extends Controller
     public function store(StoreRequest $request)
     {
         $calendar = $request->has('id')
-            ? $this->_names
+            ? $this->followerships
                 ->update($input)
-            : $this->_names
+            : $this->followerships
                 ->create($input);
 
         return $this->handler
@@ -54,11 +54,11 @@ class _NameController extends Controller
      */
     public function index()
     {
-        $_names = $this->_names
-            ->get_NamesPaginated(config('_component._package._name.default_per_page'))
+        $followerships = $this->followerships
+            ->getFollowershipsPaginated(config('core.interaction.followership.default_per_page'))
             ->items();
         return $this->handler
-            ->apiResponse($_names);
+            ->apiResponse($followerships);
     }
 
     /**
@@ -66,8 +66,8 @@ class _NameController extends Controller
      */
     public function deactivated()
     {
-        $_names = $this->_names
-            ->getDeactivated_NamesPaginated(config('_component._package._name.default_per_page'));
+        $followerships = $this->followerships
+            ->getDeactivatedFollowershipsPaginated(config('core.interaction.followership.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -78,8 +78,8 @@ class _NameController extends Controller
      */
     public function deleted()
     {
-        $_names = $this->_names
-            ->getDeleted_NamesPaginated(config('_component._package._name.default_per_page'));
+        $followerships = $this->followerships
+            ->getDeletedFollowershipsPaginated(config('core.interaction.followership.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -92,7 +92,7 @@ class _NameController extends Controller
      */
     public function show($id)
     {
-        $calendar = $this->_names
+        $calendar = $this->followerships
             ->findOrFail($id, true);
 
         return $this->handler
@@ -107,7 +107,7 @@ class _NameController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->followerships
             ->delete($id);
 
         return $this->handler
@@ -123,21 +123,21 @@ class _NameController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $_names = $this->_names
+        $followerships = $this->followerships
             ->deleteMany($ids);
             
         return $this->handler
-            ->apiResponse($_names, 'deleted_many');
+            ->apiResponse($followerships, 'deleted_many');
     }
 
     /**
      * @param $id
-     * @param Restore_NameRequest $request
+     * @param RestoreFollowershipRequest $request
      * @return mixed
      */
     public function restore($id, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->followerships
             ->restore($id);
             
         return $this->handler
@@ -147,12 +147,12 @@ class _NameController extends Controller
     /**
      * @param $id
      * @param $status
-     * @param Mark_NameRequest $request
+     * @param MarkFollowershipRequest $request
      * @return mixed
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->followerships
             ->mark($id, $status);
             
         return $this->handler

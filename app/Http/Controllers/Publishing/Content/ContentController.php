@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\_Component\_Package\_Name;
+namespace App\Http\Controllers\Publishing\ContentManagement;
 
-use App\Repositories\_Component\_Package\_NameRepository;
+use App\Repositories\Publishing\ContentManagement\ContentRepository;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -10,24 +10,24 @@ use App\Http\Requests\Generic\DeleteRequest;
 
 use App\Services\ResponseHandler;
 
-class _NameController extends Controller
+class ContentController extends Controller
 {
     /**
-     * [$_names description]
+     * [$contents description]
      * @var [type]
      */
-    protected $_names;
+    protected $contents;
 
     protected $handler;
     /**
      * /
-     * @param _NameRepository $_names [description]
+     * @param ContentRepository $contents [description]
      */
-    public function __construct(ResponseHandler $handler, _NameRepository $_names)
+    public function __construct(ResponseHandler $handler, ContentRepository $contents)
     {
-        $handler->setPrefix('_component._package');
+        $handler->setPrefix('publishing.content_management');
         $this->handler = $handler;
-        $this->_names = $_names;
+        $this->contents = $contents;
     }
 
     /**
@@ -38,9 +38,9 @@ class _NameController extends Controller
     public function store(StoreRequest $request)
     {
         $calendar = $request->has('id')
-            ? $this->_names
+            ? $this->contents
                 ->update($input)
-            : $this->_names
+            : $this->contents
                 ->create($input);
 
         return $this->handler
@@ -54,11 +54,11 @@ class _NameController extends Controller
      */
     public function index()
     {
-        $_names = $this->_names
-            ->get_NamesPaginated(config('_component._package._name.default_per_page'))
+        $contents = $this->contents
+            ->getContentsPaginated(config('publishing.content_management.content.default_per_page'))
             ->items();
         return $this->handler
-            ->apiResponse($_names);
+            ->apiResponse($contents);
     }
 
     /**
@@ -66,8 +66,8 @@ class _NameController extends Controller
      */
     public function deactivated()
     {
-        $_names = $this->_names
-            ->getDeactivated_NamesPaginated(config('_component._package._name.default_per_page'));
+        $contents = $this->contents
+            ->getDeactivatedContentsPaginated(config('publishing.content_management.content.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -78,8 +78,8 @@ class _NameController extends Controller
      */
     public function deleted()
     {
-        $_names = $this->_names
-            ->getDeleted_NamesPaginated(config('_component._package._name.default_per_page'));
+        $contents = $this->contents
+            ->getDeletedContentsPaginated(config('publishing.content_management.content.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -92,7 +92,7 @@ class _NameController extends Controller
      */
     public function show($id)
     {
-        $calendar = $this->_names
+        $calendar = $this->contents
             ->findOrFail($id, true);
 
         return $this->handler
@@ -107,7 +107,7 @@ class _NameController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->contents
             ->delete($id);
 
         return $this->handler
@@ -123,21 +123,21 @@ class _NameController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $_names = $this->_names
+        $contents = $this->contents
             ->deleteMany($ids);
             
         return $this->handler
-            ->apiResponse($_names, 'deleted_many');
+            ->apiResponse($contents, 'deleted_many');
     }
 
     /**
      * @param $id
-     * @param Restore_NameRequest $request
+     * @param RestoreContentRequest $request
      * @return mixed
      */
     public function restore($id, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->contents
             ->restore($id);
             
         return $this->handler
@@ -147,12 +147,12 @@ class _NameController extends Controller
     /**
      * @param $id
      * @param $status
-     * @param Mark_NameRequest $request
+     * @param MarkContentRequest $request
      * @return mixed
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->contents
             ->mark($id, $status);
             
         return $this->handler

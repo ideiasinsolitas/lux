@@ -4,11 +4,10 @@ namespace App\Repositories;
 
 class Repository
 {
-    protected $modelNamespace;
-    protected $mainTable;
-    protected $modelSlug;
+    protected $table;
+    protected $type;
 
-    public function throwException()
+    public function throwException($input = null)
     {
         //
         $message =

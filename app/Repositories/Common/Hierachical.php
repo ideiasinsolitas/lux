@@ -10,7 +10,7 @@ namespace App\Repositories\Common;
 
 trait Hierachical
 {
-    protected $elements;
+    protected $leafs;
 
     /**
      * /
@@ -19,9 +19,9 @@ trait Hierachical
      */
     public function generateTree(array $items)
     {
-        $this->elements = array();
+        $this->leafs = array();
         foreach ($items as $item) {
-            $this->elements[$item->id] = $item;
+            $this->leafs[$item->id] = $item;
         }
         return $this->buildTree();
     }
@@ -34,14 +34,14 @@ trait Hierachical
     public function buildTree($branch_id = 0)
     {
         $branch = array();
-        foreach ($this->elements as $element) {
+        foreach ($this->leafs as $element) {
             if ((int) $element->parent_id === (int) $branch_id) {
                 $leafs = $this->buildTree($element->id);
                 if ($leafs) {
                     $element['leafs'] = $leafs;
                 }
                 $branch[$element->id] = $element;
-                unset($this->elements[$element->id]);
+                unset($this->leafs[$element->id]);
             }
         }
         return $branch;
@@ -54,7 +54,7 @@ trait Hierachical
      */
     public function setBranch($leaf_id, $branch_id = 0)
     {
-        return DB::table($this->mainTable)
+        return DB::table($this->table)
             ->update(['parent_id' => $branch_id])
             ->where('id', $leaf_id);
     }
@@ -66,10 +66,10 @@ trait Hierachical
      */
     public function getBranch($leaf_id)
     {
-        $id = DB::table($this->mainTable)
+        $id = DB::table($this->table)
             ->select('id')
             ->where('id', $leaf_id);
-        return DB::table($this->mainTable)
+        return DB::table($this->table)
             ->where('id', $id);
     }
 
@@ -80,7 +80,7 @@ trait Hierachical
      */
     public function getLeafs($branch_id)
     {
-        return DB::table($this->mainTable)
+        return DB::table($this->table)
             ->where('parent_id', $branch_id)->get();
     }
 
@@ -91,9 +91,21 @@ trait Hierachical
      */
     public function addLeaf($branch_id, $leaf_id)
     {
-        return DB::table($this->mainTable)
+        return DB::table($this->table)
             ->update(['parent_id' => $branch_id])
             ->where('id', $leaf_id);
+    }
+
+    /**
+     * /
+     * @param [type] $branch_id [description]
+     * @param [type] $leaf_id  [description]
+     */
+    public function addLeaves($branch_id, $leaves_id)
+    {
+        return DB::table($this->table)
+            ->update(['parent_id' => $branch_id])
+            ->whereIn('id', $leaves_id);
     }
 
     /**
@@ -103,7 +115,7 @@ trait Hierachical
      */
     public function removeLeaf($leaf_id)
     {
-        return DB::table($this->mainTable)
+        return DB::table($this->table)
             ->update(['parent_id' => 0])
             ->where('id', $leaf_id);
     }

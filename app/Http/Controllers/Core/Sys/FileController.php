@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\_Component\_Package\_Name;
+namespace App\Http\Controllers\Core\Sys\File;
 
-use App\Repositories\_Component\_Package\_NameRepository;
+use App\Repositories\Core\Sys\FileRepository;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -10,24 +10,24 @@ use App\Http\Requests\Generic\DeleteRequest;
 
 use App\Services\ResponseHandler;
 
-class _NameController extends Controller
+class FileController extends Controller
 {
     /**
-     * [$_names description]
+     * [$files description]
      * @var [type]
      */
-    protected $_names;
+    protected $files;
 
     protected $handler;
     /**
      * /
-     * @param _NameRepository $_names [description]
+     * @param FileRepository $files [description]
      */
-    public function __construct(ResponseHandler $handler, _NameRepository $_names)
+    public function __construct(ResponseHandler $handler, FileRepository $files)
     {
-        $handler->setPrefix('_component._package');
+        $handler->setPrefix('core.sys');
         $this->handler = $handler;
-        $this->_names = $_names;
+        $this->files = $files;
     }
 
     /**
@@ -52,9 +52,9 @@ class _NameController extends Controller
             'activity'
         ]);
         $calendar = $request->has('id')
-            ? $this->_names
+            ? $this->files
                 ->update($input)
-            : $this->_names
+            : $this->files
                 ->create($input);
 
         return $this->handler
@@ -68,11 +68,11 @@ class _NameController extends Controller
      */
     public function index()
     {
-        $_names = $this->_names
-            ->get_NamesPaginated(config('_component._package._name.default_per_page'))
+        $files = $this->files
+            ->getFilesPaginated(config('core.sys.file.default_per_page'))
             ->items();
         return $this->handler
-            ->apiResponse($_names);
+            ->apiResponse($files);
     }
 
     /**
@@ -80,8 +80,8 @@ class _NameController extends Controller
      */
     public function deactivated()
     {
-        $_names = $this->_names
-            ->getDeactivated_NamesPaginated(config('_component._package._name.default_per_page'));
+        $files = $this->files
+            ->getDeactivatedFilesPaginated(config('core.sys.file.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -92,8 +92,8 @@ class _NameController extends Controller
      */
     public function deleted()
     {
-        $_names = $this->_names
-            ->getDeleted_NamesPaginated(config('_component._package._name.default_per_page'));
+        $files = $this->files
+            ->getDeletedFilesPaginated(config('core.sys.file.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -106,7 +106,7 @@ class _NameController extends Controller
      */
     public function show($id)
     {
-        $calendar = $this->_names
+        $calendar = $this->files
             ->findOrFail($id, true);
 
         return $this->handler
@@ -121,7 +121,7 @@ class _NameController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->files
             ->delete($id);
 
         return $this->handler
@@ -137,21 +137,21 @@ class _NameController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $_names = $this->_names
+        $files = $this->files
             ->deleteMany($ids);
             
         return $this->handler
-            ->apiResponse($_names, 'deleted_many');
+            ->apiResponse($files, 'deleted_many');
     }
 
     /**
      * @param $id
-     * @param Restore_NameRequest $request
+     * @param RestoreFileRequest $request
      * @return mixed
      */
     public function restore($id, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->files
             ->restore($id);
             
         return $this->handler
@@ -161,12 +161,12 @@ class _NameController extends Controller
     /**
      * @param $id
      * @param $status
-     * @param Mark_NameRequest $request
+     * @param MarkFileRequest $request
      * @return mixed
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->files
             ->mark($id, $status);
             
         return $this->handler

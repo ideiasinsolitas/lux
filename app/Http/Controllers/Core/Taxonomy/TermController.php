@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\_Component\_Package\_Name;
+namespace App\Http\Controllers\Core\Term;
 
-use App\Repositories\_Component\_Package\_NameRepository;
+use App\Repositories\Core\Term\TermRepository;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -10,24 +10,24 @@ use App\Http\Requests\Generic\DeleteRequest;
 
 use App\Services\ResponseHandler;
 
-class _NameController extends Controller
+class TermController extends Controller
 {
     /**
-     * [$_names description]
+     * [$terms description]
      * @var [type]
      */
-    protected $_names;
+    protected $terms;
 
     protected $handler;
     /**
      * /
-     * @param _NameRepository $_names [description]
+     * @param TermRepository $terms [description]
      */
-    public function __construct(ResponseHandler $handler, _NameRepository $_names)
+    public function __construct(ResponseHandler $handler, TermRepository $terms)
     {
-        $handler->setPrefix('_component._package');
+        $handler->setPrefix('core.taxonomy');
         $this->handler = $handler;
-        $this->_names = $_names;
+        $this->terms = $terms;
     }
 
     /**
@@ -39,9 +39,9 @@ class _NameController extends Controller
     {
         $input = $request->only(['id', 'node_id', 'parent_id', 'type_id', 'activity']);
         $calendar = $request->has('id')
-            ? $this->_names
+            ? $this->terms
                 ->update($input)
-            : $this->_names
+            : $this->terms
                 ->create($input);
 
         return $this->handler
@@ -55,11 +55,11 @@ class _NameController extends Controller
      */
     public function index()
     {
-        $_names = $this->_names
-            ->get_NamesPaginated(config('_component._package._name.default_per_page'))
+        $terms = $this->terms
+            ->getTermsPaginated(config('core.taxonomy.term.default_per_page'))
             ->items();
         return $this->handler
-            ->apiResponse($_names);
+            ->apiResponse($terms);
     }
 
     /**
@@ -67,8 +67,8 @@ class _NameController extends Controller
      */
     public function deactivated()
     {
-        $_names = $this->_names
-            ->getDeactivated_NamesPaginated(config('_component._package._name.default_per_page'));
+        $terms = $this->terms
+            ->getDeactivatedTermsPaginated(config('core.taxonomy.term.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -79,8 +79,8 @@ class _NameController extends Controller
      */
     public function deleted()
     {
-        $_names = $this->_names
-            ->getDeleted_NamesPaginated(config('_component._package._name.default_per_page'));
+        $terms = $this->terms
+            ->getDeletedTermsPaginated(config('core.taxonomy.term.default_per_page'));
             
         return $this->handler
             ->apiResponse($calendar);
@@ -93,7 +93,7 @@ class _NameController extends Controller
      */
     public function show($id)
     {
-        $calendar = $this->_names
+        $calendar = $this->terms
             ->findOrFail($id, true);
 
         return $this->handler
@@ -108,7 +108,7 @@ class _NameController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->terms
             ->delete($id);
 
         return $this->handler
@@ -124,21 +124,21 @@ class _NameController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $_names = $this->_names
+        $terms = $this->terms
             ->deleteMany($ids);
             
         return $this->handler
-            ->apiResponse($_names, 'deleted_many');
+            ->apiResponse($terms, 'deleted_many');
     }
 
     /**
      * @param $id
-     * @param Restore_NameRequest $request
+     * @param RestoreTermRequest $request
      * @return mixed
      */
     public function restore($id, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->terms
             ->restore($id);
             
         return $this->handler
@@ -148,12 +148,12 @@ class _NameController extends Controller
     /**
      * @param $id
      * @param $status
-     * @param Mark_NameRequest $request
+     * @param MarkTermRequest $request
      * @return mixed
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $calendar = $this->_names
+        $calendar = $this->terms
             ->mark($id, $status);
             
         return $this->handler

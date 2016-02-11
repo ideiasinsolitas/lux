@@ -57,7 +57,7 @@ class CalendarRepository extends Repository
         return DB::table('business_events')
             ->select('')
             ->where('calendar_id', $calendar_id)
-            ->where('status', '>', $status)
+            ->where('activity', '>', $status)
             ->orderBy($order_by, $sort)
             ->paginate($per_page);
     }

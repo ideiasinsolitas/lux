@@ -1,49 +1,38 @@
 <?php
-namespace App\Repositories\_Component\_Package\_Name;
+namespace App\Repositories\Publishing\ContentManagement\Issue;
 
 use Illuminate\Support\Facades\DB;
 
-use App\Models\_Component\_Package\_Name\_Name;
+use App\Models\Publishing\ContentManagement\Issue\Issue;
 use App\Repositories\Repository;
 
 use App\Repositories\Common\Activity;
 use App\Repositories\Common\Collaborative;
-use App\Repositories\Common\Collectable;
-use App\Repositories\Common\Commentable;
 use App\Repositories\Common\Likeable;
 use App\Repositories\Common\OwnerTaggable;
 use App\Repositories\Common\Ownable;
-use App\Repositories\Common\Typed;
-use App\Repositories\Common\UserTaggable;
-use App\Repositories\Common\Votable;
 
 use App\Exceptions\GeneralException;
 
 /**
- * Class Eloquent_NameRepository
- * @package App\Repositories\_Name
+ * Class EloquentIssueRepository
+ * @package App\Repositories\Issue
  */
-class _NameRepository extends Repository
+class IssueRepository extends Repository
 {
     use Activity,
-        Builder,
         Collaborative,
-        Collectable,
         Likeable,
         OwnerTaggable,
-        Ownable,
-        Typed,
-        UserTaggable,
-        Votable;
+        Ownable;
 
     /**
      * /
      */
     public function __construct()
     {
-        $this->mainTable = '_package__names';
-        $this->modelPath = 'App\Models\_Component\_Package\_Name';
-        $this->type = '_Name';
+        $this->table = 'publishing_issues';
+        $this->type = 'Issue';
     }
 
     /**
@@ -52,7 +41,7 @@ class _NameRepository extends Repository
      */
     public function create($input)
     {
-        return DB::table('_component__names')
+        return DB::table($this->table)
             ->insertGetId($input);
     }
 
@@ -63,18 +52,28 @@ class _NameRepository extends Repository
      */
     public function update($id, $input)
     {
-        return DB::table('_component__names')
+        return DB::table($this->table)
             ->update($input)
             ->where('id', $id);
+    }
+
+    private function getBuilder()
+    {
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ;
     }
 
     /**
      * @param $id
      * @return mixed
      */
-    public function findOrFail($id)
+    public function findOne($id)
     {
-        return _Name::findOrFail($id);
+        return DB::table($this->table)
+            ->select()
+            ->where($id);
     }
 
     /**
@@ -84,36 +83,12 @@ class _NameRepository extends Repository
      * @param int $status
      * @return mixed
      */
-    public function get_NamesPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    public function getFullPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
     {
-        return _Name::where('status', '>', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeactivated_NamesPaginated($per_page = 20)
-    {
-        return _Name::where('activity', 1)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeleted_NamesPaginated($per_page = 20)
-    {
-        return _Name::where('activity', 0)->paginate($per_page);
-    }
-
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAll_Names($order_by = 'id', $sort = 'asc')
-    {
-        return _Name::orderBy($order_by, $sort)->get();
+        return DB::table($this->table)
+            ->select()
+            ->where('activity', '>', $status)
+            ->orderBy($order_by, $sort)
+            ->paginate($per_page);
     }
 }

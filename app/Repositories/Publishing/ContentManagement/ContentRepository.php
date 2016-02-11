@@ -1,14 +1,14 @@
 <?php
-namespace App\Repositories\_Component\_Package\_Name;
+namespace App\Repositories\_Component\_Package\Content;
 
 use Illuminate\Support\Facades\DB;
 
-use App\Models\_Component\_Package\_Name\_Name;
+use App\Models\_Component\_Package\Content\Content;
 use App\Repositories\Repository;
 
 use App\Repositories\Common\Activity;
 use App\Repositories\Common\Collaborative;
-use App\Repositories\Common\Collectable;
+use App\Repositories\Common\Collector;
 use App\Repositories\Common\Commentable;
 use App\Repositories\Common\Likeable;
 use App\Repositories\Common\OwnerTaggable;
@@ -20,14 +20,14 @@ use App\Repositories\Common\Votable;
 use App\Exceptions\GeneralException;
 
 /**
- * Class Eloquent_NameRepository
- * @package App\Repositories\_Name
+ * Class EloquentContentRepository
+ * @package App\Repositories\Content
  */
-class _NameRepository extends Repository
+class ContentRepository extends Repository
 {
     use Activity,
         Builder,
-        Collaborative,
+        Collaborator,
         Collectable,
         Likeable,
         OwnerTaggable,
@@ -41,18 +41,17 @@ class _NameRepository extends Repository
      */
     public function __construct()
     {
-        $this->mainTable = '_package__names';
-        $this->modelPath = 'App\Models\_Component\_Package\_Name';
-        $this->type = '_Name';
+        $this->table = 'publishing_contents';
+        $this->type = 'Content';
     }
 
     /**
      * @param $input
      * @return int
      */
-    public function create($input)
+    public function create($input, $translationInput, $collectionInput)
     {
-        return DB::table('_component__names')
+        return DB::table($this->table)
             ->insertGetId($input);
     }
 
@@ -61,59 +60,18 @@ class _NameRepository extends Repository
      * @param $input
      * @return mixed
      */
-    public function update($id, $input)
+    public function update($id, $input, $translationInput, $collectionInput)
     {
-        return DB::table('_component__names')
+        return DB::table($this->table)
             ->update($input)
             ->where('id', $id);
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function findOrFail($id)
+    private function getBuilder()
     {
-        return _Name::findOrFail($id);
-    }
-
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function get_NamesPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
-    {
-        return _Name::where('status', '>', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeactivated_NamesPaginated($per_page = 20)
-    {
-        return _Name::where('activity', 1)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeleted_NamesPaginated($per_page = 20)
-    {
-        return _Name::where('activity', 0)->paginate($per_page);
-    }
-
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAll_Names($order_by = 'id', $sort = 'asc')
-    {
-        return _Name::orderBy($order_by, $sort)->get();
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ;
     }
 }

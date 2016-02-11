@@ -18,7 +18,8 @@ trait OwnerTaggable
     {
         return DB::table('core_taxonomy')
             ->insert([
-                'item_id' => $item_id,
+                'ownertaggable_type' => $this->type,
+                'ownertaggable_id' => $item_id,
                 'term_id' => $this->getOrCreateTermId($term)
             ]);
     }
@@ -36,6 +37,7 @@ trait OwnerTaggable
     public function removeTaxonomyTerm($item_id, $term)
     {
         return DB::table('core_taxonomy')
+            ->join('core_terms', 'core_taxonomy.term_id', 'core_terms.id')
             ->where('ownertaggable_type', $this->type)
             ->where('ownertaggable_id', $ownertaggable_id)
             ->where('term', $term)

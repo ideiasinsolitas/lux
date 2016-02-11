@@ -8,7 +8,7 @@ trait Nodable
 {
     public function createNode($type)
     {
-        DB::table('core_nodes')
+        return DB::table('core_nodes')
             ->insertGetId(['type', $type]);
     }
 }

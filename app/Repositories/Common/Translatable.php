@@ -12,22 +12,6 @@ trait Translatable
 {
     /**
      * /
-     * @param  [type] $builder [description]
-     * @return [type]          [description]
-     */
-    public function buildTranslatable($builder = null)
-    {
-        $builder = $builder || $this->getBuilder();
-        $type = DB::raw($this->type);
-        return $builder
-            ->join('core_translations', function ($q) use ($type) {
-                return $q->on('core_translations.translatable_id', 'main.id')
-                    ->where('core_translations.translatable_type', $type);
-            });
-    }
-
-    /**
-     * /
      * @param  [type] $item_id [description]
      * @return [type]          [description]
      */

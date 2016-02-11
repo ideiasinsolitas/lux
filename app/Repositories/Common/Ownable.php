@@ -12,18 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 trait Ownable
 {
-    public function buildOwner($builder = null)
-    {
-        $builder = $builder || $this->getBuilder();
-        $type = DB::raw($this->type);
-        return $builder
-            ->join('core_ownership', function ($q) use ($type) {
-                $q->on('core_ownership.ownable_type', $type)
-                    ->where('core_ownership.ownable_id', 'main.id');
-            })
-            ->join('core_users', 'core_users.id', 'core_ownership.user_id');
-    }
-
     /**
      * /
      * @param  [type] $user_id [description]
@@ -62,13 +50,12 @@ trait Ownable
     public function getOwner($item_id)
     {
         $type = DB::raw($this->type);
-        $table = DB::raw($this->mainTable + ' AS main');
         return DB::table('core_users')
-            ->join('core_ownership', 'core_users.id', 'core_ownership.user_id')
-            ->join($table, function ($q) use ($item_id, $type) {
-                return $q->on('ownable_type', $type)
-                    ->where('ownable_id', $item_id);
+            ->join('core_ownership', function ($q) use ($item_id, $type) {
+                return $q->on('core_ownership.ownable_type', $type)
+                    ->where('core_ownership.ownable_id', $item_id);
             })
+            ->join('core_ownership', 'core_users.id', 'core_ownership.user_id')
             ->select('core_users.id', 'core_users.first_name', 'core_users.middle_name', 'core_users.last_name')
             ->first();
     }

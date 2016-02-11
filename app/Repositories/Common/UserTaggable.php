@@ -4,7 +4,7 @@ namespace App\Repositories\Common;
 
 trait UserTaggable
 {
-    public function getOrCreateTermId($term)
+    private function getOrCreateTermId($term)
     {
         $id = DB::table('core_terms')->select('id')->where('name', $term);
         if ($id) {
@@ -22,6 +22,18 @@ trait UserTaggable
                 'item_id' => $item_id,
                 'term_id' => $this->getOrCreateTermId($term)
             ]);
+    }
+
+    public function addFolksonomyTerms($user_id, $item_id, $terms)
+    {
+        $items = [];
+        foreach ($terms as $term) {
+            $items[]['user_id'] = $user_id;
+            $items[]['item_id'] = $item_id;
+            $items[]['term_id'] = $this->getOrCreateTermId($term);
+        }
+        return DB::table('core_folksonomy')
+            ->insert($items);
     }
 
     public function getAllFolksonomyTerms($item_id)

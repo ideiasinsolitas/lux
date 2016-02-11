@@ -17,7 +17,7 @@ trait Collector
     {
         $items = [];
         $order = 0;
-        foreach ($item_ids as $id) {
+        foreach ($ordered_items as $id) {
             $items[]['collection_id'] = $collection_id;
             $items[]['collectable_type'] = $this->type;
             $items[]['collectable_id'] = $id;

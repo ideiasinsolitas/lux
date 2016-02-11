@@ -33,8 +33,7 @@ class ResourceRepository extends Repository
      */
     public function __construct()
     {
-        $this->modelNamespace = 'App\Models\Package\Resource\Resource';
-        $this->mainTable = 'publishing_resources';
+        $this->table = 'publishing_resources';
         $this->type = 'Resource';
     }
 

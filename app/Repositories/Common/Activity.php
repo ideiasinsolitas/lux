@@ -17,7 +17,9 @@ trait Activity
      */
     public function delete($id)
     {
-        $this->mark($id, 0);
+        return DB::table($this->table)
+            ->update(['activity' => $activity, 'deleted' => Carbon::now()])
+            ->where('id', $id);
     }
 
     /**
@@ -27,8 +29,8 @@ trait Activity
      */
     public function deleteMany($ids)
     {
-        return DB::table($this->mainTable)
-            ->update(['activity' => $activity])
+        return DB::table($this->table)
+            ->update(['activity' => $activity, 'deleted' => Carbon::now()])
             ->whereIn('id', $ids);
     }
 
@@ -57,9 +59,12 @@ trait Activity
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
-    public function promote($id)
+    public function demote($id)
     {
-        DB::table($this->mainTable)->increment('activity');
+        $old = $this->getActivity($id);
+        $new = $old - 1;
+        $activity = $new >= 0 ? $new : 0;
+        $this->mark($id, $activity);
     }
 
     /**
@@ -67,9 +72,11 @@ trait Activity
      * @param  [type] $id [description]
      * @return [type]     [description]
      */
-    public function demote($id)
+    public function promote($id)
     {
-        DB::table($this->mainTable)->decrement('activity');
+        $old = $this->getActivity($id);
+        $activity = $old + 1;
+        $this->mark($id, $activity);
     }
 
     /**
@@ -79,8 +86,8 @@ trait Activity
      */
     public function mark($id, $activity)
     {
-        return DB::table($this->mainTable)
-            ->update(['activity' => $activity])
+        return DB::table($this->table)
+            ->update(['activity' => $activity, 'modified' => Carbon::now()])
             ->where('id', $id);
     }
 
@@ -91,28 +98,51 @@ trait Activity
      */
     public function getActivity($id)
     {
-        return DB::table($this->mainTable)
+        return DB::table($this->table)
             ->select('activity')
             ->where('id', $id)
             ->get();
     }
 
     /**
-     * /
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * @param $per_page
+     * @param string $order_by
+     * @param string $sort
+     * @param int $status
+     * @return mixed
      */
-    public function created($object)
+    public function getAllActive($order_by = 'id', $sort = 'asc')
     {
-        $object->activity = 2;
-        $object->created = '';
-        $object->modified = '';
-        return $object;
+        return DB::table($this->table)->where('activity', '>', $status)->orderBy($order_by, $sort);
     }
 
-    public function modified($object)
+    /**
+     * @param $per_page
+     * @param string $order_by
+     * @param string $sort
+     * @param int $status
+     * @return mixed
+     */
+    public function getActivePaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
     {
-        $object->modified = '';
-        return $object;
+        return DB::table($this->table)->where('activity', '>', $status)->orderBy($order_by, $sort)->paginate($per_page);
+    }
+
+    /**
+     * @param $per_page
+     * @return \Illuminate\Pagination\Paginator
+     */
+    public function getDeactivatedPaginated($per_page = 20)
+    {
+        return DB::table($this->table)->where('activity', 1)->paginate($per_page);
+    }
+
+    /**
+     * @param $per_page
+     * @return \Illuminate\Pagination\Paginator
+     */
+    public function getDeletedPaginated($per_page = 20)
+    {
+        return DB::table($this->table)->where('activity', 0)->paginate($per_page);
     }
 }

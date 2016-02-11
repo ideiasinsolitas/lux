@@ -41,8 +41,7 @@ class FactRepository extends Repository
      */
     public function __construct()
     {
-        $this->mainTable = 'intel_facts';
-        $this->modelPath = 'App\Models\Intel\Subject\Fact';
+        $this->table = 'intel_facts';
         $this->type = 'Fact';
     }
 
@@ -86,7 +85,7 @@ class FactRepository extends Repository
      */
     public function getFactsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
     {
-        return Fact::where('status', '>', $status)->orderBy($order_by, $sort)->paginate($per_page);
+        return Fact::where('activity', '>', $status)->orderBy($order_by, $sort)->paginate($per_page);
     }
 
     /**
