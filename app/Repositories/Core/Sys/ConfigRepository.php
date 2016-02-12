@@ -1,65 +1,84 @@
 <?php
 namespace App\Repositories\Core\Sys;
 
-use App\Models\Core\Sys\Config;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Core\Sys\Actions\ConfigAction;
+use App\Repositories\Core\Sys\Relationships\ConfigRelationship;
 
-/**
- * Class EloquentConfigRepository
- * @package App\Repositories\Config
- */
 class ConfigRepository extends Repository
 {
+    use ConfigAction,
+        ConfigRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->modelPath = 'App\Models\Core\Sys\Config';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('core_configs', 'Config', $filters);
+    }
+
+    protected function getBuilder()
+    {
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
+    }
+
+    protected function parseFilters($filters = [], $defaults = true)
+    {
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
+
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
+
+        return $this->finish($filters);
     }
 
     /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
+     * @param $input
+     * @return int
      */
-    public function getConfigsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
-    {
-        return Config::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedConfigsPaginated($per_page = 20)
-    {
-        return Config::where('activity', '0')->paginate($per_page);
-    }
-
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllConfigs($order_by = 'id', $sort = 'asc')
-    {
-        return Config::orderBy($order_by, $sort)->get();
-    }
-
     public function create($input)
     {
-        return DB::table('core_config')
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
             ->insertGetId($input);
     }
 
-    public function update($input)
+    /**
+     * @param
+     * @param
+     * @return mixed
+     */
+    public function update($id, $input)
     {
-        return DB::table('core_config')
-            ->update($input)
-            ->where('id', $input['id']);
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

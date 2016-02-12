@@ -1,173 +1,84 @@
 <?php
 namespace App\Repositories\Business\Logistics;
 
-use App\Models\Business\Logistics\Storage;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Business\Logistics\Actions\StorageAction;
+use App\Repositories\Business\Logistics\Relationships\StorageRelationship;
 
-/**
- * Class EloquentStorageRepository
- * @package App\Repositories\Storage
- */
 class StorageRepository extends Repository
 {
+    use StorageAction,
+        StorageRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Logistics\Storage';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('business_storages', 'Storage', $filters);
     }
 
-    /**
-     * @param $id
-     * @param bool $withRoles
-     * @return mixed
-     * @throws GeneralException
-     */
-    public function findOrFail($id)
+    protected function getBuilder()
     {
-        return Storage::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getStoragesPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        return Storage::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedStoragesPaginated($per_page = 20)
-    {
-        return Storage::where('activity', 0)->paginate($per_page);
-    }
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
 
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllStorages($order_by = 'id', $sort = 'asc')
-    {
-        return Storage::orderBy($order_by, $sort)->get();
+        return $this->finish($filters);
     }
 
     /**
      * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws StorageNeedsRolesException
+     * @return int
      */
     public function create($input)
     {
-        $storage = Storage::create($input);
-
-        if ($storage->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this storage. Please try again.');
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
     }
 
     /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
+     * @param
+     * @param
+     * @return mixed
      */
     public function update($id, $input)
     {
-        $storage = $this->findOrFail($id);
-
-        if ($storage->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this storage. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $storage = $this->findOrFail($id);
-        if ($storage->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this storage. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $storage = $this->findOrFail($id, true);
-
-        try {
-            $storage->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $storage = $this->findOrFail($id);
-
-        if ($storage->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this storage. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $storage = $this->findOrFail($id);
-        $storage->status = $status;
-
-        if ($storage->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this storage. Please try again.");
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

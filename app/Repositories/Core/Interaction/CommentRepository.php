@@ -1,82 +1,84 @@
 <?php
 namespace App\Repositories\Core\Interaction;
 
-use App\Models\Core\Interaction\Comment;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Core\Interaction\Actions\CommentAction;
+use App\Repositories\Core\Interaction\Relationships\CommentRelationship;
 
-/**
- * Class EloquentCommentRepository
- * @package App\Repositories\Comment
- */
 class CommentRepository extends Repository
 {
+    use CommentAction,
+        CommentRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->modelPath = 'App\Models\Core\Interaction\Comment';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('core_comments', 'Comment', $filters);
     }
 
-    /**
-     * @param $id
-     * @param bool $withRoles
-     * @return mixed
-     * @throws GeneralException
-     */
-    public function findOrFail($id)
+    protected function getBuilder()
     {
-        return Comment::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getCommentsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        return Comment::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedCommentsPaginated($per_page = 20)
-    {
-        return Comment::where('activity', 0)->paginate($per_page);
-    }
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
 
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllComments($order_by = 'id', $sort = 'asc')
-    {
-        return Comment::orderBy($order_by, $sort)->get();
+        return $this->finish($filters);
     }
 
     /**
      * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws CommentNeedsRolesException
+     * @return int
      */
     public function create($input)
     {
-        $comment = Comment::create($input);
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
+    }
 
-        if ($comment->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this comment. Please try again.');
+    /**
+     * @param
+     * @param
+     * @return mixed
+     */
+    public function update($id, $input)
+    {
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

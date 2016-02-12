@@ -1,173 +1,84 @@
 <?php
 namespace App\Repositories\Business\Store;
 
-use App\Models\Business\Store\Customer;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Business\Store\Actions\CustomerAction;
+use App\Repositories\Business\Store\Relationships\CustomerRelationship;
 
-/**
- * Class EloquentCustomerRepository
- * @package App\Repositories\Customer
- */
 class CustomerRepository extends Repository
 {
+    use CustomerAction,
+        CustomerRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Store\Customer';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('core_users', 'Customer', $filters);
     }
 
-    /**
-     * @param $id
-     * @param bool $withRoles
-     * @return mixed
-     * @throws GeneralException
-     */
-    public function findOrFail($id)
+    protected function getBuilder()
     {
-        return Customer::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getCustomersPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        return Customer::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedCustomersPaginated($per_page = 20)
-    {
-        return Customer::where('activity', 0)->paginate($per_page);
-    }
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
 
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllCustomers($order_by = 'id', $sort = 'asc')
-    {
-        return Customer::orderBy($order_by, $sort)->get();
+        return $this->finish($filters);
     }
 
     /**
      * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws CustomerNeedsRolesException
+     * @return int
      */
     public function create($input)
     {
-        $customer = Customer::create($input);
-
-        if ($customer->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this name. Please try again.');
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
     }
 
     /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
+     * @param
+     * @param
+     * @return mixed
      */
     public function update($id, $input)
     {
-        $customer = $this->findOrFail($id);
-
-        if ($customer->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this name. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $customer = $this->findOrFail($id);
-        if ($customer->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this name. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $customer = $this->findOrFail($id, true);
-
-        try {
-            $customer->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $customer = $this->findOrFail($id);
-
-        if ($customer->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this name. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $customer = $this->findOrFail($id);
-        $customer->status = $status;
-
-        if ($customer->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this name. Please try again.");
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

@@ -1,100 +1,84 @@
 <?php
-namespace App\Repositories\Package\Institution;
+namespace App\Repositories\Intel\Subject;
 
-use App\Models\Package\Institution\Institution;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Intel\Subject\Actions\InstitutionAction;
+use App\Repositories\Intel\Subject\Relationships\InstitutionRelationship;
 
-/**
- * Class EloquentInstitutionRepository
- * @package App\Repositories\Institution
- */
 class InstitutionRepository extends Repository
 {
+    use InstitutionAction,
+        InstitutionRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Package\Institution\Institution';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('intel_institutions', 'Institution', $filters);
     }
 
-    /**
-     * @param $id
-     * @param bool $withRoles
-     * @return mixed
-     * @throws GeneralException
-     */
-    public function findOrFail($id)
+    protected function getBuilder()
     {
-        return Institution::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getInstitutionsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        return Institution::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedInstitutionsPaginated($per_page = 20)
-    {
-        return Institution::where('activity', 0)->paginate($per_page);
-    }
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
 
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllInstitutions($order_by = 'id', $sort = 'asc')
-    {
-        return Institution::orderBy($order_by, $sort)->get();
+        return $this->finish($filters);
     }
 
     /**
      * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws InstitutionNeedsRolesException
+     * @return int
      */
     public function create($input)
     {
-        $institution = Institution::create($input);
-
-        if ($institution->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this institution. Please try again.');
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
     }
 
     /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
+     * @param
+     * @param
+     * @return mixed
      */
     public function update($id, $input)
     {
-        $institution = $this->findOrFail($id);
-
-        if ($institution->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this institution. Please try again.');
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

@@ -2,13 +2,13 @@
 DROP TABLE IF EXISTS `core_types`;
 CREATE TABLE `core_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE(`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `core_types` (name, item_name) VALUES
+INSERT INTO `core_types` (name, class) VALUES
 ("Image", "File"),
 ("Document", "File"),
 ("Url", "Resource"),
@@ -148,9 +148,9 @@ CREATE TABLE `core_translations` (
 DROP TABLE IF EXISTS `core_nodes`;
 CREATE TABLE `core_nodes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
-  `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `deleted` datetime NULL,
@@ -212,7 +212,8 @@ CREATE TABLE `core_files` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `deleted` datetime NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE(`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* links */
@@ -244,6 +245,7 @@ CREATE TABLE `core_collections` (
   `deleted` datetime NULL,
   PRIMARY KEY (`id`),
   UNIQUE(`collector_type`, `collector_id`),
+  UNIQUE(`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Many To Many Polymorphic
@@ -262,11 +264,13 @@ CREATE TABLE `core_collectables` (
 DROP TABLE IF EXISTS `core_comments`;
 CREATE TABLE `core_comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `node_id` int(10) unsigned NOT NULL,
   `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `user_id` int(10) unsigned DEFAULT NULL,
   `comment` BLOB NOT NULL,
   `created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE(`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* Polymorphic many2many */

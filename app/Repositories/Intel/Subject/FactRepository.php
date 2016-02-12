@@ -1,48 +1,59 @@
 <?php
-namespace App\Repositories\Intel\Subject\Fact;
+namespace App\Repositories\Intel\Subject;
 
 use Illuminate\Support\Facades\DB;
 
-use App\Models\Intel\Subject\Fact\Fact;
 use App\Repositories\Repository;
-
-use App\Repositories\Common\Activity;
-use App\Repositories\Common\Collaborative;
-use App\Repositories\Common\Collectable;
-use App\Repositories\Common\Commentable;
-use App\Repositories\Common\Likeable;
-use App\Repositories\Common\OwnerTaggable;
-use App\Repositories\Common\Ownable;
-use App\Repositories\Common\Typed;
-use App\Repositories\Common\UserTaggable;
-use App\Repositories\Common\Votable;
-
 use App\Exceptions\GeneralException;
+use App\Repositories\Intel\Subject\Actions\FactAction;
+use App\Repositories\Intel\Subject\Relationships\FactRelationship;
 
-/**
- * Class EloquentFactRepository
- * @package App\Repositories\Fact
- */
 class FactRepository extends Repository
 {
-    use Activity,
-        Builder,
-        Collaborative,
-        Collectable,
-        Likeable,
-        OwnerTaggable,
-        Ownable,
-        Typed,
-        UserTaggable,
-        Votable;
+    use FactAction,
+        FactRelationship;
 
     /**
      * /
      */
     public function __construct()
     {
-        $this->table = 'intel_facts';
-        $this->type = 'Fact';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('intel_facts', 'Fact', $filters);
+    }
+
+    protected function getBuilder()
+    {
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
+    }
+
+    protected function parseFilters($filters = [], $defaults = true)
+    {
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
+
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
+
+        return $this->finish($filters);
     }
 
     /**
@@ -51,68 +62,23 @@ class FactRepository extends Repository
      */
     public function create($input)
     {
-        return DB::table('intel_facts')
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
             ->insertGetId($input);
     }
 
     /**
-     * @param $id
-     * @param $input
+     * @param
+     * @param
      * @return mixed
      */
     public function update($id, $input)
     {
-        return DB::table('intel_facts')
-            ->update($input)
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
             ->where('id', $id);
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function findOrFail($id)
-    {
-        return Fact::findOrFail($id);
-    }
-
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getFactsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
-    {
-        return Fact::where('activity', '>', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeactivatedFactsPaginated($per_page = 20)
-    {
-        return Fact::where('activity', 1)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedFactsPaginated($per_page = 20)
-    {
-        return Fact::where('activity', 0)->paginate($per_page);
-    }
-
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllFacts($order_by = 'id', $sort = 'asc')
-    {
-        return Fact::orderBy($order_by, $sort)->get();
     }
 }

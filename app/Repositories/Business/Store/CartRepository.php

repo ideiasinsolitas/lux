@@ -1,173 +1,84 @@
 <?php
 namespace App\Repositories\Business\Store;
 
-use App\Models\Business\Store\Cart;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Business\Store\Actions\CartAction;
+use App\Repositories\Business\Store\Relationships\CartRelationship;
 
-/**
- * Class EloquentCartRepository
- * @package App\Repositories\Cart
- */
 class CartRepository extends Repository
 {
+    use CartAction,
+        CartRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Store\Cart';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('business_carts', 'Cart', $filters);
     }
 
-    /**
-     * @param $id
-     * @param bool $withRoles
-     * @return mixed
-     * @throws GeneralException
-     */
-    public function findOrFail($id)
+    protected function getBuilder()
     {
-        return Cart::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getCartsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        return Cart::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedCartsPaginated($per_page = 20)
-    {
-        return Cart::where('activity', 0)->paginate($per_page);
-    }
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
 
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllCarts($order_by = 'id', $sort = 'asc')
-    {
-        return Cart::orderBy($order_by, $sort)->get();
+        return $this->finish($filters);
     }
 
     /**
      * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws CartNeedsRolesException
+     * @return int
      */
     public function create($input)
     {
-        $cart = Cart::create($input);
-
-        if ($cart->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this shopping cart. Please try again.');
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
     }
 
     /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
+     * @param 
+     * @param 
+     * @return mixed
      */
     public function update($id, $input)
     {
-        $cart = $this->findOrFail($id);
-
-        if ($cart->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this shopping cart. Please try again.');
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function destroy($id)
-    {
-        if (auth()->id() == $id) {
-            throw new GeneralException("You can not delete yourself.");
-        }
-
-        $cart = $this->findOrFail($id);
-        if ($cart->delete()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem deleting this shopping cart. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @return boolean|null
-     * @throws GeneralException
-     */
-    public function delete($id)
-    {
-        $cart = $this->findOrFail($id, true);
-
-        try {
-            $cart->forceDelete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     * @throws GeneralException
-     */
-    public function restore($id)
-    {
-        $cart = $this->findOrFail($id);
-
-        if ($cart->restore()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem restoring this shopping cart. Please try again.");
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @return bool
-     * @throws GeneralException
-     */
-    public function mark($id, $status)
-    {
-        if (auth()->id() == $id && ($status == 0 || $status == 2)) {
-            throw new GeneralException("You can not do that to yourself.");
-        }
-
-        $cart = $this->findOrFail($id);
-        $cart->status = $status;
-
-        if ($cart->save()) {
-            return true;
-        }
-
-        throw new GeneralException("There was a problem updating this shopping cart. Please try again.");
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

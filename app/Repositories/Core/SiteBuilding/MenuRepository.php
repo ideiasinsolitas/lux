@@ -1,100 +1,84 @@
 <?php
 namespace App\Repositories\Core\SiteBuilding;
 
-use App\Models\Core\SiteBuilding\Menu;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Core\SiteBuilding\Actions\MenuAction;
+use App\Repositories\Core\SiteBuilding\Relationships\MenuRelationship;
 
-/**
- * Class EloquentMenuRepository
- * @package App\Repositories\Menu
- */
 class MenuRepository extends Repository
 {
+    use MenuAction,
+        MenuRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\SiteBuilding\Menu';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('core_menus', 'Menu', $filters);
     }
 
-    /**
-     * @param $id
-     * @param bool $withRoles
-     * @return mixed
-     * @throws GeneralException
-     */
-    public function findOrFail($id)
+    protected function getBuilder()
     {
-        return Menu::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getMenusPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        return Menu::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedMenusPaginated($per_page = 20)
-    {
-        return Menu::where('activity', 0)->paginate($per_page);
-    }
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
 
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllMenus($order_by = 'id', $sort = 'asc')
-    {
-        return Menu::orderBy($order_by, $sort)->get();
+        return $this->finish($filters);
     }
 
     /**
      * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws MenuNeedsRolesException
+     * @return int
      */
     public function create($input)
     {
-        $menu = Menu::create($input);
-
-        if ($menu->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this menu. Please try again.');
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
     }
 
     /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
+     * @param
+     * @param
+     * @return mixed
      */
     public function update($id, $input)
     {
-        $menu = $this->findOrFail($id);
-
-        if ($menu->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this menu. Please try again.');
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

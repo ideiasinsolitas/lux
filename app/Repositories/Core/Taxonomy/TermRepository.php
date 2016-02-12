@@ -1,94 +1,84 @@
 <?php
-namespace App\Repositories\Core\Taxonomy\Term;
+namespace App\Repositories\Core\Taxonomy;
 
-use App\Models\Core\Taxonomy\Term\Term;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Core\Taxonomy\Actions\TermAction;
+use App\Repositories\Core\Taxonomy\Relationships\TermRelationship;
 
-/**
- * Class EloquentTermRepository
- * @package App\Repositories\Term
- */
 class TermRepository extends Repository
 {
+    use TermAction,
+        TermRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Core\Taxonomy\Term\Term';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('core_terms', 'Term', $filters);
+    }
+
+    protected function getBuilder()
+    {
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
+    }
+
+    protected function parseFilters($filters = [], $defaults = true)
+    {
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
+
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
+
+        return $this->finish($filters);
     }
 
     /**
-     * @param $id
-     * @param bool $withRoles
+     * @param $input
+     * @return int
+     */
+    public function create($input)
+    {
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
+    }
+
+    /**
+     * @param
+     * @param
      * @return mixed
-     * @throws GeneralException
      */
-    public function findOrFail($id)
+    public function update($id, $input)
     {
-        return Term::findOrFail($id);
-    }
-
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getTermsPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
-    {
-        return Term::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
-
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedTermsPaginated($per_page = 20)
-    {
-        return Term::where('activity', 0)->paginate($per_page);
-    }
-
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllTerms($order_by = 'id', $sort = 'asc')
-    {
-        return Term::orderBy($order_by, $sort)->get();
-    }
-
-    /*
-     * CRUD
-     */
-    /**
-     * /
-     * @param  $input [description]
-     * @return [type]         [description]
-     */
-    public function create($termInput, $translationInput)
-    {
-        $translationInput['translatable_type'] = $this->type;
-        $translationInput['translatable_id'] = DB::table('core_terms')->insertGetId($termInput);
-        return DB::table('core_translations')->insert($translationInput);
-    }
-
-    /**
-     * /
-     * @param  $input [description]
-     * @return [type]         [description]
-     */
-    public function update($termInput, $translationInput)
-    {
-        $id = $termInput['id'];
-        DB::table('core_terms')->update($termInput)->where('id', $id);
-        DB::table('core_translations')
-            ->update($translationInput)
-            ->where('lang', $translationInput['lang'])
-            ->where('translatable_type', $this->type)
-            ->where('translatable_id', $id);
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

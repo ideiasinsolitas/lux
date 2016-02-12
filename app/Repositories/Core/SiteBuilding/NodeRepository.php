@@ -1,211 +1,84 @@
 <?php
-namespace App\Repositories\Core\SiteBuilding\Node;
+namespace App\Repositories\Core\SiteBuilding;
 
-use App\Models\Package\Node\Node;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
-use App\Repositories\Common\Activity;
-use App\Repositories\Common\Builder;
-use App\Repositories\Common\Collaborative;
-use App\Repositories\Common\Display;
-use App\Repositories\Common\Likeable;
-use App\Repositories\Common\Metadata;
-use App\Repositories\Common\OwnerTaggable;
-use App\Repositories\Common\Ownership;
-use App\Repositories\Common\Translatable;
-use App\Repositories\Common\Tree;
-use App\Repositories\Common\Typed;
-use App\Repositories\Common\UserTaggable;
-use App\Repositories\Common\Votable;
 use App\Exceptions\GeneralException;
+use App\Repositories\Core\SiteBuilding\Actions\NodeAction;
+use App\Repositories\Core\SiteBuilding\Relationships\NodeRelationship;
 
-/**
- * Class EloquentNodeRepository
- * @package App\Repositories\Node
- */
 class NodeRepository extends Repository
 {
-    use Activity,
-        Builder,
-        Collaborative,
-        Display,
-        Likeable,
-        Metadata,
-        OwnerTaggable,
-        Ownership,
-        Translatable,
-        Tree,
-        Typed,
-        UserTaggable,
-        Votable;
+    use NodeAction,
+        NodeRelationship;
 
     /**
      * /
      */
     public function __construct()
     {
-        $this->table = 'publishing_nodes';
-        $this->type = 'Node';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('core_nodes', 'Node', $filters);
     }
 
-    /*
-     * CRUD
-     */
-    public function findOrFail($id, $lang = 'pt-br')
+    protected function getBuilder()
     {
-        return Node::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * /
-     * @param  Request $request [description]
-     * @return [type]         [description]
-     */
-    public function create($nodeInput, $translationInput)
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        $id = DB::table($this->table)->insertGetId($nodeInput);
-        $translationInput['translatable_id'] = $id;
-        $translationInput['translatable_type'] = $this->modelSlug;
-        DB::table('core_translations')->insert($translationInput);
-        return $id;
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * /
-     * @param  Request $request [description]
-     * @return [type]         [description]
-     */
-    public function update($nodeInput, $translationInput)
-    {
-        DB::table($this->table)
-            ->where('id', $nodeInput['id'])
-            ->update($nodeInput);
-        DB::table('core_translations')
-            ->where('translatable_type', 'Node')
-            ->where('translatable_id', $nodeInput['id'])
-            ->update($translationInput);
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
+
+        return $this->finish($filters);
     }
 
     /**
-     * /
-     * @param  [type] $id   [description]
-     * @param  string $lang [description]
-     * @return [type]       [description]
+     * @param $input
+     * @return int
      */
-    public function getNode($id, $lang = 'pt-br')
+    public function create($input)
     {
-        $result = DB::table($this->table)
-            ->join('translations t2', 'publishing_nodes..id', '=', 'core_translations.translatable_id')
-            ->join('types t3', 'publishing_nodes..type_id', '=', 't3.id')
-            ->select(
-                'publishing_nodes.id',
-                'publishing_nodes.activity',
-                'publishing_nodes.date_pub',
-                'publishing_nodes.created',
-                'publishing_nodes.modified',
-                DB::raw('core_types.name AS type')
-            )
-            ->where('publishing_nodes..id', $id)
-            ->where('core_translations.language', $lang)
-            ->get();
-
-        return $result;
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
     }
 
     /**
-     * /
-     * @param  integer $page     [description]
-     * @param  integer $per_page [description]
-     * @param  string  $key      [description]
-     * @param  string  $order    [description]
-     * @param  string  $lang     [description]
-     * @return [type]            [description]
+     * @param
+     * @param
+     * @return mixed
      */
-    public function getNodesPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc', $lang = 'pt-br')
+    public function update($id, $input)
     {
-        $builder = DB::table($this->table);
-        $builder = $this->build($builder);
-        return $builder
-            ->select(
-                'publishing_nodes.id',
-                'publishing_nodes.activity',
-                'publishing_nodes.date_pub',
-                'publishing_nodes.created',
-                'publishing_nodes.modified',
-                'core_translations.slug',
-                'core_translations.title',
-                'core_translations.subtitle',
-                'core_translations.excerpt',
-                'core_translations.description',
-                'core_translations.body',
-                DB::raw('core_types.name AS type')
-            )
-            ->where('activity', '>', '0')
-            ->where('language', $lang)
-            ->orderBy($order_by, $sort)
-            ->paginate($per_page);
-    }
-
-    /**
-     * /
-     * @param  [type]  $type     [description]
-     * @param  integer $page     [description]
-     * @param  integer $per_page [description]
-     * @param  string  $key      [description]
-     * @param  string  $order    [description]
-     * @param  string  $lang     [description]
-     * @return [type]            [description]
-     */
-    public function getNodesByTypePaginated($type, $per_page = 12, $order_by = 'modified', $sort = 'asc', $lang = 'pt-br')
-    {
-        $builder = DB::table($this->table);
-        $builder = $this->build($builder);
-        return $builder
-            ->select(
-                'publishing_nodes.id',
-                'publishing_nodes.activity',
-                'publishing_nodes.date_pub',
-                'publishing_nodes.created',
-                'publishing_nodes.modified',
-                'core_translations.slug',
-                'core_translations.title',
-                'core_translations.subtitle',
-                'core_translations.excerpt',
-                'core_translations.description',
-                'core_translations.body',
-                DB::raw('core_types.name AS type')
-            )
-            ->where('type', $type)
-            ->where('main.activity', '>', '0')
-            ->where('core_translations.language', $lang)
-            ->orderBy($order_by, $sort)
-            ->paginate($per_page);
-    }
-
-    /**
-     * /
-     * @param [type] $id [description]
-     */
-    public function markDraft($id)
-    {
-        return DB::table($this->table)->update(['status' => 3])->where('id', $id);
-    }
-
-    /**
-     * /
-     * @param [type] $id [description]
-     */
-    public function markPending($id)
-    {
-        return DB::table($this->table)->update(['status' => 4])->where('id', $id);
-    }
-
-    /**
-     * /
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function publish($id)
-    {
-        return DB::table($this->table)->update(['status' => 5])->where('id', $id);
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

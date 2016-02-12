@@ -1,134 +1,84 @@
 <?php
 namespace App\Repositories\Business\Sales;
 
-use App\Models\Business\Sales\Order;
+use Illuminate\Support\Facades\DB;
+
 use App\Repositories\Repository;
 use App\Exceptions\GeneralException;
+use App\Repositories\Business\Sales\Actions\OrderAction;
+use App\Repositories\Business\Sales\Relationships\OrderRelationship;
 
-/**
- * Class EloquentOrderRepository
- * @package App\Repositories\Order
- */
 class OrderRepository extends Repository
 {
+    use OrderAction,
+        OrderRelationship;
+
     /**
      * /
      */
     public function __construct()
     {
-        $this->model = 'App\Models\Business\Sales\Order';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('business_orders', 'Order', $filters);
     }
 
-    /**
-     * @param $id
-     * @param bool $withRoles
-     * @return mixed
-     * @throws GeneralException
-     */
-    public function findOrFail($id)
+    protected function getBuilder()
     {
-        return Order::findOrFail($id);
+        return DB::table($this->table)
+            ->join()
+            ->join()
+            ->select();
     }
 
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getOrdersPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
+    protected function parseFilters($filters = [], $defaults = true)
     {
-        return Order::where('status', $status)->orderBy($order_by, $sort)->paginate($per_page);
-    }
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
 
-    /**
-     * @param $per_page
-     * @return \Illuminate\Pagination\Paginator
-     */
-    public function getDeletedOrdersPaginated($per_page = 20)
-    {
-        return Order::where('activity', 0)->paginate($per_page);
-    }
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
 
-    /**
-     * @param string $order_by
-     * @param string $sort
-     * @return mixed
-     */
-    public function getAllOrders($order_by = 'id', $sort = 'asc')
-    {
-        return Order::orderBy($order_by, $sort)->get();
+        return $this->finish($filters);
     }
 
     /**
      * @param $input
-     * @param $roles
-     * @param $permissions
-     * @return bool
-     * @throws GeneralException
-     * @throws OrderNeedsRolesException
+     * @return int
      */
     public function create($input)
     {
-        $order = Order::create($input);
-
-        if ($order->save()) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem creating this order. Please try again.');
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
+        return DB::table($this->table)
+            ->insertGetId($input);
     }
 
     /**
-     * @param $id
-     * @param $input
-     * @param $roles
-     * @return bool
-     * @throws GeneralException
+     * @param
+     * @param
+     * @return mixed
      */
     public function update($id, $input)
     {
-        $order = $this->findOrFail($id);
-
-        if ($order->update($input)) {
-            return true;
-        }
-
-        throw new GeneralException('There was a problem updating this order. Please try again.');
-    }
-
-
-
-
-
-
-    public function orderDetail($order_id)
-    {
-        $sql = "SELECT * FROM itens INNER JOIN products ON products.product_id=itens.product_id WHERE itens.order_id=:order_id";
-        $itens = $this->db->run($sql, array('order_id' => $order_id));
-        $this->setDado('itens', $itens);
-
-        $sql = "SELECT * FROM orders WHERE order_id=:order_id";
-        $order = $this->db->run($sql, array('order_id' => $order_id));
-
-        $sql = "SELECT * FROM customers WHERE customer_id=:customer_id";
-        $customer = $this->db->run($sql, array('customer_id' => $order[0]['customer_id']));
-
-        $data = array('customer' => $customer[0], 'order' => $order[0]);
-        return $data;
-    }
-
-    public function getProducts($order_id)
-    {
-        $sql = "SELECT product_id FROM itens WHERE order_id=:order_id";
-
-        $itens = $this->db->run($sql, array('order_id' => $order_id));
-
-        $list = implode(',', $itens);
-        $sql = "SELECT * FROM products WHERE product_id IN ($list)";
-        $products = $this->db->run($sql);
-
-        return $products;
+        $input['modified'] = Carbon::now();
+        return DB::table($this->table)
+            ->update()
+            ->where('id', $id);
     }
 }

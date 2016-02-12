@@ -1,22 +1,11 @@
 <?php
-namespace App\Repositories\Publishing\ContentManagement\Publisher;
+namespace App\Repositories\Publishing\ContentManagement;
 
 use Illuminate\Support\Facades\DB;
 
-use App\Models\Publishing\ContentManagement\Publisher\Publisher;
 use App\Repositories\Repository;
-
-use App\Repositories\Common\Activity;
-use App\Repositories\Common\Collaborative;
-use App\Repositories\Common\Collectable;
-use App\Repositories\Common\Commentable;
-use App\Repositories\Common\Likeable;
-use App\Repositories\Common\OwnerTaggable;
-use App\Repositories\Common\Ownable;
-use App\Repositories\Common\Typed;
-use App\Repositories\Common\UserTaggable;
-use App\Repositories\Common\Votable;
-
+use App\Repositories\Publishing\ContentManagement\Actions\PublisherAction;
+use App\Repositories\Publishing\ContentManagement\Relationships\PublisherRelationship;
 use App\Exceptions\GeneralException;
 
 /**
@@ -25,23 +14,58 @@ use App\Exceptions\GeneralException;
  */
 class PublisherRepository extends Repository
 {
-    use Activity,
-        Collaborative,
-        Collectable,
-        Likeable,
-        OwnerTaggable,
-        Ownable,
-        Typed,
-        UserTaggable,
-        Votable;
+    use PublisherAction,
+        PublisherRelationship;
 
     /**
      * /
      */
     public function __construct()
     {
-        $this->table = 'publishing_publishers';
-        $this->type = 'Publisher';
+        $filters = [
+            'per_page' => 20,
+            'sort' => 'date_pub',
+            'order' => 'desc'
+        ];
+
+        parent::__construct('publishing_publishers', 'Publisher', $filters);
+    }
+
+    protected function getBuilder()
+    {
+        $relationship_type = DB::raw('\"' . $this->type . '\"');
+        return DB::table($this->table)
+            ->join('core_translations', function ($q) use ($relationship_type) {
+                $q->on('core_translations.translatable_type', $relationship_type)
+                    ->where('core_translations.translatable_id', $this->table . '.id');
+            })
+            ->join('core_types', $this->table . '.type_id', 'core_types.id')
+            ->select();
+    }
+
+    protected function parseFilters($filters = [], $defaults = true)
+    {
+        if ($defaults) {
+            $filters = array_merge($this->filters, $filters);
+        }
+
+        if (isset($filters['owner'])) {
+            $this->builder->where('core_users.username', $filters['username']);
+        }
+        
+        if (isset($filters['activity'])) {
+            $this->builder->where($this->table . '.activity', $filters['activity']);
+        }
+        
+        if (isset($filters['activity_greater'])) {
+            $this->builder->where($this->table . '.activity', '>', $filters['activity_greater']);
+        }
+
+        if (isset($filters['id'])) {
+            $this->builder->where($this->table . '.id', $filters['id']);
+        }
+
+        return $this->finish($filters);
     }
 
     /**
@@ -50,6 +74,9 @@ class PublisherRepository extends Repository
      */
     public function create($input)
     {
+        $now = Carbon::now();
+        $input['created'] = $now;
+        $input['modified'] = $now;
         return DB::table($this->table)
             ->insertGetId($input);
     }
@@ -61,39 +88,19 @@ class PublisherRepository extends Repository
      */
     public function update($id, $input)
     {
+        $input['modified'] = Carbon::now();
         return DB::table($this->table)
             ->update($input)
             ->where('id', $id);
     }
 
-    private function getBuilder()
+    public function getOne($id, $lang)
     {
-        return DB::table($this->table)
-            ->join()
-            ->join()
-            ;
+        return $this->parseFilters(['id' => $id, 'lang' => $lang], false);
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function findOne($id)
+    public function getOneBySlug($slug)
     {
-        return DB::table($this->table)
-            ->select()
-            ->where($id);
-    }
-
-    /**
-     * @param $per_page
-     * @param string $order_by
-     * @param string $sort
-     * @param int $status
-     * @return mixed
-     */
-    public function getFullPublishedPaginated($per_page = 20, $status = 1, $order_by = 'id', $sort = 'asc')
-    {
-        return DB::table($this->table)->where('activity', '>', $status)->orderBy($order_by, $sort)->paginate($per_page);
+        return $this->parseFilters(['slug' => $slug], false);
     }
 }
