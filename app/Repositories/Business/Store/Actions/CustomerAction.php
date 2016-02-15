@@ -6,7 +6,4 @@ use App\Repositories\Common\Actions;
 
 trait CustomerAction
 {
-    use Actions\,
-        Actions\,
-        Actions\;
 }

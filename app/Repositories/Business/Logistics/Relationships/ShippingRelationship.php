@@ -6,7 +6,4 @@ use App\Repositories\Common\Relationships;
 
 trait ShippingRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
 }

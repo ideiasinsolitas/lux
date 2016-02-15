@@ -6,7 +6,6 @@ use App\Repositories\Common\Actions;
 
 trait OrderAction
 {
-    use Actions\,
-        Actions\,
-        Actions\;
+    use Actions\DefaultDeleter,
+        Actions\DefaultSelector;
 }

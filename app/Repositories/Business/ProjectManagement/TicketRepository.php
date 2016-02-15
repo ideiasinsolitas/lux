@@ -32,7 +32,18 @@ class TicketRepository extends Repository
         return DB::table($this->table)
             ->join()
             ->join()
-            ->select();
+            ->select(
+                $this->table . '.id',
+                $this->table . '.responsible_id',
+                $this->table . '.customer_id',
+                $this->table . '.project_id',
+                $this->table . '.problem_url',
+                $this->table . '.description',
+                $this->table . '.activity',
+                $this->table . '.created',
+                $this->table . '.modified',
+                $this->table . '.deleted'
+            );
     }
 
     protected function parseFilters($filters = [], $defaults = true)

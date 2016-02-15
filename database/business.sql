@@ -92,7 +92,7 @@ CREATE TABLE `business_invoices` (
   `hours` DECIMAL(10,2) unsigned NOT NULL,
   `rate` DECIMAL(10,2) NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
-  `activity` DECIMAL(10,2) NOT NULL DEFAULT 1, -- 0 = deleted, 1 = active, 2 = sent, 3 = contested, 4 = paid
+  `activity` tinyint(1) NOT NULL DEFAULT 1, -- 0 = deleted, 1 = active, 2 = sent, 3 = contested, 4 = paid
   `created` datetime NOT NULL,
   `paid` datetime NOT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, /* 0 = deleted, 1 = unassigned, 2 = open, 3 = active, 4 = closed, 5 = charged */
@@ -155,6 +155,7 @@ CREATE TABLE `business_shippings` (
   `order_id` int(10) unsigned NOT NULL,
   `type_id` int(10) unsigned NOT NULL,
   `tracking_ref` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `activity` tinyint(1) NOT NULL DEFAULT 1,
   `created` datetime NOT NULL,
   `shipped` datetime NULL,
   `delivered` datetime NULL,

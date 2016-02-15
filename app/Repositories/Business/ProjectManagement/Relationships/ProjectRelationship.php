@@ -6,7 +6,8 @@ use App\Repositories\Common\Relationships;
 
 trait ProjectRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
+    use Relationships\Collaborative,
+        Relationships\Ownable,
+        Relationships\Nodable,
+        Relationships\UserTaggable;
 }

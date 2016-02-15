@@ -6,7 +6,6 @@ use App\Repositories\Common\Actions;
 
 trait PaymentAction
 {
-    use Actions\,
-        Actions\,
-        Actions\;
+    use Actions\DefaultDeleter,
+        Actions\DefaultSelector;
 }

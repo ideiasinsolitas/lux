@@ -30,9 +30,12 @@ class StorageRepository extends Repository
     protected function getBuilder()
     {
         return DB::table($this->table)
-            ->join()
-            ->join()
-            ->select();
+            ->select(
+                $this->table . '.id',
+                $this->table . '.place_id',
+                $this->table . '.name',
+                $this->table . '.description'
+            );
     }
 
     protected function parseFilters($filters = [], $defaults = true)
@@ -78,7 +81,7 @@ class StorageRepository extends Repository
     {
         $input['modified'] = Carbon::now();
         return DB::table($this->table)
-            ->update()
+            ->update($input)
             ->where('id', $id);
     }
 }

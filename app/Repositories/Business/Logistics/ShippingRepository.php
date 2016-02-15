@@ -30,9 +30,18 @@ class ShippingRepository extends Repository
     protected function getBuilder()
     {
         return DB::table($this->table)
-            ->join()
-            ->join()
-            ->select();
+            ->join('core_types', $this->table . '.type_id', 'core_types.id')
+            ->select(
+                $this->table . '.id',
+                $this->table . '.order_id',
+                $this->table . '.type_id',
+                $this->table . '.tracking_ref',
+                $this->table . '.activity',
+                $this->table . '.created',
+                $this->table . '.shipped',
+                $this->table . '.delivered',
+                DB::raw('core_types.name AS type')
+            );
     }
 
     protected function parseFilters($filters = [], $defaults = true)
@@ -78,7 +87,7 @@ class ShippingRepository extends Repository
     {
         $input['modified'] = Carbon::now();
         return DB::table($this->table)
-            ->update()
+            ->update($input)
             ->where('id', $id);
     }
 }

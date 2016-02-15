@@ -30,9 +30,13 @@ class ProjectRepository extends Repository
     protected function getBuilder()
     {
         return DB::table($this->table)
-            ->join()
-            ->join()
-            ->select();
+            ->select(
+                $this->table . '.id',
+                $this->table . '.node_id',
+                $this->table . '.name',
+                $this->table . '.description',
+                $this->table . '.activity'
+            );
     }
 
     protected function parseFilters($filters = [], $defaults = true)

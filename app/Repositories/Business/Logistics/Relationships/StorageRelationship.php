@@ -6,7 +6,4 @@ use App\Repositories\Common\Relationships;
 
 trait StorageRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
 }

@@ -6,7 +6,6 @@ use App\Repositories\Common\Actions;
 
 trait StorageAction
 {
-    use Actions\,
-        Actions\,
-        Actions\;
+    use Actions\DefaultSelector,
+        Actions\DefaultDeleter;
 }

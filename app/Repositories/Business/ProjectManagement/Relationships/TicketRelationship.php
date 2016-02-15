@@ -6,7 +6,4 @@ use App\Repositories\Common\Relationships;
 
 trait TicketRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
 }

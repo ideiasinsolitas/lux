@@ -6,7 +6,7 @@ use App\Repositories\Common\Actions;
 
 trait ShippingAction
 {
-    use Actions\,
-        Actions\,
-        Actions\;
+    use Actions\ActivityDeleter,
+        Actions\ActivitySelector,
+        Actions\ActivityUpdater;
 }

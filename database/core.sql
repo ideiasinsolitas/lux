@@ -1,3 +1,27 @@
+/* user management
+DROP TABLE IF EXISTS `core_users`;
+CREATE TABLE `core_users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = inactive, 1 = active
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` datetime NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE(`username`),
+  UNIQUE(`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
+(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
+ */
+
 /* Everything that has a type id points here */
 DROP TABLE IF EXISTS `core_types`;
 CREATE TABLE `core_types` (
@@ -20,9 +44,8 @@ INSERT INTO `core_types` (name, class) VALUES
 ("Album", "Collection"),
 ("Folder", "Collection"),
 ("Category", "Term"),
-("OwnerTag", "Term"),
-("UserTag", "Term"),
-("Vote", "Term"),
+("Taxonomy", "Term"),
+("Folksonomy", "Term"),
 ("Pagseguro", "Payment"),
 ("Boleto", "Payment"),
 ("Credito", "Payment"),
@@ -96,30 +119,6 @@ CREATE TABLE `core_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE(`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-/* user management
-DROP TABLE IF EXISTS `core_users`;
-CREATE TABLE `core_users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = inactive, 1 = active
-  `created` datetime NOT NULL,
-  `modified` datetime NOT NULL,
-  `deleted` datetime NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE(`username`),
-  UNIQUE(`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
-(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
- */
 
 /*
 store text based content for all entities and group by language
@@ -336,28 +335,38 @@ CREATE TABLE `core_blocks` (
 DROP TABLE IF EXISTS `core_menus`;
 CREATE TABLE `core_menus` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `block_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `core_menus_resources`;
 CREATE TABLE `core_menus_resources` (
   `menu_id` int(10) unsigned NOT NULL,
-  `resource_id` int(10) unsigned NOT NULL,
+  `resource_id` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+DROP TABLE IF EXISTS `core_notifications`;
+CREATE TABLE `core_node_stats` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `message` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 DROP TABLE IF EXISTS `core_interaction_stats`;
 CREATE TABLE `core_interaction_stats` (
   `interaction_type` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `interaction_id` int(10) unsigned NOT NULL,
   `count_type` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `count` int(10) unsigned NOT NULL,
+  `count` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `core_node_stats`;
 CREATE TABLE `core_node_stats` (
   `node_id` int(10) unsigned NOT NULL,
   `count_type` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `count` int(10) unsigned NOT NULL,
+  `count` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
