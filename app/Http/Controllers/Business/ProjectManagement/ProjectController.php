@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\ProjectManagement\Project;
 
-use App\Repositories\Business\ProjectManagementProjectRepository;
+use App\Repositories\Business\ProjectManagementProjectDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -22,9 +22,9 @@ class ProjectController extends Controller
 
     /**
      * /
-     * @param ProjectRepository $projects [description]
+     * @param ProjectDAO $projects [description]
      */
-    public function __construct(ProjectRepository $projects)
+    public function __construct(ProjectDAO $projects)
     {
         $this->projects = $projects;
     }

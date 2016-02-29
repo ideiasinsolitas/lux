@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\ProjectManagement\Ticket;
 
-use App\Repositories\Business\ProjectManagementTicketRepository;
+use App\Repositories\Business\ProjectManagementTicketDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -22,9 +22,9 @@ class TicketController extends Controller
 
     /**
      * /
-     * @param TicketRepository $tickets [description]
+     * @param TicketDAO $tickets [description]
      */
-    public function __construct(TicketRepository $tickets)
+    public function __construct(TicketDAO $tickets)
     {
         $this->tickets = $tickets;
     }

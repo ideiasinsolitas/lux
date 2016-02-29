@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Term;
 
-use App\Repositories\Core\Term\TermRepository;
+use App\Repositories\Core\Term\TermDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -21,9 +21,9 @@ class TermController extends Controller
     protected $handler;
     /**
      * /
-     * @param TermRepository $terms [description]
+     * @param TermDAO $terms [description]
      */
-    public function __construct(ResponseHandler $handler, TermRepository $terms)
+    public function __construct(ResponseHandler $handler, TermDAO $terms)
     {
         $handler->setPrefix('core.taxonomy');
         $this->handler = $handler;

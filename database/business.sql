@@ -74,7 +74,7 @@ CREATE TABLE `business_products` (
 save cart if user is logged in
  */
 DROP TABLE IF EXISTS `business_carts`;
-CREATE TABLE `business_cart` (
+CREATE TABLE `business_carts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) unsigned NOT NULL,
   `product_id` int(10) unsigned NOT NULL,
@@ -92,9 +92,6 @@ CREATE TABLE `business_invoices` (
   `hours` DECIMAL(10,2) unsigned NOT NULL,
   `rate` DECIMAL(10,2) NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
-  `activity` tinyint(1) NOT NULL DEFAULT 1, -- 0 = deleted, 1 = active, 2 = sent, 3 = contested, 4 = paid
-  `created` datetime NOT NULL,
-  `paid` datetime NOT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, /* 0 = deleted, 1 = unassigned, 2 = open, 3 = active, 4 = closed, 5 = charged */
   `created` datetime NOT NULL,
   `paid` datetime NULL,
@@ -172,15 +169,11 @@ CREATE TABLE `business_storages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---many2many
+/*--many2many*/
 DROP TABLE IF EXISTS `business_storages_products`;
 CREATE TABLE `business_storages_products` (
   `storage_id` int(10) unsigned NOT NULL,
   `product_id` int(10) unsigned NOT NULL,
   `quantity` int(10) unsigned NOT NULL,
-  `tracking_ref` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-DROP TABLE IF EXISTS `core_sales_stats`;
-CREATE TABLE `core_sales_stats` (
+  `tracking_ref` varchar(120) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

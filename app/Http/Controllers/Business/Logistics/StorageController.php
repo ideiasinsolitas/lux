@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\Logistics\Storage;
 
-use App\Repositories\Business\Logistics\StorageRepository;
+use App\Repositories\Business\Logistics\StorageDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -22,9 +22,9 @@ class StorageController extends Controller
 
     /**
      * /
-     * @param StorageRepository $storages [description]
+     * @param StorageDAO $storages [description]
      */
-    public function __construct(StorageRepository $storages)
+    public function __construct(StorageDAO $storages)
     {
         $this->storages = $storages;
     }

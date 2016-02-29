@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Sys\Config;
 
-use App\Repositories\Core\Sys\ConfigRepository;
+use App\Repositories\Core\Sys\ConfigDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class ConfigController extends Controller
 
     /**
      * /
-     * @param ConfigRepository $configs [description]
+     * @param ConfigDAO $configs [description]
      */
-    public function __construct(ConfigRepository $configs)
+    public function __construct(ConfigDAO $configs)
     {
         $this->configs = $configs;
     }

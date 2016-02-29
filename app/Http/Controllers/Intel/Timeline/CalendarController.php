@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\Calendar\Calendar;
 
-use App\Repositories\Business\Calendar\CalendarRepository;
+use App\Repositories\Business\Calendar\CalendarDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -21,9 +21,9 @@ class CalendarController extends Controller
     protected $handler;
     /**
      * /
-     * @param CalendarRepository $calendars [description]
+     * @param CalendarDAO $calendars [description]
      */
-    public function __construct(ResponseHandler $handler, CalendarRepository $calendars)
+    public function __construct(ResponseHandler $handler, CalendarDAO $calendars)
     {
         $handler->setPrefix('business.calendar');
         $this->handler = $handler;

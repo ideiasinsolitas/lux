@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Sys\Type;
 
-use App\Repositories\Core\Sys\TypeRepository;
+use App\Repositories\Core\Sys\TypeDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class TypeController extends Controller
 
     /**
      * /
-     * @param TypeRepository $types [description]
+     * @param TypeDAO $types [description]
      */
-    public function __construct(TypeRepository $types)
+    public function __construct(TypeDAO $types)
     {
         $this->types = $types;
     }

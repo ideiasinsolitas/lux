@@ -41,7 +41,7 @@ CREATE TABLE `publishing_issues` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `publishing_contents`;
-CREATE TABLE `publishing_issues` (
+CREATE TABLE `publishing_contents` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `type_id` int(10) unsigned NOT NULL,
   `parent_id` int(10) unsigned NOT NULL,

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Taxonomy\Taxonomy;
 
-use App\Repositories\Core\Taxonomy\TaxonomyRepository;
+use App\Repositories\Core\Taxonomy\TaxonomyDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -21,9 +21,9 @@ class TaxonomyController extends Controller
     protected $handler;
     /**
      * /
-     * @param TaxonomyRepository $taxonomys [description]
+     * @param TaxonomyDAO $taxonomys [description]
      */
-    public function __construct(ResponseHandler $handler, TaxonomyRepository $taxonomys)
+    public function __construct(ResponseHandler $handler, TaxonomyDAO $taxonomys)
     {
         $handler->setPrefix('core.taxonomy');
         $this->handler = $handler;

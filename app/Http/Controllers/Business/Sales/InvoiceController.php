@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\SalesInvoice;
 
-use App\Repositories\Business\SalesInvoiceRepository;
+use App\Repositories\Business\SalesInvoiceDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -22,9 +22,9 @@ class InvoiceController extends Controller
 
     /**
      * /
-     * @param InvoiceRepository $invoices [description]
+     * @param InvoiceDAO $invoices [description]
      */
-    public function __construct(InvoiceRepository $invoices)
+    public function __construct(InvoiceDAO $invoices)
     {
         $this->invoices = $invoices;
     }

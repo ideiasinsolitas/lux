@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Interaction\Comment;
 
-use App\Repositories\Core\Interaction\CommentRepository;
+use App\Repositories\Core\Interaction\CommentDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class CommentController extends Controller
 
     /**
      * /
-     * @param CommentRepository $comments [description]
+     * @param CommentDAO $comments [description]
      */
-    public function __construct(CommentRepository $comments)
+    public function __construct(CommentDAO $comments)
     {
         $this->comments = $comments;
     }

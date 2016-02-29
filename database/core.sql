@@ -1,4 +1,5 @@
 /* user management
+ */
 DROP TABLE IF EXISTS `core_users`;
 CREATE TABLE `core_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -20,7 +21,6 @@ CREATE TABLE `core_users` (
 
 INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
 (1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
- */
 
 /* Everything that has a type id points here */
 DROP TABLE IF EXISTS `core_types`;
@@ -63,7 +63,7 @@ INSERT INTO `core_types` (name, class) VALUES
 ("Personal", "Project"),
 ("Feature", "Ticket"),
 ("Emergency", "Ticket"),
-("Support", "Ticket")
+("Support", "Ticket"),
 ("SignUp", "Token"),
 ("Invitation", "Token");
 
@@ -79,32 +79,32 @@ CREATE TABLE `core_config` (
   UNIQUE(`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `core_config` (`key`, `value`, `activity`, `created`, `modified`) VALUES 
-("site.title", "bla bla bla", 2, NOW(), NOW()),
-("site.tagline", "bla bla bla bla bla", 2, NOW(), NOW()),
-("system.email", "pedrokoblitz@gmail.com", 2, NOW(), NOW()),
-("per.page", "12", 2, NOW(), NOW()),
-("upload.dir", "/public/media", 2, NOW(), NOW()),
-("app.web.root", "/", 2, NOW(), NOW()),
-("app.abs.path", "/var/www/html/", 2, NOW(), NOW()),
-("panel.log.quantity", "15", 2, NOW(), NOW()),
-("panel.content.quantity", "10", 2, NOW(), NOW()),
-("panel.collection.quantity", "5", 2, NOW(), NOW()),
-("panel.resource.quantity", "5", 2, NOW(), NOW()),
-("panel.term.quantity", "5", 2, NOW(), NOW()),
-("facebook.app.id", "", 2, NOW(), NOW()),
-("facebook.app.key", "", 2, NOW(), NOW()),
-("facebook.app.secret", "", 2, NOW(), NOW()),
-("twitter.app.id", "", 2, NOW(), NOW()),
-("twitter.app.key", "", 2, NOW(), NOW()),
-("twitter.app.secret", "", 2, NOW(), NOW()),
-("flickr.profile.url", "http://flickr.com.br/photos/pedrokoblitz", 2, NOW(), NOW()),
-("tumblr.profile.url", "http://pedrokoblitz.tumblr.com", 2, NOW(), NOW()),
-("facebook.profile.url", "https://facebook.com/pedrokoblitz", 2, NOW(), NOW()),
-("facebook.page.url", "https://facebook.com/ideiasinsolitas", 2, NOW(), NOW()),
-("twitter.profile.url", "http://twitter.com/pedrokoblitz", 2, NOW(), NOW()),
-("linkedin.profile.url", "http://br.linkedin.com/pedrokoblitz", 2, NOW(), NOW()),
-("pinterest.profile.url", "http://pinterest.com/pedrokoblitz", 2, NOW(), NOW());
+INSERT INTO `core_config` (`key`, `value`) VALUES 
+("site.title", "bla bla bla"),
+("site.tagline", "bla bla bla bla bla"),
+("system.email", "pedrokoblitz@gmail.com"),
+("per.page", "12"),
+("upload.dir", "/public/media"),
+("app.web.root", "/"),
+("app.abs.path", "/var/www/html/"),
+("panel.log.quantity", "15"),
+("panel.content.quantity", "10"),
+("panel.collection.quantity", "5"),
+("panel.resource.quantity", "5"),
+("panel.term.quantity", "5"),
+("facebook.app.id", ""),
+("facebook.app.key", ""),
+("facebook.app.secret", ""),
+("twitter.app.id", ""),
+("twitter.app.key", ""),
+("twitter.app.secret", ""),
+("flickr.profile.url", "http://flickr.com.br/photos/pedrokoblitz"),
+("tumblr.profile.url", "http://pedrokoblitz.tumblr.com"),
+("facebook.profile.url", "https://facebook.com/pedrokoblitz"),
+("facebook.page.url", "https://facebook.com/ideiasinsolitas"),
+("twitter.profile.url", "http://twitter.com/pedrokoblitz"),
+("linkedin.profile.url", "http://br.linkedin.com/pedrokoblitz"),
+("pinterest.profile.url", "http://pinterest.com/pedrokoblitz");
 
 /* authentication tokens */
 DROP TABLE IF EXISTS `core_tokens`;

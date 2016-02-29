@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Repositories\Publishing\PublicationRepository;
-use App\Repositories\Publishing\IssueRepository;
-use App\Repositories\Publishing\ContentRepository;
+use App\Repositories\Publishing\PublicationDAO;
+use App\Repositories\Publishing\IssueDAO;
+use App\Repositories\Publishing\ContentDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
@@ -19,8 +19,8 @@ class MagazineController extends Controller
 
     public function __construct(
         ResponseHandler $handler,
-        PublicationRepository $publications,
-        ContentRepository $contents
+        PublicationDAO $publications,
+        ContentDAO $contents
     ) {
         $handler->setPrefix('front.blog');
         $this->handler = $handler;

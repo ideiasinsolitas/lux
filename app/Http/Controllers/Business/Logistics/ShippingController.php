@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\Logistics\Shipping;
 
-use App\Repositories\Business\Logistics\ShippingRepository;
+use App\Repositories\Business\BusinessManager;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -20,13 +20,13 @@ class ShippingController extends Controller
     protected $handler;
     /**
      * /
-     * @param ShippingRepository $shippings [description]
+     * @param BusinessManager $shippings [description]
      */
-    public function __construct(ResponseHandler $handler, ShippingRepository $shippings)
+    public function __construct(ResponseHandler $handler, BusinessManager $manager)
     {
         $handler->setPrefix('business.logistics');
         $this->handler = $handler;
-        $this->shippings = $shippings;
+        $this->shippings = $manager->getDAO('shippings');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Interaction\Friendship;
 
-use App\Repositories\Core\Interaction\FriendshipRepository;
+use App\Repositories\Core\Interaction\FriendshipDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class FriendshipController extends Controller
 
     /**
      * /
-     * @param FriendshipRepository $friendships [description]
+     * @param FriendshipDAO $friendships [description]
      */
-    public function __construct(FriendshipRepository $friendships)
+    public function __construct(FriendshipDAO $friendships)
     {
         $this->friendships = $friendships;
     }

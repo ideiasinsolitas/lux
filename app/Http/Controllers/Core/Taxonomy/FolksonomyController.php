@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Interaction\Folksonomy;
 
-use App\Repositories\Core\Interaction\FolksonomyRepository;
+use App\Repositories\Core\Interaction\FolksonomyDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class FolksonomyController extends Controller
 
     /**
      * /
-     * @param FolksonomyRepository $folksonomies [description]
+     * @param FolksonomyDAO $folksonomies [description]
      */
-    public function __construct(FolksonomyRepository $folksonomies)
+    public function __construct(FolksonomyDAO $folksonomies)
     {
         $this->folksonomies = $folksonomies;
     }

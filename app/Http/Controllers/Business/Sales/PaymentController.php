@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\SalesPayment;
 
-use App\Repositories\Business\SalesPaymentRepository;
+use App\Repositories\Business\SalesPaymentDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -22,9 +22,9 @@ class PaymentController extends Controller
 
     /**
      * /
-     * @param PaymentRepository $payments [description]
+     * @param PaymentDAO $payments [description]
      */
-    public function __construct(PaymentRepository $payments)
+    public function __construct(PaymentDAO $payments)
     {
         $this->payments = $payments;
     }

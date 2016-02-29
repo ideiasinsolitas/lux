@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding\Block;
 
-use App\Repositories\Core\SiteBuilding\BlockRepository;
+use App\Repositories\Core\SiteBuilding\BlockDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class BlockController extends Controller
 
     /**
      * /
-     * @param BlockRepository $blocks [description]
+     * @param BlockDAO $blocks [description]
      */
-    public function __construct(BlockRepository $blocks)
+    public function __construct(BlockDAO $blocks)
     {
         $this->blocks = $blocks;
     }

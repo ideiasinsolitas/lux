@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding\Menu;
 
-use App\Repositories\Core\SiteBuilding\MenuRepository;
+use App\Repositories\Core\SiteBuilding\MenuDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class MenuController extends Controller
 
     /**
      * /
-     * @param MenuRepository $menus [description]
+     * @param MenuDAO $menus [description]
      */
-    public function __construct(MenuRepository $menus)
+    public function __construct(MenuDAO $menus)
     {
         $this->menus = $menus;
     }
