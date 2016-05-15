@@ -3,15 +3,21 @@
 namespace App\Http\Controllers\Core\Sys\Config;
 
 use App\Repositories\Core\Sys\ConfigDAO;
+use App\Services\Rest\RestProcessor;
 
-use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
+
+use Carbon\Carbon;
 
 class ConfigController extends Controller
 {
+    /**
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+    
     /**
      * [$configs description]
      * @var [config]
@@ -22,18 +28,10 @@ class ConfigController extends Controller
      * /
      * @param ConfigDAO $configs [description]
      */
-    public function __construct(ConfigDAO $configs)
+    public function __construct(RestProcessor $rest, ConfigDAO $configs)
     {
+        $this->rest = $rest;
         $this->configs = $configs;
-    }
-
-    /**
-     * /
-     * @return [config] [description]
-     */
-    public function app()
-    {
-        return view('core.sys.config');
     }
 
     /**
@@ -44,6 +42,7 @@ class ConfigController extends Controller
     public function index()
     {
         $configs = $this->configs->getDefaultConfig();
+        return $this->rest->process($configs);
     }
 
     /**
@@ -53,12 +52,13 @@ class ConfigController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $input = $request->only(['id', 'user', 'key', 'value', 'format', 'activity']);
-        if (isset($input['id'])) {
-            $config = $this->configs->create($input);
+        $input = $request->only(['user', 'key', 'value', 'format', 'activity']);
+        if ($request->has('pk')) {
+            $config = $this->configs->update($input, $request->get('pk'));
         } else {
-            $config = $this->configs->update($input, $input['id']);
+            $config = $this->configs->insert($input);
         }
+        return $this->rest->process($config);
     }
 
     /**
@@ -69,27 +69,7 @@ class ConfigController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $config = $this->configs->delete($pk);
-    }
-
-    /**
-     * @param $pk
-     * @param RestoreConfigRequest $request
-     * @return mixed
-     */
-    public function restore($pk, UpdateRequest $request)
-    {
-        $config = $this->configs->restore($pk);
-    }
-
-    /**
-     * @param $pk
-     * @param $status
-     * @param MarkConfigRequest $request
-     * @return mixed
-     */
-    public function mark($pk, $status, UpdateRequest $request)
-    {
-        $config = $this->configs->mark($pk, $status);
+        $config = $this->configs->update(['activity' => 0], $pk);
+        return $this->rest->process($config);
     }
 }

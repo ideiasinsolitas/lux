@@ -1,12 +1,8 @@
 <?php namespace App\Http\Requests\Generic;
 
-use App\Http\Requests\Request;
+use App\Http\Requests\FormRequest;
 
-/**
- * Class CreatePermissionGroupRequest
- * @package App\Http\Requests\Core\Access\Permission\Group
- */
-class StoreRequest extends Request
+class StoreRequest extends FormRequest
 {
 
 }

@@ -3,15 +3,21 @@
 namespace App\Http\Controllers\Core\Interaction\Folksonomy;
 
 use App\Repositories\Core\Interaction\TermDAO;
+use App\Services\Rest\RestProcessor;
 
-use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
+
+use Carbon\Carbon;
 
 class TermController extends Controller
 {
+    /**
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+
     /**
      * [$terms description]
      * @var [type]
@@ -22,8 +28,9 @@ class TermController extends Controller
      * /
      * @param FolksonomyDAO $terms [description]
      */
-    public function __construct(TermDAO $terms)
+    public function __construct(RestProcessor $rest, TermDAO $terms)
     {
+        $this->rest = $rest;
         $this->terms = $terms;
     }
     
@@ -35,6 +42,7 @@ class TermController extends Controller
     public function index()
     {
         $terms = $this->terms->getAll();
+        return $this->rest->process($terms);
     }
 
     /**
@@ -44,45 +52,25 @@ class TermController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $id = $request->only(['id']);
         $input = $request->only(['term_id', 'user_id', 'usertaggable_type', 'usertaggable_id']);
-        if (isset($id['id'])) {
-            $folksonomy = $this->terms->create($input);
+        if ($request->has('pk')) {
+            $term = $this->terms->update($input, $request->get('pk'));
         } else {
-            $folksonomy = $this->terms->update($input, $id['id']);
+            $input['node_id'] = $this->terms->createNode();
+            $term = $this->terms->insert($input);
         }
+        return $this->rest->process($term);
     }
 
     /**
      * /
-     * @param  [type]        $id      [description]
+     * @param  [type]        $pk      [description]
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]
      */
-    public function destroy($id, DeleteRequest $request)
+    public function destroy($pk, DeleteRequest $request)
     {
-        $folksonomy = $this->terms->delete($id);
-    }
-
-    /**
-     * /
-     * @param  [type]        $id      [description]
-     * @param  DeleteRequest $request [description]
-     * @return [type]                 [description]
-     */
-    public function deleteMany(DeleteRequest $request)
-    {
-        $ids = $request->only('ids');
-        $terms = $this->terms->deleteMany($var['ids']);
-    }
-
-    /**
-     * @param $id
-     * @param RestoreFolksonomyRequest $request
-     * @return mixed
-     */
-    public function restore($id, UpdateRequest $request)
-    {
-        $this->terms->restore($id);
+        $term = $this->terms->update(['activity' => 0], $pk);
+        return $this->rest->process($term);
     }
 }

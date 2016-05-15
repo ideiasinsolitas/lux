@@ -3,29 +3,34 @@
 namespace App\Http\Controllers\Core\Sys\Resource;
 
 use App\Repositories\Core\Sys\ResourceDAO;
+use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
-use App\Services\ResponseHandler;
+use Carbon\Carbon;
 
 class ResourceController extends Controller
 {
+    /**
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+
     /**
      * [$resources description]
      * @var [type]
      */
     protected $resources;
 
-    protected $handler;
-
     /**
      * /
      * @param ResourceDAO $resources [description]
      */
-    public function __construct(ResourceDAO $resources)
+    public function __construct(RestProcessor $rest, ResourceDAO $resources)
     {
+        $this->rest = $rest;
         $this->resources = $resources;
     }
 
@@ -34,19 +39,24 @@ class ResourceController extends Controller
      * @param  StoreRequest $request [description]
      * @return [type]                [description]
      */
-    public function save(StoreRequest $request)
+    public function store(StoreRequest $request)
     {
         $input = $request->only([
-            'id',
             'name',
             'description',
             'url',
             'embed',
             'activity'
             ]);
-        $resource = $request->has('id')
-            ? $this->resources->update($input, $input['id'])
-            : $this->resources->create($input);
+        if ($request->has('pk')) {
+            $input['modified'] = Carbon::now();
+            $this->resources->update($input, $request->get('pk'));
+        } else {
+            $input['node_id'] = $this->resources->createNode();
+            $input['created'] = Carbon::now();
+            $this->resources->insert($input);
+        }
+        return $this->rest->process($resource);
     }
 
     /**
@@ -57,26 +67,29 @@ class ResourceController extends Controller
     public function index()
     {
         $resources = $this->resources->getAll();
+        return $this->rest->process($resources);
     }
 
     /**
      * Display the specified resource.
-     * @param  int  $id
+     * @param  int  $pk
      * @return Response
      */
-    public function show($id)
+    public function show($pk)
     {
-        $calendar = $this->resources->getOne($id);
+        $resource = $this->resources->getOne(['pk' => $pk]);
+        return $this->rest->process($resource);
     }
 
     /**
      * /
-     * @param  [type]        $id      [description]
+     * @param  [type]        $pk      [description]
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]
      */
-    public function destroy($id, DeleteRequest $request)
+    public function destroy($pk, DeleteRequest $request)
     {
-        $calendar = $this->resources->delete($id);
+        $resource = $this->resources->delete($pk);
+        return $this->rest->process($resource);
     }
 }

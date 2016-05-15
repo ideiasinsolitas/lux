@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Core\Interaction\Comment;
 
 use App\Repositories\Core\Interaction\CommentDAO;
+use App\Services\Rest\RestProcessor;
 
-use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
 class CommentController extends Controller
 {
+    /**
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+
     /**
      * [$comments description]
      * @var [type]
@@ -22,8 +26,9 @@ class CommentController extends Controller
      * /
      * @param CommentDAO $comments [description]
      */
-    public function __construct(CommentDAO $comments)
+    public function __construct(RestProcessor $rest, CommentDAO $comments)
     {
+        $this->rest = $rest;
         $this->comments = $comments;
     }
 
@@ -35,6 +40,7 @@ class CommentController extends Controller
     public function index()
     {
         $comments = $this->comments->getAll();
+        return $this->rest->process($comments);
     }
 
     /**
@@ -45,32 +51,34 @@ class CommentController extends Controller
     public function store(StoreRequest $request)
     {
         $input = $request->only(['parent_id', 'user_id', 'commment']);
-        if (isset($input['id'])) {
-            $comment = $this->comments->update($input, $input['id']);
+        if ($request->has('pk')) {
+            $comment = $this->comments->update($input, $request->get('pk'));
         } else {
-            $input['node_id'] = $this->comments->createNode('Comment');
-            $comment = $this->comments->create($input);
+            $comment = $this->comments->insert($input);
         }
+        return $this->rest->process($comment);
     }
 
     /**
      * Display the specified resource.
-     * @param  int  $id
+     * @param  int  $pk
      * @return Response
      */
-    public function show($id)
+    public function show($pk)
     {
-        $comment = $this->comments->getOne($id);
+        $comment = $this->comments->getOne(['pk' => $pk]);
+        return $this->rest->process($comment);
     }
 
     /**
      * /
-     * @param  [type]        $id      [description]
+     * @param  [type]        $pk      [description]
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]
      */
-    public function destroy($id, DeleteRequest $request)
+    public function destroy($pk, DeleteRequest $request)
     {
-        $comment = $this->comments->delete($id);
+        $comment = $this->comments->delete($pk);
+        return $this->rest->process($comment);
     }
 }

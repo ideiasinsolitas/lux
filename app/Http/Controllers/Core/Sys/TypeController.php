@@ -3,15 +3,21 @@
 namespace App\Http\Controllers\Core\Sys\Type;
 
 use App\Repositories\Core\Sys\TypeDAO;
+use App\Services\Rest\RestProcessor;
 
-use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
+
+use Carbon\Carbon;
 
 class TypeController extends Controller
 {
+    /**
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+
     /**
      * [$types description]
      * @var [type]
@@ -22,20 +28,12 @@ class TypeController extends Controller
      * /
      * @param TypeDAO $types [description]
      */
-    public function __construct(TypeDAO $types)
+    public function __construct(RestProcessor $rest, TypeDAO $types)
     {
+        $this->rest = $rest;
         $this->types = $types;
     }
-
-    /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.sys.type');
-    }
-
+    
     /**
      * Display a listing of the resource.
      * @param  integer $page [description]
@@ -44,6 +42,7 @@ class TypeController extends Controller
     public function index()
     {
         $types = $this->types->getAll();
+        return $this->rest->process($types);
     }
 
     /**
@@ -53,13 +52,13 @@ class TypeController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $pk = $request->only('id');
         $input = $request->only(['class', 'name']);
-        if (isset($pk)) {
-            $type = $this->types->create($input);
+        if ($request->has('pk')) {
+            $type = $this->types->update($input, $request->get('pk'));
         } else {
-            $type = $this->types->update($input, $pk['id']);
+            $type = $this->types->insert($input);
         }
+        return $this->rest->process($type);
     }
 
     /**
@@ -70,6 +69,7 @@ class TypeController extends Controller
     public function show($pk)
     {
         $type = $this->types->getOne(['pk' => $pk]);
+        return $this->rest->process($type);
     }
 
     /**
@@ -81,5 +81,6 @@ class TypeController extends Controller
     public function destroy($pk, DeleteRequest $request)
     {
         $type = $this->types->delete($pk);
+        return $this->rest->process($type);
     }
 }

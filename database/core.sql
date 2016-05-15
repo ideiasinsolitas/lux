@@ -148,12 +148,7 @@ CREATE TABLE `core_translations` (
 DROP TABLE IF EXISTS `core_nodes`;
 CREATE TABLE `core_nodes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
-  `created` datetime NOT NULL,
-  `modified` datetime NOT NULL,
-  `deleted` datetime NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -228,6 +223,7 @@ CREATE TABLE `core_resources` (
   `embed` BLOB DEFAULT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
   `created` datetime NOT NULL,
+  `modified` datetime NULL,
   `deleted` datetime NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -269,9 +265,10 @@ CREATE TABLE `core_comments` (
   `node_id` int(10) unsigned NOT NULL,
   `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `user_id` int(10) unsigned DEFAULT NULL,
-  `comment` BLOB NOT NULL,
   `created` datetime NOT NULL,
-  PRIMARY KEY (`id`),
+  `modified` datetime DEFAULT NULL,
+  `deleted` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* Polymorphic many2many */

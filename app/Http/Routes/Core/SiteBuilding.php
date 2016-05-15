@@ -2,23 +2,23 @@
 
 $router->group(['namespace' => 'SiteBuilding', 'prefix' => 'sitebuilding'], function () use ($router) {
     $router->group(['namespace' => 'Area', 'prefix' => 'area'], function () {
-        get('/', 'AreaController@index')->name('core.sys.area.list');
-        get('/{pk}', 'AreaController@show')->name('core.sys.area.show');
-        post('/', 'AreaController@save')->name('core.sys.area.save');
-        delete('/{pk}', 'AreaController@destroy')->name('core.sys.area.delete');
+        Route::get('/', 'AreaController@index')->name('core.sys.area.list');
+        Route::get('/{pk}', 'AreaController@show')->name('core.sys.area.show');
+        Route::post('/', 'AreaController@store')->name('core.sys.area.save');
+        Route::delete('/{pk}', 'AreaController@destroy')->name('core.sys.area.delete');
     });
 
     $router->group(['namespace' => 'Block', 'prefix' => 'block'], function () {
-        get('/', 'BlockController@index')->name('core.sys.block.list');
-        get('/{pk}', 'BlockController@show')->name('core.sys.block.show');
-        post('/', 'BlockController@save')->name('core.sys.block.save');
-        delete('/{pk}', 'BlockController@destroy')->name('core.sys.block.delete');
+        Route::get('/', 'BlockController@index')->name('core.sys.block.list');
+        Route::get('/{pk}', 'BlockController@show')->name('core.sys.block.show');
+        Route::post('/', 'BlockController@store')->name('core.sys.block.save');
+        Route::delete('/{pk}', 'BlockController@destroy')->name('core.sys.block.delete');
     });
 
     $router->group(['namespace' => 'Menu', 'prefix' => 'menu'], function () {
-        get('/', 'MenuController@index')->name('core.sys.menu.list');
-        get('/{pk}', 'MenuController@show')->name('core.sys.menu.show');
-        post('/', 'MenuController@save')->name('core.sys.menu.save');
-        delete('/{pk}', 'MenuController@destroy')->name('core.sys.menu.delete');
+        Route::get('/', 'MenuController@index')->name('core.sys.menu.list');
+        Route::get('/{pk}', 'MenuController@show')->name('core.sys.menu.show');
+        Route::post('/', 'MenuController@store')->name('core.sys.menu.save');
+        Route::delete('/{pk}', 'MenuController@destroy')->name('core.sys.menu.delete');
     });
 });

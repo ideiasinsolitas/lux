@@ -15,13 +15,15 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+//        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \App\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
-        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \App\Http\Middleware\VerifyCsrfToken::class,
-        \App\Http\Middleware\LocaleMiddleware::class,
+//        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+//        \App\Http\Middleware\VerifyCsrfToken::class,
+//        \App\Http\Middleware\LocaleMiddleware::class,
+        \App\Http\Middleware\ConfigLoaderMiddleware::class,
+//        \App\Http\Middleware\CustomAuthMiddleware::class,
     ];
 
     /**
@@ -32,15 +34,15 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         /**
          * Default laravel route middleware
-         */
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+         */
 
         /**
          * Access Middleware
-         */
         'access.routeNeedsRole' => \App\Http\Middleware\RouteNeedsRole::class,
         'access.routeNeedsPermission' => \App\Http\Middleware\RouteNeedsPermission::class,
+         */
     ];
 }
