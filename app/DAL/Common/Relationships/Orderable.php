@@ -6,15 +6,18 @@ use Illuminate\Support\Facades\DB;
 
 trait Orderable
 {
-    public function addItems($order_id, $item_info)
+    public function addItems($order_id, array $items)
     {
-        $items = [];
-        foreach ($item_info as $item) {
-            $items[]['order_id'] = $order_id;
-            $items[]['orderable_type'] = self::INTERNAL_TYPE;
-            $items[]['orderable_id'] = $item['id'];
-            $items[]['price'] = $item['price'];
-            isset($item['quantity']) ? $item['quantity'] : 1;
+        if (!is_int($order_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
+        $c = count($items);
+        for ($i=0; $i <$c; $i++) {
+            $items[$i]['order_id'] = $order_id;
+            $items[$i]['orderable_type'] = self::INTERNAL_TYPE;
+            $items[$i]['orderable_id'] = $item['id'];
+            $items[$i]['price'] = $item['price'];
+            isset($items[$i]['quantity']) ? $items[$i]['quantity'] : 1;
         }
         DB::table('business_orderarbles')
            ->insert($items);
@@ -22,6 +25,9 @@ trait Orderable
 
     public function removeItem($order_id, $item_id)
     {
+        if (!is_int($order_id) || !is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $orderable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         DB::table('business_orderarbles')
             ->where('order_id', $order_id)

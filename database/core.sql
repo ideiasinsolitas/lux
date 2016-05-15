@@ -217,8 +217,6 @@ CREATE TABLE `core_resources` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `type_id` int(10) unsigned NOT NULL,
   `node_id` int(10) unsigned NOT NULL,
-  `name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `description` TINYBLOB NULL,
   `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `embed` BLOB DEFAULT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
@@ -339,18 +337,11 @@ CREATE TABLE `core_menus` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `core_menus_resources`;
-CREATE TABLE `core_menus_resources` (
-  `menu_id` int(10) unsigned NOT NULL,
-  `resource_id` int(10) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
 DROP TABLE IF EXISTS `core_notifications`;
 CREATE TABLE `core_node_stats` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `message` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `notification` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

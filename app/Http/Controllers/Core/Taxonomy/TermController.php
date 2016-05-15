@@ -54,7 +54,7 @@ class TermController extends Controller
     {
         $input = $request->only(['term_id', 'user_id', 'usertaggable_type', 'usertaggable_id']);
         if ($request->has('pk')) {
-            $term = $this->terms->update($input, $request->get('pk'));
+            $term = $this->terms->update($input, (int) $request->get('pk'));
         } else {
             $input['node_id'] = $this->terms->createNode();
             $term = $this->terms->insert($input);
@@ -70,7 +70,7 @@ class TermController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $term = $this->terms->update(['activity' => 0], $pk);
+        $term = $this->terms->update(['activity' => 0], (int) $pk);
         return $this->rest->process($term);
     }
 }

@@ -4,8 +4,7 @@ namespace App\DAL\Core\SiteBuilding\Relationships;
 
 use App\DAL\Common\Relationships as CommonRelationships;
 
-trait ResourceRelationship
+trait MenuRelationship
 {
-    use CommonRelationships\Ownable,
-        CommonRelationships\Collectable;
+    use CommonRelationships\Collector;
 }

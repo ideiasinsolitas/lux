@@ -54,7 +54,7 @@ class TypeController extends Controller
     {
         $input = $request->only(['class', 'name']);
         if ($request->has('pk')) {
-            $type = $this->types->update($input, $request->get('pk'));
+            $type = $this->types->update($input, (int) $request->get('pk'));
         } else {
             $type = $this->types->insert($input);
         }
@@ -68,7 +68,7 @@ class TypeController extends Controller
      */
     public function show($pk)
     {
-        $type = $this->types->getOne(['pk' => $pk]);
+        $type = $this->types->getOne(['pk' => (int) $pk]);
         return $this->rest->process($type);
     }
 
@@ -80,7 +80,7 @@ class TypeController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $type = $this->types->delete($pk);
+        $type = $this->types->delete((int) $pk);
         return $this->rest->process($type);
     }
 }

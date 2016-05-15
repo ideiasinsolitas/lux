@@ -49,4 +49,57 @@ class MenuDAO extends AbstractDAO
 
         return $this->finish($filters);
     }
+
+    public function createResourceCollection($item_id, $items)
+    {
+        $collection_id = $this->createCollection($item_id);
+        $c = count($items);
+        for ($i=0; $i < $c; $i++) {
+            $items[$i]['collection_id'] = $collection_id;
+        }
+        return DB::table('core_collectables')->insert($items);
+    }
+
+    public function updateResourceCollection($items, $collection_id)
+    {
+        $c = count($items);
+        for ($i=0; $i < $c; $i++) {
+            $items[$i]['collection_id'] = $collection_id;
+        }
+        return DB::table('core_collectables')->insert($items);
+    }
+
+    public function getResourceCollection($collection_id)
+    {
+        $collection = DB::table('core_collections')
+            ->select(
+                'core_collections.id',
+                'core_collections.node_id',
+                'core_collections.type_id',
+                'core_collections.order',
+                'core_collections.activity',
+                'core_collections.created',
+                'core_collections.modified'
+            )
+            ->where('id', $collection_id)
+            ->first();
+
+        $resources = DB::table('core_collectables')
+            ->join('core_resources', 'core_collectables.collectable_id', '=', 'core_resources.id')
+            ->select(
+                'core_resources.id',
+                'core_resources.type_id',
+                'core_resources.node_id',
+                'core_resources.url',
+                'core_resources.embed',
+                'core_resources.activity',
+                'core_resources.created',
+                'core_resources.modified'
+            )
+            ->orderBy('core_collectables.order', 'asc')
+            ->get();
+
+        $collection->resources = $resources;
+        return $collection;
+    }
 }

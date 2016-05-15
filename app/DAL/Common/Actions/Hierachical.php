@@ -33,6 +33,10 @@ trait Hierachical
 
     public function setBranch($leaf_id, $branch_id = 0)
     {
+        if (!is_int($leaf_id) || !is_int($branch_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
+
         return DB::table(self::TABLE)
             ->update(['parent_id' => $branch_id])
             ->where(self::PK, $leaf_id);
@@ -40,6 +44,10 @@ trait Hierachical
 
     public function getBranch($leaf_id)
     {
+        if (!is_int($leaf_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
+
         $id = DB::table(self::TABLE)
             ->select('parent_id')
             ->where(self::PK, $leaf_id);
@@ -48,25 +56,37 @@ trait Hierachical
 
     public function getLeafs($branch_id)
     {
+        if (!is_int($branch_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return $this->builder->where('parent_id', $branch_id)->get();
     }
 
     public function addLeaf($branch_id, $leaf_id)
     {
+        if (!is_int($branch_id) || !is_int($leaf_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table(self::TABLE)
             ->update(['parent_id' => $branch_id])
             ->where(self::PK, $leaf_id);
     }
 
-    public function addLeaves($branch_id, $leaves_id)
+    public function addLeaves($branch_id, array $leaves_ids)
     {
+        if (!is_int($branch_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table(self::TABLE)
             ->update(['parent_id' => $branch_id])
-            ->whereIn(self::PK, $leaves_id);
+            ->whereIn(self::PK, $leaves_ids);
     }
 
     public function removeLeaf($leaf_id)
     {
+        if (!is_int($leaf_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table(self::TABLE)
             ->update(['parent_id' => 0])
             ->where(self::PK, $leaf_id);

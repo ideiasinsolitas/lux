@@ -8,6 +8,9 @@ trait Ownable
 {
     public function own($user_id, $item_id)
     {
+        if (!is_int($user_id) || !is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_ownership')
             ->insertGetId([
                 'user_id' => $user_id,
@@ -18,6 +21,9 @@ trait Ownable
 
     public function changeOwner($user_id, $item_id)
     {
+        if (!is_int($user_id) || !is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_ownership')
             ->where('ownable_type', self::INTERNAL_TYPE)
             ->where('ownable_id', $item_id)
@@ -26,6 +32,9 @@ trait Ownable
 
     public function getOwner($item_id)
     {
+        if (!is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $ownable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_users')
             ->join('core_ownership', function ($q) use ($item_id, $ownable_type) {
@@ -40,6 +49,9 @@ trait Ownable
 
     public function isOwner($user_id, $item_id)
     {
+        if (!is_int($user_id) || !is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_ownership')
             ->select('user_id')
             ->where('user_id', $user_id)

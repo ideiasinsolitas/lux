@@ -4,8 +4,12 @@ namespace App\DAL\Relationships\Common;
 
 trait Commentable
 {
-    public function addComment($item_id, $input)
+    public function addComment($item_id, array $input)
     {
+        if (!is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
+
         $commentInput = [
             'node_id' => $input['node_id'],
             'parent_id' => $input['parent_id'],
@@ -46,8 +50,11 @@ trait Commentable
         return true;
     }
 
-    public function editComment($item_id, $input, $comment_id)
+    public function editComment($item_id, array $input, $comment_id)
     {
+        if (!is_int($item_id) || !is_int($comment_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $translation = DB::table('core_translations')
             ->update(['body' => $input['body']])
             ->where('translatable_type', 'Comment')
@@ -62,6 +69,9 @@ trait Commentable
 
     public function getComments($item_id, $lang)
     {
+        if (!is_int($item_id) || !is_string($lang)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $translatable_type = DB::raw('\"Comment\"');
         return DB::table('core_comments')
             ->join('core_translations', function ($q) use ($translatable_type) {
@@ -77,6 +87,9 @@ trait Commentable
 
     public function removeComment($comment_id)
     {
+        if (!is_int($comment_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $comment = DB::table('core_comments')
             ->where('id', $comment_id)
             ->delete();

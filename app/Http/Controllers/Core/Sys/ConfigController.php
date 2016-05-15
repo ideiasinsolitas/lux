@@ -54,7 +54,7 @@ class ConfigController extends Controller
     {
         $input = $request->only(['user', 'key', 'value', 'format', 'activity']);
         if ($request->has('pk')) {
-            $config = $this->configs->update($input, $request->get('pk'));
+            $config = $this->configs->update($input, (int) $request->get('pk'));
         } else {
             $config = $this->configs->insert($input);
         }
@@ -69,7 +69,7 @@ class ConfigController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $config = $this->configs->update(['activity' => 0], $pk);
+        $config = $this->configs->update(['activity' => 0], (int) $pk);
         return $this->rest->process($config);
     }
 }

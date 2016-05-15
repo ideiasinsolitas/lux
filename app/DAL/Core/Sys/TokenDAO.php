@@ -5,33 +5,8 @@ use App\DAL\AbstractDAO;
 use AppGeneralExceptions\GeneralException;
 use App\DAL\Core\Sys\Contracts\TokenDAOContract;
 
-class TokenDAO extends AbstractDAO implements TokenDAOContract
+class TokenDAO implements TokenDAOContract
 {
-
-    public function __construct()
-    {
-    }
-
-    protected function parseFilters(array $filters, $defaults = true)
-    {
-        throw new GeneralException("Not Implemented", 1);
-    }
-
-    public function getBuilder()
-    {
-        throw new GeneralException("Not Implemented", 1);
-    }
- 
-    public function insert(array $input)
-    {
-        throw new GeneralException("Not Implemented", 1);
-    }
-
-    public function update(array $input, $pk)
-    {
-        throw new GeneralException("Not Implemented", 1);
-    }
-
     public function generate($user_id, $type)
     {
         if (!is_int($user_id) || !is_string($type)) {

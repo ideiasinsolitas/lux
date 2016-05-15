@@ -12,6 +12,9 @@ trait Collaborative
 {
     public function enterCollaboration($user_id, $item_id)
     {
+        if (!is_int($user_id) || !is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_collaborations')
             ->insert([
                 'user_id' => $user_id,
@@ -22,6 +25,9 @@ trait Collaborative
 
     public function leaveCollaboration($user_id, $item_id)
     {
+        if (!is_int($user_id) || !is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $collaborative_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_collaborations')
             ->where('user_id', $user_id)
@@ -32,6 +38,9 @@ trait Collaborative
 
     public function isUserInTeam($user_id, $item_id)
     {
+        if (!is_int($user_id) || !is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $collaborative_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_collaborations')
             ->select('user_id')
@@ -43,6 +52,9 @@ trait Collaborative
 
     public function getTeam($item_id)
     {
+        if (!is_int($item_id)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_users')
             ->join('core_collaborations', 'core_users.id', 'core_collaborations.user_id')
             ->select(

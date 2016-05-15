@@ -57,7 +57,7 @@ class FileController extends Controller
 
         if ($request->has('pk')) {
             $input['modified'] = Carbon::now();
-            $this->files->update($input, $request->get('pk'));
+            $this->files->update($input, (int) $request->get('pk'));
         } else {
             $input['node_id'] = $this->files->createNode();
             $input['created'] = Carbon::now();
@@ -84,7 +84,7 @@ class FileController extends Controller
      */
     public function show($pk)
     {
-        $file = $this->files->getOne(['pk' => $pk]);
+        $file = $this->files->getOne(['pk' => (int) $pk]);
         return $this->rest->process($file);
     }
 
@@ -96,7 +96,7 @@ class FileController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $file = $this->files->update(['activity' => 0, 'deleted' => Carbon::now()], $pk);
+        $file = $this->files->update(['activity' => 0, 'deleted' => Carbon::now()], (int) $pk);
         return $this->rest->process($file);
     }
 }

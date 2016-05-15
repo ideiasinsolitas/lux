@@ -25,6 +25,9 @@ trait Translatable
 
     public function addTranslation($item_id, $lang, array $input)
     {
+        if (!is_int($item_id) || !is_string($lang)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $translationInput = $this->handleTranslationInput($input);
         if (!$translationInput) {
             throw new \Exception("Error Processing Request", 1);
@@ -39,6 +42,9 @@ trait Translatable
 
     public function updateTranslation($item_id, $lang, array $input)
     {
+        if (!is_int($item_id) || !is_string($lang)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $translationInput = $this->handleTranslationInput($input);
         if (!$translationInput) {
             throw new \Exception("Error Processing Request", 1);
@@ -53,10 +59,9 @@ trait Translatable
 
     public function getAllTranslations($item_id)
     {
-        if (!property_exists($this, 'type')) {
+        if (!is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        
         return DB::table('core_translations')
             ->select('id', 'slug', 'name', 'title', 'subtitle', 'tagline', 'excerpt', 'description', 'body', 'language')
             ->where('translatable_type', self::INTERNAL_TYPE)
@@ -66,6 +71,9 @@ trait Translatable
 
     public function getTranslation($item_id, $lang)
     {
+        if (!is_int($item_id) || !is_string($lang)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_translations')
             ->select('id', 'slug', 'name', 'title', 'subtitle', 'tagline', 'excerpt', 'description', 'body', 'language')
             ->where('translatable_type', self::INTERNAL_TYPE)
@@ -76,6 +84,9 @@ trait Translatable
 
     public function getSlug($item_id, $lang)
     {
+        if (!is_int($item_id) || !is_string($lang)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_translations')
             ->select('slug')
             ->where('translatable_type', self::INTERNAL_TYPE)
@@ -86,6 +97,9 @@ trait Translatable
 
     public function getTranslationBySlug($slug)
     {
+        if (!is_string($slug)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_translations')
             ->select('id', 'slug', 'name', 'title', 'subtitle', 'tagline', 'excerpt', 'description', 'body', 'language')
             ->where('slug', $slug)
@@ -94,6 +108,9 @@ trait Translatable
 
     public function removeTranslation($item_id, $lang)
     {
+        if (!is_int($item_id) || !is_string($lang)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         $translatable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_translations')
             ->where('tranlatable_type', self::INTERNAL_TYPE)

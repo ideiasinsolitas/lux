@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\DB;
-
 abstract class AbstractDAO
 {
     protected $filters;

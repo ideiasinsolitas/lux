@@ -50,7 +50,7 @@ class ResourceController extends Controller
             ]);
         if ($request->has('pk')) {
             $input['modified'] = Carbon::now();
-            $this->resources->update($input, $request->get('pk'));
+            $this->resources->update($input, (int) $request->get('pk'));
         } else {
             $input['node_id'] = $this->resources->createNode();
             $input['created'] = Carbon::now();
@@ -77,7 +77,7 @@ class ResourceController extends Controller
      */
     public function show($pk)
     {
-        $resource = $this->resources->getOne(['pk' => $pk]);
+        $resource = $this->resources->getOne(['pk' => (int) $pk]);
         return $this->rest->process($resource);
     }
 
@@ -89,7 +89,7 @@ class ResourceController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $resource = $this->resources->delete($pk);
+        $resource = $this->resources->delete((int) $pk);
         return $this->rest->process($resource);
     }
 }

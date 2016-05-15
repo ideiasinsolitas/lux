@@ -52,7 +52,7 @@ class CommentController extends Controller
     {
         $input = $request->only(['parent_id', 'user_id', 'commment']);
         if ($request->has('pk')) {
-            $comment = $this->comments->update($input, $request->get('pk'));
+            $comment = $this->comments->update($input, (int) $request->get('pk'));
         } else {
             $comment = $this->comments->insert($input);
         }
@@ -66,7 +66,7 @@ class CommentController extends Controller
      */
     public function show($pk)
     {
-        $comment = $this->comments->getOne(['pk' => $pk]);
+        $comment = $this->comments->getOne(['pk' => (int) $pk]);
         return $this->rest->process($comment);
     }
 
@@ -78,7 +78,7 @@ class CommentController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $comment = $this->comments->delete($pk);
+        $comment = $this->comments->delete((int) $pk);
         return $this->rest->process($comment);
     }
 }
