@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding;
 
-use App\Repositories\Core\SiteBuilding\FileDAO;
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\SiteBuilding\FileDAO;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;

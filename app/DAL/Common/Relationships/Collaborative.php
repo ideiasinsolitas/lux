@@ -47,7 +47,7 @@ trait Collaborative
             ->where('user_id', $user_id)
             ->where('collaborative_type', $collaborative_type)
             ->where('collaborative_id', $item_id)
-            ->get();
+            ->first() ? true : false;
     }
 
     public function getTeam($item_id)

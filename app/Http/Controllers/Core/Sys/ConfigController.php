@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\Sys\Config;
 
-use App\Repositories\Core\Sys\ConfigDAO;
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\Sys\ConfigDAO;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;

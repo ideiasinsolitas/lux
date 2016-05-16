@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\Interaction\Comment;
 
-use App\Repositories\Core\Interaction\CommentDAO;
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\Interaction\CommentDAO;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;

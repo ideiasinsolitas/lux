@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\Sys\Type;
 
-use App\Repositories\Core\Sys\TypeDAO;
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\Sys\TypeDAO;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;

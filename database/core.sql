@@ -5,9 +5,6 @@ CREATE TABLE `core_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = inactive, 1 = active
@@ -21,6 +18,14 @@ CREATE TABLE `core_users` (
 
 INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
 (1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
+
+DROP TABLE IF EXISTS `core_user_profiles`;
+CREATE TABLE `core_user_profiles` (
+  `user_id` int(10) unsigned NOT NULL,
+  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* Everything that has a type id points here */
 DROP TABLE IF EXISTS `core_types`;

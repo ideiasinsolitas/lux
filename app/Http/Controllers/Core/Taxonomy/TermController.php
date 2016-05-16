@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\Interaction\Folksonomy;
 
-use App\Repositories\Core\Interaction\TermDAO;
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\Interaction\TermDAO;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;

@@ -29,6 +29,12 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\NotificationListener',
             'App\Listeners\LoggerListener',
         ],
+        'App\Events\Core\UserForgotPassword' => [
+            'App\Listeners\NotificationListener',
+        ],
+        'App\Events\Core\UserPasswordChanged' => [
+            'App\Listeners\PostmanListener',
+        ]
     ];
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+require(__DIR__ . "/Routes/Auth.php");
+
 $router->group(['namespace' => 'Core', 'prefix' => 'api'], function () use ($router) {
     require(__DIR__ . "/Routes/Core/Interaction.php");
     require(__DIR__ . "/Routes/Core/SiteBuilding.php");

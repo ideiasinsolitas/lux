@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-class AurhListener
+class AuthListener
 {
 
 }

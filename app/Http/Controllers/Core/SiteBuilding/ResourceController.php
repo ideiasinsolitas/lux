@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\Sys\Resource;
 
-use App\Repositories\Core\Sys\ResourceDAO;
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\Sys\ResourceDAO;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
@@ -89,7 +91,7 @@ class ResourceController extends Controller
      */
     public function destroy($pk, DeleteRequest $request)
     {
-        $resource = $this->resources->delete((int) $pk);
+        $resource = $this->resources->update(['activity' => 0, 'deleted' => Carbon::now()], (int) $pk);
         return $this->rest->process($resource);
     }
 }

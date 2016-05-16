@@ -1,7 +1,7 @@
 <?php
 
 $router->group(['namespace' => 'Taxonomy', 'prefix' => 'taxonomy'], function () use ($router) {
-    $router->group(['namespace' => 'Term', 'prefix' => 'term'], function () {
+    $router->group(['prefix' => 'term'], function () {
         Route::get('/', 'TermController@index')->name('core.sys.term.list');
         Route::get('/{pk}', 'TermController@show')->name('core.sys.term.show');
         Route::post('/', 'TermController@store')->name('core.sys.term.store');
