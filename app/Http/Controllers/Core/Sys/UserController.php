@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Sys;
 
 use App\Http\Controllers\Controller;
 
-use App\DAL\Core\Sys\UserDAO;
+use App\DAL\Core\Sys\Contracts\UserDAOContract;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
@@ -17,7 +17,7 @@ class UserController extends Controller
     protected $rest;
     protected $users;
 
-    public function __construct(RestProcessor $rest, UserDAO $users)
+    public function __construct(RestProcessor $rest, UserDAOContract $users)
     {
         $this->rest = $rest;
         $this->users = $users;

@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Sys;
 
-use App\DAL\Core\Sys\ConfigDAO;
+use App\DAL\Core\Sys\Contracts\ConfigDAOContract;
 
 class ConfigService
 {
@@ -9,7 +9,7 @@ class ConfigService
     protected $config;
     protected $dao;
 
-    public function __construct(ConfigDAO $dao, $user_id = null)
+    public function __construct(ConfigDAOContract $dao, $user_id = null)
     {
         $this->user_id = (int) $user_id;
         $this->config = [];

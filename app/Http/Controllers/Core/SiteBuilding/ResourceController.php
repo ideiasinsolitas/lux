@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Core\Sys\Resource;
 
 use App\Http\Controllers\Controller;
 
-use App\DAL\Core\Sys\ResourceDAO;
+use App\DAL\Core\Sys\Contracts\ResourceDAOContract;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
@@ -30,7 +30,7 @@ class ResourceController extends Controller
      * /
      * @param ResourceDAO $resources [description]
      */
-    public function __construct(RestProcessor $rest, ResourceDAO $resources)
+    public function __construct(RestProcessor $rest, ResourceDAOContract $resources)
     {
         $this->rest = $rest;
         $this->resources = $resources;

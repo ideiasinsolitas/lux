@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\DAL\Core\Sys\AuthDAO;
-use App\DAL\Core\Sys\TokenDAO;
-use App\DAL\Core\Sys\UserDAO;
+use App\DAL\Core\Sys\Contracts\AuthDAOContract;
+use App\DAL\Core\Sys\Contracts\TokenDAOContract;
+use App\DAL\Core\Sys\Contracts\UserDAOContract;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
@@ -16,7 +16,7 @@ class AuthController extends Controller
     protected $token;
     protected $user;
 
-    public function __construct(RestProcessor $rest, AuthDAO $auth, TokenDAO $token, UserDAO $user)
+    public function __construct(RestProcessor $rest, AuthDAOContract $auth, TokenDAOContract $token, UserDAOContract $user)
     {
         $this->rest = $rest;
         $this->auth = $auth;

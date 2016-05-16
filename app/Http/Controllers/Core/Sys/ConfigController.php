@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Core\Sys\Config;
 
 use App\Http\Controllers\Controller;
 
-use App\DAL\Core\Sys\ConfigDAO;
+use App\DAL\Core\Sys\Contracts\ConfigDAOContract;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
@@ -30,7 +30,7 @@ class ConfigController extends Controller
      * /
      * @param ConfigDAO $configs [description]
      */
-    public function __construct(RestProcessor $rest, ConfigDAO $configs)
+    public function __construct(RestProcessor $rest, ConfigDAOContract $configs)
     {
         $this->rest = $rest;
         $this->configs = $configs;

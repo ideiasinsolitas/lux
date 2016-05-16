@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Core\Interaction\Folksonomy;
 
 use App\Http\Controllers\Controller;
 
-use App\DAL\Core\Interaction\TermDAO;
+use App\DAL\Core\Interaction\Contracts\TermDAOContract;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
@@ -30,7 +30,7 @@ class TermController extends Controller
      * /
      * @param FolksonomyDAO $terms [description]
      */
-    public function __construct(RestProcessor $rest, TermDAO $terms)
+    public function __construct(RestProcessor $rest, TermDAOContract $terms)
     {
         $this->rest = $rest;
         $this->terms = $terms;

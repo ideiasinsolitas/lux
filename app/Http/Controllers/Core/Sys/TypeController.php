@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Core\Sys\Type;
 
 use App\Http\Controllers\Controller;
 
-use App\DAL\Core\Sys\TypeDAO;
+use App\DAL\Core\Sys\Contracts\TypeDAOContract;
 use App\Services\Rest\RestProcessor;
 
 use App\Http\Requests\Generic\StoreRequest;
@@ -30,7 +30,7 @@ class TypeController extends Controller
      * /
      * @param TypeDAO $types [description]
      */
-    public function __construct(RestProcessor $rest, TypeDAO $types)
+    public function __construct(RestProcessor $rest, TypeDAOContract $types)
     {
         $this->rest = $rest;
         $this->types = $types;

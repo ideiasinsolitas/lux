@@ -2,14 +2,14 @@
 
 namespace App\Services\Sys;
 
-use App\DAL\Core\Sys\NotificationDAO;
+use App\DAL\Core\Sys\Contracts\NotificationDAOContract;
 use Carbon\Carbon;
 
 class NotificationService
 {
     protected $dao;
 
-    public function __construct(NotificationDAO $dao)
+    public function __construct(NotificationDAOContract $dao)
     {
         $this->dao = $dao;
     }
