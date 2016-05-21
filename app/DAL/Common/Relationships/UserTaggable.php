@@ -9,12 +9,12 @@ trait UserTaggable
         if (!is_string($term)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        $term_id = DB::table('core_terms')->select('id')->where('name', $term);
-        if ($term_id) {
-            return $term_id->id;
+        $item = DB::table('core_terms')->select('pk')->where('name', $term);
+        if ($item) {
+            return $item->pk;
         }
         $term_id = DB::table('core_terms')->insertGetId(['name' => $term]);
-        return $term_id->id;
+        return $term_id;
     }
 
     public function addFolksonomyTerm($user_id, $item_id, $term)
@@ -31,7 +31,7 @@ trait UserTaggable
             ]);
     }
 
-    public function addFolksonomyTerms($user_id, $item_id, $terms)
+    public function addFolksonomyTerms($user_id, $item_id, array $terms)
     {
         if (!is_int($user_id) || !is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);
@@ -55,8 +55,8 @@ trait UserTaggable
         return DB::table('core_folksonomy')
             ->join('core_terms', 'core_folksonomy.term_id', 'core_terms.id')
             ->select('core_terms.name', 'core_terms.id')
-            ->where('usertaggable_type', self::INTERNAL_TYPE)
-            ->where('usertaggable_id', $item_id)
+            ->where('core_folksonomy.usertaggable_type', self::INTERNAL_TYPE)
+            ->where('core_folksonomy.usertaggable_id', $item_id)
             ->get();
     }
 
@@ -69,9 +69,9 @@ trait UserTaggable
         return DB::table('core_folksonomy')
             ->join('core_terms', 'core_folksonomy.term_id', 'core_terms.id')
             ->select('core_terms.name', 'core_terms.id')
-            ->where('usertaggable_type', self::INTERNAL_TYPE)
-            ->where('usertaggable_id', $item_id)
-            ->where('user_id', $user_id)
+            ->where('core_folksonomy.usertaggable_type', self::INTERNAL_TYPE)
+            ->where('core_folksonomy.usertaggable_id', $item_id)
+            ->where('core_folksonomy.user_id', $user_id)
             ->get();
     }
 
@@ -81,10 +81,11 @@ trait UserTaggable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_folksonomy')
-            ->where('usertaggable_type', self::INTERNAL_TYPE)
-            ->where('usertaggable_id', $item_id)
-            ->where('user_id', $user_id)
-            ->where('term', $term)
+            ->join('core_terms', 'core_folksonomy.term_id', 'core_terms.id')
+            ->where('core_folksonomy.usertaggable_type', self::INTERNAL_TYPE)
+            ->where('core_folksonomy.usertaggable_id', $item_id)
+            ->where('core_folksonomy.user_id', $user_id)
+            ->where('core_terms_term', $term)
             ->delete();
     }
 }

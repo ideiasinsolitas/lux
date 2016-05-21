@@ -10,7 +10,7 @@ trait TypeSelector
     {
         return DB::table('core_types')
             ->select('core_types.name')
-            ->where('class', self::INTERNAL_TYPE)
+            ->where('core_types.class', self::INTERNAL_TYPE)
             ->get();
     }
 

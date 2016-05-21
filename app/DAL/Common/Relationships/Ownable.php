@@ -53,10 +53,10 @@ trait Ownable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_ownership')
-            ->select('user_id')
-            ->where('user_id', $user_id)
-            ->where('ownable_type', self::INTERNAL_TYPE)
-            ->where('ownable_id', $item_id)
+            ->select('core_ownership.user_id')
+            ->where('core_ownership.user_id', $user_id)
+            ->where('core_ownership.ownable_type', self::INTERNAL_TYPE)
+            ->where('core_ownership.ownable_id', $item_id)
             ->get() ? true : false;
     }
 }

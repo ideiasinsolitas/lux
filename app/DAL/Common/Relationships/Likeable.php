@@ -23,9 +23,9 @@ trait Likeable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_likes')
-            ->where('user_id', $user_id)
-            ->where('likeable_type', self::INTERNAL_TYPE)
-            ->where('likeable_id', $item_id)
+            ->where('core_likes.user_id', $user_id)
+            ->where('core_likes.likeable_type', self::INTERNAL_TYPE)
+            ->where('core_likes.likeable_id', $item_id)
             ->delete();
     }
 
@@ -35,9 +35,9 @@ trait Likeable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_likes')
-            ->select(DB::raw('count(likeable_id) AS vote_count'))
-            ->where('likeable_type', self::INTERNAL_TYPE)
-            ->where('likeable_id', $item_id)
+            ->select(DB::raw('count(core_likes.likeable_id) AS like_count'))
+            ->where('core_likes.likeable_type', self::INTERNAL_TYPE)
+            ->where('core_likes.likeable_id', $item_id)
             ->get();
     }
 }

@@ -28,11 +28,10 @@ trait Orderable
         if (!is_int($order_id) || !is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        $orderable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         DB::table('business_orderarbles')
-            ->where('order_id', $order_id)
-            ->where('orderable_type', $orderable_type)
-            ->where('orderable_id', $item_id)
+            ->where('business_orderarbles.order_id', $order_id)
+            ->where('business_orderarbles.orderable_type', self::INTERNAL_TYPE)
+            ->where('business_orderarbles.orderable_id', $item_id)
             ->delete();
     }
 }

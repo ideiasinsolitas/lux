@@ -52,7 +52,8 @@ class CommentDAO extends AbstractDAO implements CommentDAOContract
         }
 
         if (isset($filters['lang'])) {
-            $this->builder->where('core_translations.translatable_type', self::INTERNAL_TYPE);
+            // do you need it?
+            // $this->builder->where('core_translations.translatable_type', self::INTERNAL_TYPE);
             if (isset($filters['pk'])) {
                 $this->builder->where('core_translations.translatable_id', $filters['pk']);
             }

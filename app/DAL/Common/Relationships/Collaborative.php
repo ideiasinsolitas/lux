@@ -30,27 +30,27 @@ trait Collaborative
         }
         $collaborative_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_collaborations')
-            ->where('user_id', $user_id)
-            ->where('collaborative_type', $collaborative_type)
-            ->where('collaborative_id', $item_id)
+            ->where('core_collaborations.user_id', $user_id)
+            ->where('core_collaborations.collaborative_type', $collaborative_type)
+            ->where('core_collaborations.collaborative_id', $item_id)
             ->delete();
     }
 
-    public function isUserInTeam($user_id, $item_id)
+    public function userCollaborates($user_id, $item_id)
     {
         if (!is_int($user_id) || !is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);
         }
         $collaborative_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_collaborations')
-            ->select('user_id')
-            ->where('user_id', $user_id)
-            ->where('collaborative_type', $collaborative_type)
-            ->where('collaborative_id', $item_id)
+            ->select('core_collaborations.user_id')
+            ->where('core_collaborations.user_id', $user_id)
+            ->where('core_collaborations.collaborative_type', $collaborative_type)
+            ->where('core_collaborations.collaborative_id', $item_id)
             ->first() ? true : false;
     }
 
-    public function getTeam($item_id)
+    public function getCollaborators($item_id)
     {
         if (!is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);

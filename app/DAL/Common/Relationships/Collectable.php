@@ -24,9 +24,9 @@ trait Collectable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_collections')
-            ->where('id', $collection_id)
-            ->where('collectable_type', self::INTERNAL_TYPE)
-            ->where('collectable_id', $item_id)
+            ->where('core_collections.id', $collection_id)
+            ->where('core_collections.collectable_type', self::INTERNAL_TYPE)
+            ->where('core_collections.collectable_id', $item_id)
             ->delete();
     }
 
@@ -36,7 +36,7 @@ trait Collectable
             throw new \Exception("Error Processing Request", 1);
         }
         DB::table('core_collectables')
-            ->where('collection_id', $collection_id)
+            ->where('core_collectables.collection_id', $collection_id)
             ->delete();
     }
 }

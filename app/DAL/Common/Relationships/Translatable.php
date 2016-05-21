@@ -6,21 +6,20 @@ trait Translatable
 {
     protected function handleTranslationInput($input)
     {
-        $input = array_filter(
+        return array_filter(
             $input,
             function ($k, $v) {
                 return in_array($k, [
-                        'name',
-                        'description',
-                        'title',
-                        'subtitle',
-                        'tagline',
-                        'excerpt',
-                        'body',
+                        'core_translations.name',
+                        'core_translations.description',
+                        'core_translations.title',
+                        'core_translations.subtitle',
+                        'core_translations.tagline',
+                        'core_translations.excerpt',
+                        'core_translations.body',
                     ]);
             }
         );
-        return $input;
     }
 
     public function addTranslation($item_id, $lang, array $input)
@@ -52,9 +51,26 @@ trait Translatable
 
         return DB::table('core_translations')
             ->update($translationInput)
-            ->where('translatable_type', self::INTERNAL_TYPE)
-            ->where('translatable_id', $item_id)
-            ->where('lang', $lang);
+            ->where('core_translations.translatable_type', self::INTERNAL_TYPE)
+            ->where('core_translations.translatable_id', $item_id)
+            ->where('core_translations.lang', $lang);
+    }
+
+    protected function getTranslationBuilder()
+    {
+        return DB::table('core_translations')
+            ->select(
+                'core_translations.id',
+                'core_translations.slug',
+                'core_translations.name',
+                'core_translations.title',
+                'core_translations.subtitle',
+                'core_translations.tagline',
+                'core_translations.excerpt',
+                'core_translations.description',
+                'core_translations.body',
+                'core_translations.language'
+            );
     }
 
     public function getAllTranslations($item_id)
@@ -62,10 +78,9 @@ trait Translatable
         if (!is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        return DB::table('core_translations')
-            ->select('id', 'slug', 'name', 'title', 'subtitle', 'tagline', 'excerpt', 'description', 'body', 'language')
-            ->where('translatable_type', self::INTERNAL_TYPE)
-            ->where('translatable_id', $item_id)
+        return $this->getTranslationBuilder()
+            ->where('core_translations.translatable_type', self::INTERNAL_TYPE)
+            ->where('core_translations.translatable_id', $item_id)
             ->get();
     }
 
@@ -74,8 +89,7 @@ trait Translatable
         if (!is_int($item_id) || !is_string($lang)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        return DB::table('core_translations')
-            ->select('id', 'slug', 'name', 'title', 'subtitle', 'tagline', 'excerpt', 'description', 'body', 'language')
+        return $this->getTranslationBuilder()
             ->where('translatable_type', self::INTERNAL_TYPE)
             ->where('translatable_id', $item_id)
             ->where('lang', $lang)
@@ -88,10 +102,10 @@ trait Translatable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_translations')
-            ->select('slug')
-            ->where('translatable_type', self::INTERNAL_TYPE)
-            ->where('translatable_id', $item_id)
-            ->where('lang', $lang)
+            ->select('core_translations.slug')
+            ->where('core_translations.translatable_type', self::INTERNAL_TYPE)
+            ->where('core_translations.translatable_id', $item_id)
+            ->where('core_translations.lang', $lang)
             ->get();
     }
 
@@ -100,9 +114,8 @@ trait Translatable
         if (!is_string($slug)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        return DB::table('core_translations')
-            ->select('id', 'slug', 'name', 'title', 'subtitle', 'tagline', 'excerpt', 'description', 'body', 'language')
-            ->where('slug', $slug)
+        return $this->getTranslationBuilder()
+            ->where('core_translationsslug', $slug)
             ->get();
     }
 

@@ -79,7 +79,10 @@ trait Commentable
                     ->where('core_translations.translatable_id', 'core_comments.id');
             })
             ->join('core_commenting', 'core_comments.id', 'core_commenting.comment_id')
-            ->select()
+            ->select(
+                '',
+                ''
+            )
             ->where('core_comments.id', $comment_id)
             ->where('core_translations.lang', $lang)
             ->get();

@@ -54,8 +54,8 @@ trait OwnerTaggable
         return DB::table('core_taxonomy')
             ->join('core_terms', 'core_taxonomy.term_id', 'core_terms.id')
             ->select('core_terms.name', 'core_terms.id')
-            ->where('ownertaggable_type', self::INTERNAL_TYPE)
-            ->where('ownertaggable_id', $item_id)
+            ->where('core_taxonomy.ownertaggable_type', self::INTERNAL_TYPE)
+            ->where('core_taxonomy.ownertaggable_id', $item_id)
             ->get();
     }
 
@@ -66,9 +66,9 @@ trait OwnerTaggable
         }
         return DB::table('core_taxonomy')
             ->join('core_terms', 'core_taxonomy.term_id', 'core_terms.id')
-            ->where('ownertaggable_type', self::INTERNAL_TYPE)
-            ->where('ownertaggable_id', $item_id)
-            ->where('term', $term)
+            ->where('core_taxonomy.ownertaggable_type', self::INTERNAL_TYPE)
+            ->where('core_taxonomy.ownertaggable_id', $item_id)
+            ->where('core_terms.term', $term)
             ->delete();
     }
 
@@ -79,8 +79,8 @@ trait OwnerTaggable
         }
         return DB::table('core_taxonomy')
             ->join('core_terms', 'core_taxonomy.term_id', 'core_terms.id')
-            ->where('ownertaggable_type', self::INTERNAL_TYPE)
-            ->where('ownertaggable_id', $item_id)
+            ->where('core_taxonomy.ownertaggable_type', self::INTERNAL_TYPE)
+            ->where('core_taxonomy.ownertaggable_id', $item_id)
             ->delete();
     }
 }
