@@ -1,4 +1,10 @@
 /vendor
+/public/app/docs
+/public/app/gulp
+/public/app/*.md
+/public/app/gulp
 .env
 composer.*
 php*ml
+/package.json
+/npm_modules

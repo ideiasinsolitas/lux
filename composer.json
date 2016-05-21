@@ -41,7 +41,7 @@
     "autoload-dev": {
         "psr-4": {
             "Testing\\": "tests/"
-        },
+        }
     },
     "scripts": {
         "post-install-cmd": [

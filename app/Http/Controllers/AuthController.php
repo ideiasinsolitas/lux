@@ -41,6 +41,11 @@ class AuthController extends Controller
 
     public function forgotPassword()
     {
+        $input = $request->only(['email']);
+    }
+
+    public function forgotPasswordForm()
+    {
         return view('auth.reset');
     }
 

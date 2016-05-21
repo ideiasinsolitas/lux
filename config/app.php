@@ -149,14 +149,11 @@ return [
         /*
 		 * Application Service Providers...
 		 */
-        'App\Providers\AccessServiceProvider',
         'App\Providers\AppServiceProvider',
-        'App\Providers\BillingServiceProvider',
         'App\Providers\BusServiceProvider',
         'App\Providers\ConfigServiceProvider',
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
-        'App\Providers\MacroServiceProvider',
 
         /*
 		 * Third party service providers

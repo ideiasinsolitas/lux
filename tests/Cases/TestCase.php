@@ -1,11 +1,10 @@
 <?php
 
-require_once __DIR__.'/../bootstrap/autoload.php';
+namespace Testing\Cases;
 
-/**
- * Class TestCase
- */
-class TestCase extends Illuminate\Foundation\Testing\TestCase
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+class TestCase extends BaseTestCase
 {
     /**
      * The base URL to use while testing the application.

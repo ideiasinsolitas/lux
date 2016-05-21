@@ -16,15 +16,15 @@ CREATE TABLE `core_users` (
   UNIQUE(`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
-(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
+INSERT INTO `core_users` (`id`,`username`,`email`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
+(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro Koblitz', '', 1, NOW(), NOW());
 
 DROP TABLE IF EXISTS `core_user_profiles`;
 CREATE TABLE `core_user_profiles` (
   `user_id` int(10) unsigned NOT NULL,
   `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* Everything that has a type id points here */
@@ -75,7 +75,7 @@ INSERT INTO `core_types` (name, class) VALUES
 /* App config with default values */
 DROP TABLE IF EXISTS `core_config`;
 CREATE TABLE `core_config` (
-  `id` isnt(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) unsigned NOT NULL DEFAULT 0,
   `key` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` BLOB NOT NULL,
