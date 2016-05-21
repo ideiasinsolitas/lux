@@ -1,25 +1,35 @@
 <?php
+/*
+ * This file is part of the AllScorings package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package AllScorings
+ */
 
 namespace App\Services\Rest;
 
-class RestStatusMessage
+use App\Services\Contracts\RestMessageContract;
+
+class RestMessage implements RestMessageContract
 {
-    protected $statusCode;
+    protected $status;
 
     protected $data;
 
-    protected $statusMessage;
+    protected $message;
 
     protected $errors;
 
-    public function setStatusCode($statusCode)
+    public function setStatus($status)
     {
-        $this->statusCode = $statusCode;
+        $this->status = $status;
     }
 
-    public function getStatusCode()
+    public function getStatus()
     {
-        return $this->statusCode;
+        return $this->status;
     }
 
     public function setData($data)
@@ -32,39 +42,37 @@ class RestStatusMessage
         return $this->data;
     }
 
-    public function setStatusMessage()
+    public function setMessage($message)
     {
-        $this->statusMessage = $statusMessage;
+        $this->message = $message;
     }
 
-    public function getStatusMessage()
+    public function getMessage()
     {
-        return $this->statusMessage;
+        return $this->message;
     }
 
-    public function addError($error, $message)
+    public function addError($error)
     {
-        $this->errors[$error] = $message;
+        $this->data['errors'][] = $error;
     }
 
     public function setErrors($errors)
     {
-        foreach ($errors as $error => $message) {
-            $this->addError($error, $message);
-        }
+        $this->data['errors'] = $errors;
     }
 
     public function getErrors()
     {
-        return $this->errors;
+        return $this->data['errors'];
     }
-
+    
     public function toArray()
     {
         return [
-            'statusCode' => $this->statusCode,
-            'statusMessage' => $this->statusMessage,
+            'status' => $this->status,
             'data' => $this->data,
+            'message' => $this->message,
             'errors' => $this->errors,
         ];
     }
