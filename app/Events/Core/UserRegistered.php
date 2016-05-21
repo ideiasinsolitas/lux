@@ -2,9 +2,12 @@
 
 namespace App\Events\Core;
 
-use App\Events\Common\Mailable;
-
 class UserRegistered
 {
-    use Mailable;
+    protected $user_id;
+
+    public function __construct($user_id)
+    {
+        $this->user_id = $user_id;
+    }
 }
