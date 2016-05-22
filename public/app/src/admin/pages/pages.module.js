@@ -9,9 +9,7 @@
     'ui.router',
 
     'BlurAdmin.pages.dashboard',
-    'BlurAdmin.pages.users',
-    'BlurAdmin.pages.config',
-    'BlurAdmin.pages.types',
+    'BlurAdmin.pages.core'
   ])
       .config(routeConfig);
 
@@ -35,7 +33,7 @@
         stateRef: 'profile'
       }, {
         title: '404 Page',
-        fixedHref: '404.html',
+        fixedHref: '404',
         blank: true
       }]
     });
