@@ -7,6 +7,7 @@ use App\DAL\AbstractDAO;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Sys\Actions\TypeAction;
 use App\DAL\Core\Sys\Relationships\TypeRelationship;
+use App\DAL\Core\Sys\Contracts\TypeDAOContract;
 
 class TypeDAO extends AbstractDAO implements TypeDAOContract
 {

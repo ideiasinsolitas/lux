@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DAL\Actions\Common;
+namespace App\DAL\Common\Actions;
 
 use App\DAL\Core\TypeDAO;
 

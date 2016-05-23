@@ -8,7 +8,7 @@ interface TokenDAOContract
     
     const PK = "id";
 
-    public function generate($type);
+    public function generate($user_id, $type);
 
     public function validate(array $token, $type);
 }

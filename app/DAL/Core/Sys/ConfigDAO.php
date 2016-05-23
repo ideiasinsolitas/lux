@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DAL\Core\Sys;
 
 use Illuminate\Support\Facades\DB;

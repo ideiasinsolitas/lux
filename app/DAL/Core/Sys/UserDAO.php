@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\DAL\AbstractDAO;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Sys\Actions\UserAction;
+use App\DAL\Core\Sys\Contracts\UserDAOContract;
 
 class UserDAO extends AbstractDAO implements UserDAOContract
 {
@@ -21,7 +22,7 @@ class UserDAO extends AbstractDAO implements UserDAOContract
         parent::__construct($filters);
     }
 
-    protected function getBuilder()
+    public function getBuilder()
     {
         return DB::table(self::TABLE)
             ->join('core_user_profiles', 'core_user_profiles.user_id', '=', 'core_users.id')

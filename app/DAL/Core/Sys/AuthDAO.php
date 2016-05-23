@@ -5,6 +5,7 @@ namespace App\DAL\Core\Sys;
 use Illuminate\Support\Facades\DB;
 
 use App\Exceptions\GeneralException;
+use App\DAL\Core\Sys\Contracts\AuthDAOContract;
 
 class AuthDAO implements AuthDAOContract
 {
