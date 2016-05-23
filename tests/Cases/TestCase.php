@@ -18,8 +18,8 @@ class TestCase extends BaseTestCase
      */
     public function __construct()
     {
-        Dotenv::load(__DIR__.'/..');
-        $this->baseUrl = Dotenv::findEnvironmentVariable('APP_URL');
+        \Dotenv::load(__DIR__.'/..');
+        $this->baseUrl = \Dotenv::findEnvironmentVariable('APP_URL');
     }
 
     /**
@@ -31,7 +31,7 @@ class TestCase extends BaseTestCase
     {
         $app = require __DIR__ . '/../bootstrap/app.php';
 
-        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
     }

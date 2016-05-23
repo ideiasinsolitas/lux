@@ -158,7 +158,6 @@ return [
         /*
 		 * Third party service providers
 		 */
-        'Arcanedev\LogViewer\LogViewerServiceProvider',
         'Creativeorange\Gravatar\GravatarServiceProvider',
         'HieuLe\Active\ActiveServiceProvider',
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
