@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\DAL\Common\Actions;
 
 trait DefaultModifier
 {
