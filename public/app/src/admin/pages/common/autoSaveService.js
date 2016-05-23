@@ -6,7 +6,7 @@ angular
 function autoSaveService() {
     var service = {
         state: state,
-        run: run,
+        start: start,
         stop: stop,
         stopExecution: stopExecution
     };
@@ -20,7 +20,7 @@ function autoSaveService() {
     var dataService;
     var model;
 
-    function run(s) {
+    function start(s) {
         if (s) {
             dataService = s;
         }

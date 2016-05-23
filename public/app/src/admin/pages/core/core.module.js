@@ -13,18 +13,17 @@
       .config(routeConfig);
 
   /** @ngInject */
-  function routeConfig($stateProvider) {
+function routeConfig($stateProvider) {
     $stateProvider
         .state('core-dashboard', {
-          url: '/core/dashboard',
-          template : '<ui-view></ui-view>',
-          abstract: true,
-          title: 'Core Dashboard',
-          sidebarMeta: {
-            icon: 'ion-gear-a',
-            order: 100,
-          },
+            url: '/core/dashboard',
+            template : '<ui-view></ui-view>',
+            abstract: true,
+            title: 'Core Dashboard',
+            sidebarMeta: {
+                icon: 'ion-gear-a',
+                order: 100,
+            },
         });
-  }
-
+    }
 })();
