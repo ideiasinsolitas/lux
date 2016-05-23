@@ -31,8 +31,13 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 $status = $kernel->handle(
+<<<<<<< HEAD
 	$input = new Symfony\Component\Console\Input\ArgvInput,
 	new Symfony\Component\Console\Output\ConsoleOutput
+=======
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+>>>>>>> core-develop
 );
 
 /*
@@ -48,4 +53,8 @@ $status = $kernel->handle(
 
 $kernel->terminate($input, $status);
 
+<<<<<<< HEAD
 exit($status);
+=======
+exit($status);
+>>>>>>> core-develop

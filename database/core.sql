@@ -5,9 +5,12 @@ CREATE TABLE `core_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+<<<<<<< HEAD
   `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+=======
+>>>>>>> core-develop
   `display_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = inactive, 1 = active
@@ -19,8 +22,21 @@ CREATE TABLE `core_users` (
   UNIQUE(`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+<<<<<<< HEAD
 INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
 (1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
+=======
+INSERT INTO `core_users` (`id`,`username`,`email`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
+(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro Koblitz', '', 1, NOW(), NOW());
+
+DROP TABLE IF EXISTS `core_user_profiles`;
+CREATE TABLE `core_user_profiles` (
+  `user_id` int(10) unsigned NOT NULL,
+  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+>>>>>>> core-develop
 
 /* Everything that has a type id points here */
 DROP TABLE IF EXISTS `core_types`;
@@ -71,10 +87,18 @@ INSERT INTO `core_types` (name, class) VALUES
 DROP TABLE IF EXISTS `core_config`;
 CREATE TABLE `core_config` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `key` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` BLOB NOT NULL,
   `format` tinyint(1) unsigned NOT NULL DEFAULT 0, -- 0 = string, 1 = serialized, 2 = json
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = active, 1 = autoload, 
+=======
+  `user_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `key` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `value` BLOB NOT NULL,
+  `format` tinyint(1) unsigned NOT NULL DEFAULT 0, -- 0 = string, 1 = serialized, 2 = json
+  `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, -- 0 = active, 1 = autoload, 
+>>>>>>> core-develop
   PRIMARY KEY (`id`),
   UNIQUE(`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -147,12 +171,16 @@ CREATE TABLE `core_translations` (
 DROP TABLE IF EXISTS `core_nodes`;
 CREATE TABLE `core_nodes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `deleted` datetime NULL,
+=======
+  `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+>>>>>>> core-develop
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -219,12 +247,21 @@ CREATE TABLE `core_files` (
 DROP TABLE IF EXISTS `core_resources`;
 CREATE TABLE `core_resources` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `description` TINYBLOB NULL,
+=======
+  `type_id` int(10) unsigned NOT NULL,
+  `node_id` int(10) unsigned NOT NULL,
+>>>>>>> core-develop
   `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `embed` BLOB DEFAULT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
   `created` datetime NOT NULL,
+<<<<<<< HEAD
+=======
+  `modified` datetime NULL,
+>>>>>>> core-develop
   `deleted` datetime NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -266,10 +303,17 @@ CREATE TABLE `core_comments` (
   `node_id` int(10) unsigned NOT NULL,
   `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `user_id` int(10) unsigned DEFAULT NULL,
+<<<<<<< HEAD
   `comment` BLOB NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE(`node_id`)
+=======
+  `created` datetime NOT NULL,
+  `modified` datetime DEFAULT NULL,
+  `deleted` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+>>>>>>> core-develop
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* Polymorphic many2many */
@@ -340,6 +384,7 @@ CREATE TABLE `core_menus` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+<<<<<<< HEAD
 DROP TABLE IF EXISTS `core_menus_resources`;
 CREATE TABLE `core_menus_resources` (
   `menu_id` int(10) unsigned NOT NULL,
@@ -347,11 +392,17 @@ CREATE TABLE `core_menus_resources` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+=======
+>>>>>>> core-develop
 DROP TABLE IF EXISTS `core_notifications`;
 CREATE TABLE `core_node_stats` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
+<<<<<<< HEAD
   `message` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+=======
+  `notification` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+>>>>>>> core-develop
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

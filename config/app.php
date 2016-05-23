@@ -149,19 +149,29 @@ return [
         /*
 		 * Application Service Providers...
 		 */
+<<<<<<< HEAD
         'App\Providers\AccessServiceProvider',
         'App\Providers\AppServiceProvider',
         'App\Providers\BillingServiceProvider',
+=======
+        'App\Providers\AppServiceProvider',
+>>>>>>> core-develop
         'App\Providers\BusServiceProvider',
         'App\Providers\ConfigServiceProvider',
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
+<<<<<<< HEAD
         'App\Providers\MacroServiceProvider',
+=======
+>>>>>>> core-develop
 
         /*
 		 * Third party service providers
 		 */
+<<<<<<< HEAD
         'Arcanedev\LogViewer\LogViewerServiceProvider',
+=======
+>>>>>>> core-develop
         'Creativeorange\Gravatar\GravatarServiceProvider',
         'HieuLe\Active\ActiveServiceProvider',
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',

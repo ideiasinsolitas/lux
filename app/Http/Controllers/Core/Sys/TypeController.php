@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Core\Sys\Type;
 
+<<<<<<< HEAD
 use App\Repositories\Core\Sys\TypeDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
@@ -13,6 +14,27 @@ use App\Http\Requests\Generic\DeleteRequest;
 class TypeController extends Controller
 {
     /**
+=======
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\Sys\Contracts\TypeDAOContract;
+use App\Services\Rest\RestProcessor;
+
+use App\Http\Requests\Generic\StoreRequest;
+use App\Http\Requests\Generic\DeleteRequest;
+
+use Carbon\Carbon;
+
+class TypeController extends Controller
+{
+    /**
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+
+    /**
+>>>>>>> core-develop
      * [$types description]
      * @var [type]
      */
@@ -22,6 +44,7 @@ class TypeController extends Controller
      * /
      * @param TypeDAO $types [description]
      */
+<<<<<<< HEAD
     public function __construct(TypeDAO $types)
     {
         $this->types = $types;
@@ -36,6 +59,14 @@ class TypeController extends Controller
         return view('core.sys.type');
     }
 
+=======
+    public function __construct(RestProcessor $rest, TypeDAOContract $types)
+    {
+        $this->rest = $rest;
+        $this->types = $types;
+    }
+    
+>>>>>>> core-develop
     /**
      * Display a listing of the resource.
      * @param  integer $page [description]
@@ -43,12 +74,17 @@ class TypeController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $types = $this->types->getTypesPaginated(config('core.sys.type.default_per_page'))->items();
         $res = [
             'status' => $types ? 'OK' : 'error',
             'result' => $types,
         ];
         return response()->json($res);
+=======
+        $types = $this->types->getAll();
+        return $this->rest->process($types);
+>>>>>>> core-develop
     }
 
     /**
@@ -58,6 +94,7 @@ class TypeController extends Controller
      */
     public function store(StoreRequest $request)
     {
+<<<<<<< HEAD
         $input = $request->only(['id', 'class', 'name']);
         if (isset($input['id'])) {
             $type = $this->types->create($input);
@@ -70,10 +107,20 @@ class TypeController extends Controller
             'result' => $type,
         ];
         return response()->json($res);
+=======
+        $input = $request->only(['class', 'name']);
+        if ($request->has('pk')) {
+            $type = $this->types->update($input, (int) $request->get('pk'));
+        } else {
+            $type = $this->types->insert($input);
+        }
+        return $this->rest->process($type);
+>>>>>>> core-develop
     }
 
     /**
      * Display the specified resource.
+<<<<<<< HEAD
      * @param  int  $id
      * @return Response
      */
@@ -85,10 +132,20 @@ class TypeController extends Controller
             'result' => $type,
         ];
         return response()->json($res);
+=======
+     * @param  int  $pk
+     * @return Response
+     */
+    public function show($pk)
+    {
+        $type = $this->types->getOne(['pk' => (int) $pk]);
+        return $this->rest->process($type);
+>>>>>>> core-develop
     }
 
     /**
      * /
+<<<<<<< HEAD
      * @param  [type]        $id      [description]
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]
@@ -195,5 +252,15 @@ class TypeController extends Controller
             'result' => $types,
         ];
         return response()->json($res);
+=======
+     * @param  [type]        $pk      [description]
+     * @param  DeleteRequest $request [description]
+     * @return [type]                 [description]
+     */
+    public function destroy($pk, DeleteRequest $request)
+    {
+        $type = $this->types->delete((int) $pk);
+        return $this->rest->process($type);
+>>>>>>> core-develop
     }
 }

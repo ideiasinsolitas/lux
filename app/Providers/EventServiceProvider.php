@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 <?php namespace App\Providers;
+=======
+<?php
+
+namespace App\Providers;
+>>>>>>> core-develop
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -16,6 +22,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+<<<<<<< HEAD
         /**
          * Auth Events
          */
@@ -31,6 +38,25 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Core\Sys\LogEvent' => [
             'App\Listeners\Core\Sys\LogHandler',
         ],
+=======
+        'App\Events\Core\UserLoggedIn' => [
+            'App\Listeners\LoggerListener',
+        ],
+        'App\Events\Core\UserLoggedOut' => [
+            'App\Listeners\LoggerListener',
+        ],
+        'App\Events\Core\UserRegistered' => [
+            'App\Listeners\PostmanListener',
+            'App\Listeners\NotificationListener',
+            'App\Listeners\LoggerListener',
+        ],
+        'App\Events\Core\UserForgotPassword' => [
+            'App\Listeners\NotificationListener',
+        ],
+        'App\Events\Core\UserPasswordChanged' => [
+            'App\Listeners\PostmanListener',
+        ]
+>>>>>>> core-develop
     ];
 
     /**

@@ -23,8 +23,12 @@ class LocaleMiddleware
      */
     public function handle($request, Closure $next)
     {
+<<<<<<< HEAD
         if(session()->has('locale') && in_array(session()->get('locale'), $this->languages))
         {
+=======
+        if (session()->has('locale') && in_array(session()->get('locale'), $this->languages)) {
+>>>>>>> core-develop
             app()->setLocale(session()->get('locale'));
         }
 

@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 /**
  * Switch between the included languages
  */
@@ -41,4 +42,13 @@ $router->group(['namespace' => 'Backend'], function () use ($router) {
             require(__DIR__ . "/Routes/Backend/Blog.php");
         });
     });
+=======
+require(__DIR__ . "/Routes/Auth.php");
+
+$router->group(['namespace' => 'Core', 'prefix' => 'api'], function () use ($router) {
+    require(__DIR__ . "/Routes/Core/Interaction.php");
+    require(__DIR__ . "/Routes/Core/SiteBuilding.php");
+    require(__DIR__ . "/Routes/Core/Sys.php");
+    require(__DIR__ . "/Routes/Core/Taxonomy.php");
+>>>>>>> core-develop
 });

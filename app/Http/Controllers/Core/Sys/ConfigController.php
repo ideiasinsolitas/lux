@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Core\Sys\Config;
 
+<<<<<<< HEAD
 use App\Repositories\Core\Sys\ConfigDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
@@ -13,6 +14,27 @@ use App\Http\Requests\Generic\DeleteRequest;
 class ConfigController extends Controller
 {
     /**
+=======
+use App\Http\Controllers\Controller;
+
+use App\DAL\Core\Sys\Contracts\ConfigDAOContract;
+use App\Services\Rest\RestProcessor;
+
+use App\Http\Requests\Generic\StoreRequest;
+use App\Http\Requests\Generic\DeleteRequest;
+
+use Carbon\Carbon;
+
+class ConfigController extends Controller
+{
+    /**
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+    
+    /**
+>>>>>>> core-develop
      * [$configs description]
      * @var [config]
      */
@@ -22,12 +44,19 @@ class ConfigController extends Controller
      * /
      * @param ConfigDAO $configs [description]
      */
+<<<<<<< HEAD
     public function __construct(ConfigDAO $configs)
     {
+=======
+    public function __construct(RestProcessor $rest, ConfigDAOContract $configs)
+    {
+        $this->rest = $rest;
+>>>>>>> core-develop
         $this->configs = $configs;
     }
 
     /**
+<<<<<<< HEAD
      * /
      * @return [config] [description]
      */
@@ -37,18 +66,25 @@ class ConfigController extends Controller
     }
 
     /**
+=======
+>>>>>>> core-develop
      * Display a listing of the resource.
      * @param  integer $page [description]
      * @return [config]        [description]
      */
     public function index()
     {
+<<<<<<< HEAD
         $configs = $this->configs->getConfigsPaginated(config('core.sys.config.default_per_page'))->items();
         $res = [
             'status' => $configs ? 'OK' : 'error',
             'result' => $configs,
         ];
         return response()->json($res);
+=======
+        $configs = $this->configs->getDefaultConfig();
+        return $this->rest->process($configs);
+>>>>>>> core-develop
     }
 
     /**
@@ -58,6 +94,7 @@ class ConfigController extends Controller
      */
     public function store(StoreRequest $request)
     {
+<<<<<<< HEAD
         $input = $request->only(['id', 'key', 'value', 'format', 'activity']);
         if (isset($input['id'])) {
             $config = $this->configs->create($input);
@@ -102,10 +139,20 @@ class ConfigController extends Controller
             'result' => ['id' => $id],
         ];
         return response()->json($res);
+=======
+        $input = $request->only(['user', 'key', 'value', 'format', 'activity']);
+        if ($request->has('pk')) {
+            $config = $this->configs->update($input, (int) $request->get('pk'));
+        } else {
+            $config = $this->configs->insert($input);
+        }
+        return $this->rest->process($config);
+>>>>>>> core-develop
     }
 
     /**
      * /
+<<<<<<< HEAD
      * @param  [config]        $id      [description]
      * @param  DeleteRequest $request [description]
      * @return [config]                 [description]
@@ -195,5 +242,15 @@ class ConfigController extends Controller
             'result' => $configs,
         ];
         return response()->json($res);
+=======
+     * @param  [config]        $pk      [description]
+     * @param  DeleteRequest $request [description]
+     * @return [config]                 [description]
+     */
+    public function destroy($pk, DeleteRequest $request)
+    {
+        $config = $this->configs->update(['activity' => 0], (int) $pk);
+        return $this->rest->process($config);
+>>>>>>> core-develop
     }
 }

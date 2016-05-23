@@ -5,7 +5,10 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> core-develop
     /**
      * The Artisan commands provided by your application.
      *
