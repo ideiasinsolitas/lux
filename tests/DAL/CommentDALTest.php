@@ -1,5 +1,5 @@
 <?php
- Testing\DAL;
+namespace Testing\DAL;
 
 use Testing\Cases\TestCase;
 
