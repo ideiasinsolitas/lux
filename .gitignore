@@ -1,4 +1,5 @@
 /vendor
+<<<<<<< HEAD
 /public/app/docs
 /public/app/gulp
 /public/app/*.md
@@ -8,3 +9,20 @@ composer.*
 php*ml
 /package.json
 /npm_modules
+=======
+/node_modules
+/notes
+Homestead.yaml
+Homestead.json
+.env
+/.DS_Store
+/Thumbs.db
+/*.sublime-project
+/*.sublime-workspace
+.idea
+.project
+_ide_helper.php
+composer.phar
+error.log
+Todo.rtf
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39

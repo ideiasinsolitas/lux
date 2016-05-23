@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* user management
  */
 DROP TABLE IF EXISTS `core_users`;
@@ -27,17 +28,28 @@ CREATE TABLE `core_user_profiles` (
   `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+=======
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 /* Everything that has a type id points here */
 DROP TABLE IF EXISTS `core_types`;
 CREATE TABLE `core_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+=======
+  `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   PRIMARY KEY (`id`),
   UNIQUE(`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+<<<<<<< HEAD
 INSERT INTO `core_types` (name, class) VALUES
+=======
+INSERT INTO `core_types` (name, item_name) VALUES
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ("Image", "File"),
 ("Document", "File"),
 ("Url", "Resource"),
@@ -49,8 +61,14 @@ INSERT INTO `core_types` (name, class) VALUES
 ("Album", "Collection"),
 ("Folder", "Collection"),
 ("Category", "Term"),
+<<<<<<< HEAD
 ("Taxonomy", "Term"),
 ("Folksonomy", "Term"),
+=======
+("OwnerTag", "Term"),
+("UserTag", "Term"),
+("Vote", "Term"),
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ("Pagseguro", "Payment"),
 ("Boleto", "Payment"),
 ("Credito", "Payment"),
@@ -68,7 +86,11 @@ INSERT INTO `core_types` (name, class) VALUES
 ("Personal", "Project"),
 ("Feature", "Ticket"),
 ("Emergency", "Ticket"),
+<<<<<<< HEAD
 ("Support", "Ticket"),
+=======
+("Support", "Ticket")
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ("SignUp", "Token"),
 ("Invitation", "Token");
 
@@ -76,15 +98,23 @@ INSERT INTO `core_types` (name, class) VALUES
 DROP TABLE IF EXISTS `core_config`;
 CREATE TABLE `core_config` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `user_id` int(11) unsigned NOT NULL DEFAULT 0,
   `key` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` BLOB NOT NULL,
   `format` tinyint(1) unsigned NOT NULL DEFAULT 0, -- 0 = string, 1 = serialized, 2 = json
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, -- 0 = active, 1 = autoload, 
+=======
+  `key` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `value` BLOB NOT NULL,
+  `format` tinyint(1) unsigned NOT NULL DEFAULT 0, -- 0 = string, 1 = serialized, 2 = json
+  `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = active, 1 = autoload, 
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   PRIMARY KEY (`id`),
   UNIQUE(`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+<<<<<<< HEAD
 INSERT INTO `core_config` (`key`, `value`) VALUES 
 ("site.title", "bla bla bla"),
 ("site.tagline", "bla bla bla bla bla"),
@@ -111,6 +141,34 @@ INSERT INTO `core_config` (`key`, `value`) VALUES
 ("twitter.profile.url", "http://twitter.com/pedrokoblitz"),
 ("linkedin.profile.url", "http://br.linkedin.com/pedrokoblitz"),
 ("pinterest.profile.url", "http://pinterest.com/pedrokoblitz");
+=======
+INSERT INTO `core_config` (`key`, `value`, `activity`, `created`, `modified`) VALUES 
+("site.title", "bla bla bla", 2, NOW(), NOW()),
+("site.tagline", "bla bla bla bla bla", 2, NOW(), NOW()),
+("system.email", "pedrokoblitz@gmail.com", 2, NOW(), NOW()),
+("per.page", "12", 2, NOW(), NOW()),
+("upload.dir", "/public/media", 2, NOW(), NOW()),
+("app.web.root", "/", 2, NOW(), NOW()),
+("app.abs.path", "/var/www/html/", 2, NOW(), NOW()),
+("panel.log.quantity", "15", 2, NOW(), NOW()),
+("panel.content.quantity", "10", 2, NOW(), NOW()),
+("panel.collection.quantity", "5", 2, NOW(), NOW()),
+("panel.resource.quantity", "5", 2, NOW(), NOW()),
+("panel.term.quantity", "5", 2, NOW(), NOW()),
+("facebook.app.id", "", 2, NOW(), NOW()),
+("facebook.app.key", "", 2, NOW(), NOW()),
+("facebook.app.secret", "", 2, NOW(), NOW()),
+("twitter.app.id", "", 2, NOW(), NOW()),
+("twitter.app.key", "", 2, NOW(), NOW()),
+("twitter.app.secret", "", 2, NOW(), NOW()),
+("flickr.profile.url", "http://flickr.com.br/photos/pedrokoblitz", 2, NOW(), NOW()),
+("tumblr.profile.url", "http://pedrokoblitz.tumblr.com", 2, NOW(), NOW()),
+("facebook.profile.url", "https://facebook.com/pedrokoblitz", 2, NOW(), NOW()),
+("facebook.page.url", "https://facebook.com/ideiasinsolitas", 2, NOW(), NOW()),
+("twitter.profile.url", "http://twitter.com/pedrokoblitz", 2, NOW(), NOW()),
+("linkedin.profile.url", "http://br.linkedin.com/pedrokoblitz", 2, NOW(), NOW()),
+("pinterest.profile.url", "http://pinterest.com/pedrokoblitz", 2, NOW(), NOW());
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 
 /* authentication tokens */
 DROP TABLE IF EXISTS `core_tokens`;
@@ -126,6 +184,33 @@ CREATE TABLE `core_tokens` (
   UNIQUE(`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+<<<<<<< HEAD
+=======
+/* user management
+DROP TABLE IF EXISTS `core_users`;
+CREATE TABLE `core_users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = inactive, 1 = active
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` datetime NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE(`username`),
+  UNIQUE(`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
+(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
+ */
+
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 /*
 store text based content for all entities and group by language
 Polymorphic
@@ -154,6 +239,14 @@ DROP TABLE IF EXISTS `core_nodes`;
 CREATE TABLE `core_nodes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+<<<<<<< HEAD
+=======
+  `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
+  `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` datetime NULL,
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -212,21 +305,33 @@ CREATE TABLE `core_files` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `deleted` datetime NULL,
+<<<<<<< HEAD
   PRIMARY KEY (`id`),
   UNIQUE(`node_id`)
+=======
+  PRIMARY KEY (`id`)
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* links */
 DROP TABLE IF EXISTS `core_resources`;
 CREATE TABLE `core_resources` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `type_id` int(10) unsigned NOT NULL,
   `node_id` int(10) unsigned NOT NULL,
+=======
+  `name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `description` TINYBLOB NULL,
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `embed` BLOB DEFAULT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = trash, 1 = ...
   `created` datetime NOT NULL,
+<<<<<<< HEAD
   `modified` datetime NULL,
+=======
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   `deleted` datetime NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -246,7 +351,10 @@ CREATE TABLE `core_collections` (
   `deleted` datetime NULL,
   PRIMARY KEY (`id`),
   UNIQUE(`collector_type`, `collector_id`),
+<<<<<<< HEAD
   UNIQUE(`node_id`)
+=======
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Many To Many Polymorphic
@@ -265,12 +373,19 @@ CREATE TABLE `core_collectables` (
 DROP TABLE IF EXISTS `core_comments`;
 CREATE TABLE `core_comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `node_id` int(10) unsigned NOT NULL,
   `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
   `user_id` int(10) unsigned DEFAULT NULL,
   `created` datetime NOT NULL,
   `modified` datetime DEFAULT NULL,
   `deleted` datetime DEFAULT NULL,
+=======
+  `parent_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `comment` BLOB NOT NULL,
+  `created` datetime NOT NULL,
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -337,6 +452,7 @@ CREATE TABLE `core_blocks` (
 DROP TABLE IF EXISTS `core_menus`;
 CREATE TABLE `core_menus` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `parent_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -351,17 +467,38 @@ CREATE TABLE `core_node_stats` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
+=======
+  `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `block_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `core_menus_resources`;
+CREATE TABLE `core_menus_resources` (
+  `menu_id` int(10) unsigned NOT NULL,
+  `resource_id` int(10) unsigned NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 DROP TABLE IF EXISTS `core_interaction_stats`;
 CREATE TABLE `core_interaction_stats` (
   `interaction_type` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   `interaction_id` int(10) unsigned NOT NULL,
   `count_type` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+<<<<<<< HEAD
   `count` int(10) unsigned NOT NULL
+=======
+  `count` int(10) unsigned NOT NULL,
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `core_node_stats`;
 CREATE TABLE `core_node_stats` (
   `node_id` int(10) unsigned NOT NULL,
   `count_type` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+<<<<<<< HEAD
   `count` int(10) unsigned NOT NULL
+=======
+  `count` int(10) unsigned NOT NULL,
+>>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

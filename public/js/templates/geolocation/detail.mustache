@@ -1,0 +1,18 @@
+<div class="row">
+  
+  <div id="detail-address" class="col-md-12">
+    <h2>{{result.name}}<h2>
+    <h4>{{result.address.street}} {{result.address.number}}</h4>
+  </div>
+  
+  <div id="detail-actions" class="col-md-4">
+    <h5>{{result.address.district.name}} - {{result.address.city.name}}</h5>
+    <h4><strong>{{address.zipcode}}<strong></h4>
+    <a href="#/edit/{{result.id}}" id="table-edit-button-{{result.id}}" data-id="{{result.id}}" class="table-edit-button btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+    <a href="#/delete/{{result.id}}" id="table-delete-button-{{result.id}}" data-id="{{result.id}}" class="table-delete-button btn btn-default btn-xs"><i class="fa fa-trash"></i></a>
+  </div>
+
+  <div id="detail-map" class="col-md-8">
+  </div>
+
+</div>
