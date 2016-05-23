@@ -24,7 +24,7 @@ class TermDAO extends AbstractDAO implements TermDAOContract
         parent::__construct($filters);
     }
 
-    protected function getBuilder()
+    public function getBuilder()
     {
         $translatable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table(self::TABLE)

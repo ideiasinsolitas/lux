@@ -14,7 +14,7 @@ interface TypeDAOContract
 
     public function delete($pk);
 
-    public function deleteMany($pk);
+    public function deleteMany(array $pks);
 
     public function getOne(array $filters);
 
