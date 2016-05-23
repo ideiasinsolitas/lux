@@ -18,7 +18,7 @@ class TestCase extends BaseTestCase
      */
     public function __construct()
     {
-        \Dotenv::load(__DIR__.'/..');
+        \Dotenv::load(__DIR__.'/../..');
         $this->baseUrl = \Dotenv::findEnvironmentVariable('APP_URL');
     }
 

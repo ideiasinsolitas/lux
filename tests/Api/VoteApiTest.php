@@ -1,5 +1,6 @@
 <?php
- Testing\Api;
+
+namespace Testing\Api;
 
 use Testing\Cases\TestCase;
 
