@@ -1,7 +1,8 @@
 // factory
 angular
     .module('BlurAdmin.pages')
-    .factory('configService', configService);
+    .factory('configService', configService)
+    .factory('configMultiLoader', configMultiLoader);
 
 configService.$inject = ['$http', '$location', '$q', 'apiService'];
 
@@ -22,4 +23,8 @@ function configService($http, $location, $q, apiService) {
     function findAll() {
         return apiService.findAll();
     };
+}
+
+function configMultiLoader() {
+    return configService.findAll();
 }
