@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\Calendar\Event;
 
-use App\Repositories\Business\Calendar\EventRepository;
+use App\Repositories\Business\Calendar\EventDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -21,9 +21,9 @@ class EventController extends Controller
     protected $handler;
     /**
      * /
-     * @param EventRepository $events [description]
+     * @param EventDAO $events [description]
      */
-    public function __construct(ResponseHandler $handler, EventRepository $events)
+    public function __construct(ResponseHandler $handler, EventDAO $events)
     {
         $handler->setPrefix('business.calendar.event');
         $this->handler = $handler;

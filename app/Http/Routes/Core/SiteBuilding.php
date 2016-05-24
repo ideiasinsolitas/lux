@@ -1,6 +1,7 @@
 <?php
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 $router->group(['namespace' => 'SiteBuilding', 'prefix' => 'sitebuilding'], function () use ($router) {
     $router->group(['prefix' => 'area'], function () {
         Route::get('/', 'AreaController@index')->name('core.sys.area.list');
@@ -22,6 +23,8 @@ $router->group(['namespace' => 'SiteBuilding', 'prefix' => 'sitebuilding'], func
         Route::post('/', 'MenuController@store')->name('core.sys.menu.save');
         Route::delete('/{pk}', 'MenuController@destroy')->name('core.sys.menu.delete');
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'auth'], function () use ($router) {
     $router->group(['namespace' => 'SiteBuilding', 'prefix' => 'sitebuilding'], function () use ($router) {
         $router->group(['middleware' => 'access.routeNeedsPermission:view-backend'], function () use ($router) {
@@ -84,6 +87,31 @@ $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'aut
             });
 
         });
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+$router->group(['namespace' => 'SiteBuilding', 'prefix' => 'sitebuilding'], function () use ($router) {
+    $router->group(['prefix' => 'area'], function () {
+        Route::get('/', 'AreaController@index')->name('core.sys.area.list');
+        Route::get('/{pk}', 'AreaController@show')->name('core.sys.area.show');
+        Route::post('/', 'AreaController@store')->name('core.sys.area.save');
+        Route::delete('/{pk}', 'AreaController@destroy')->name('core.sys.area.delete');
+    });
+
+    $router->group(['prefix' => 'block'], function () {
+        Route::get('/', 'BlockController@index')->name('core.sys.block.list');
+        Route::get('/{pk}', 'BlockController@show')->name('core.sys.block.show');
+        Route::post('/', 'BlockController@store')->name('core.sys.block.save');
+        Route::delete('/{pk}', 'BlockController@destroy')->name('core.sys.block.delete');
+    });
+
+    $router->group(['prefix' => 'menu'], function () {
+        Route::get('/', 'MenuController@index')->name('core.sys.menu.list');
+        Route::get('/{pk}', 'MenuController@show')->name('core.sys.menu.show');
+        Route::post('/', 'MenuController@store')->name('core.sys.menu.save');
+        Route::delete('/{pk}', 'MenuController@destroy')->name('core.sys.menu.delete');
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     });
 });

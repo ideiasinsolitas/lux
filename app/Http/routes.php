@@ -1,6 +1,7 @@
 <?php
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 require(__DIR__ . "/Routes/Auth.php");
 
 $router->group(['namespace' => 'Core', 'prefix' => 'api'], function () use ($router) {
@@ -9,6 +10,8 @@ $router->group(['namespace' => 'Core', 'prefix' => 'api'], function () use ($rou
     require(__DIR__ . "/Routes/Core/Sys.php");
     require(__DIR__ . "/Routes/Core/Taxonomy.php");
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 /**
  * Switch between the included languages
  */
@@ -48,9 +51,19 @@ $router->group(['namespace' => 'Backend'], function () use ($router) {
             require(__DIR__ . "/Routes/Backend/Dashboard.php");
             require(__DIR__ . "/Routes/Backend/Access.php");
             require(__DIR__ . "/Routes/Backend/Blog.php");
-            require(__DIR__ . "/Routes/Backend/GeoLocation.php");
-            require(__DIR__ . "/Routes/Backend/People.php");
         });
     });
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+require(__DIR__ . "/Routes/Auth.php");
+
+$router->group(['namespace' => 'Core', 'prefix' => 'api'], function () use ($router) {
+    require(__DIR__ . "/Routes/Core/Interaction.php");
+    require(__DIR__ . "/Routes/Core/SiteBuilding.php");
+    require(__DIR__ . "/Routes/Core/Sys.php");
+    require(__DIR__ . "/Routes/Core/Taxonomy.php");
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 });

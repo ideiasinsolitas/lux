@@ -1,11 +1,14 @@
 /vendor
 <<<<<<< HEAD
+<<<<<<< HEAD
 /public/app/docs
 /public/app/gulp
 /public/app/*.md
 /public/app/gulp
 /npm_modules
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 /node_modules
 /notes
 Homestead.yaml
@@ -21,4 +24,14 @@ _ide_helper.php
 composer.phar
 error.log
 Todo.rtf
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+/public/app/docs
+/public/app/gulp
+/public/app/*.md
+/public/app/gulp
+/npm_modules
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd

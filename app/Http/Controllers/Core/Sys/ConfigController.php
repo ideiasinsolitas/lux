@@ -3,6 +3,21 @@
 namespace App\Http\Controllers\Core\Sys\Config;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+use App\Repositories\Core\Sys\ConfigDAO;
+
+use App\Http\Requests\Generic\CreateRequest;
+use App\Http\Requests\Generic\StoreRequest;
+use App\Http\Requests\Generic\EditRequest;
+use App\Http\Requests\Generic\UpdateRequest;
+use App\Http\Requests\Generic\DeleteRequest;
+
+class ConfigController extends Controller
+{
+    /**
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 use App\Http\Controllers\Controller;
 
 use App\DAL\Core\Sys\Contracts\ConfigDAOContract;
@@ -22,6 +37,7 @@ class ConfigController extends Controller
     protected $rest;
     
     /**
+<<<<<<< HEAD
 =======
 use App\Repositories\Core\Sys\ConfigRepository;
 
@@ -35,6 +51,9 @@ class ConfigController extends Controller
 {
     /**
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * [$configs description]
      * @var [config]
      */
@@ -42,6 +61,7 @@ class ConfigController extends Controller
 
     /**
      * /
+<<<<<<< HEAD
 <<<<<<< HEAD
      * @param ConfigDAO $configs [description]
      */
@@ -54,12 +74,27 @@ class ConfigController extends Controller
     public function __construct(ConfigRepository $configs)
     {
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+     * @param ConfigDAO $configs [description]
+     */
+<<<<<<< HEAD
+    public function __construct(ConfigDAO $configs)
+    {
+=======
+    public function __construct(RestProcessor $rest, ConfigDAOContract $configs)
+    {
+        $this->rest = $rest;
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         $this->configs = $configs;
     }
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * /
      * @return [config] [description]
      */
@@ -69,7 +104,12 @@ class ConfigController extends Controller
     }
 
     /**
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * Display a listing of the resource.
      * @param  integer $page [description]
      * @return [config]        [description]
@@ -77,16 +117,26 @@ class ConfigController extends Controller
     public function index()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $configs = $this->configs->getDefaultConfig();
         return $this->rest->process($configs);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         $configs = $this->configs->getConfigsPaginated(config('core.sys.config.default_per_page'))->items();
         $res = [
             'status' => $configs ? 'OK' : 'error',
             'result' => $configs,
         ];
         return response()->json($res);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+        $configs = $this->configs->getDefaultConfig();
+        return $this->rest->process($configs);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 
     /**
@@ -97,6 +147,7 @@ class ConfigController extends Controller
     public function store(StoreRequest $request)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $input = $request->only(['user', 'key', 'value', 'format', 'activity']);
         if ($request->has('pk')) {
             $config = $this->configs->update($input, (int) $request->get('pk'));
@@ -105,6 +156,8 @@ class ConfigController extends Controller
         }
         return $this->rest->process($config);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         $input = $request->only(['id', 'key', 'value', 'format', 'activity']);
         if (isset($input['id'])) {
             $config = $this->configs->create($input);
@@ -149,11 +202,24 @@ class ConfigController extends Controller
             'result' => ['id' => $id],
         ];
         return response()->json($res);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+        $input = $request->only(['user', 'key', 'value', 'format', 'activity']);
+        if ($request->has('pk')) {
+            $config = $this->configs->update($input, (int) $request->get('pk'));
+        } else {
+            $config = $this->configs->insert($input);
+        }
+        return $this->rest->process($config);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 
     /**
      * /
+<<<<<<< HEAD
 <<<<<<< HEAD
      * @param  [config]        $pk      [description]
      * @param  DeleteRequest $request [description]
@@ -164,6 +230,8 @@ class ConfigController extends Controller
         $config = $this->configs->update(['activity' => 0], (int) $pk);
         return $this->rest->process($config);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * @param  [config]        $id      [description]
      * @param  DeleteRequest $request [description]
      * @return [config]                 [description]
@@ -253,6 +321,19 @@ class ConfigController extends Controller
             'result' => $configs,
         ];
         return response()->json($res);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+     * @param  [config]        $pk      [description]
+     * @param  DeleteRequest $request [description]
+     * @return [config]                 [description]
+     */
+    public function destroy($pk, DeleteRequest $request)
+    {
+        $config = $this->configs->update(['activity' => 0], (int) $pk);
+        return $this->rest->process($config);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 }

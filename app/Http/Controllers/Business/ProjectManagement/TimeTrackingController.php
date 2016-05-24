@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Business\ProjectManagement\TimeTracking;
 
-use App\Repositories\Business\ProjectManagementTimeTrackingRepository;
+use App\Repositories\Business\ProjectManagementTimeTrackingDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -22,9 +22,9 @@ class TimeTrackingController extends Controller
 
     /**
      * /
-     * @param TimeTrackingRepository $timeTracking [description]
+     * @param TimeTrackingDAO $timeTracking [description]
      */
-    public function __construct(TimeTrackingRepository $timeTracking)
+    public function __construct(TimeTrackingDAO $timeTracking)
     {
         $this->timeTracking = $timeTracking;
     }

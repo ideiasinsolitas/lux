@@ -1,4 +1,10 @@
 <?php
+<<<<<<< HEAD
+
+namespace App\Services\Rest;
+
+class RestProcessor implements HttpStatusCodesContracts
+=======
 /*
  * This file is part of the AllScorings package.
  *
@@ -11,18 +17,74 @@
 namespace App\Services\Rest;
 
 class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
+>>>>>>> core-develop
 {
     protected $httpMessages;
 
     protected $data;
 
+<<<<<<< HEAD
+    protected $currentStep = 0;
+
+    public function __construct(RestMessageContract $message)
+=======
     protected $code;
 
     public function __construct(Message $message)
+>>>>>>> core-develop
     {
         $this->body = $message;
 
         $this->httpMessages = [
+<<<<<<< HEAD
+            200 => self::HTTP_OK,
+        ];
+    }
+
+    protected function stepFoward()
+    {
+        $this->currentStep++;
+    }
+
+    protected function hasData()
+    {
+        return !empty($request->all());
+    }
+
+    protected function makeResponse()
+    {
+        return new JsonResponse($this->code, $this->body->toArray());
+    }
+
+    public function process(array $data, $code = 200, $errors = null)
+    {
+        if (!$data && !$error) {
+            $this->body->setMessage($this->getHttpMessage($code));
+            $this->body->setData(false);
+        }
+
+        if ($error) {
+            $this->code = 500;
+            $this->body->setErrors($errors);
+        }
+
+        $this->body->setData($data);
+    }
+
+    public function listing()
+    {
+        return $this;
+    }
+
+    public function single()
+    {
+        return $this;
+    }
+
+    public function nullable()
+    {
+        return $this;
+=======
             200 => self::MESSAGE_OK,
             201 => self::MESSAGE_CREATED,
             304 => self::MESSAGE_NOT_MODIFIED,
@@ -84,5 +146,6 @@ class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
     {
         $data = $this->body->toArray();
         return ResponseFactory::make(array_filter($data), $this->code);
+>>>>>>> core-develop
     }
 }

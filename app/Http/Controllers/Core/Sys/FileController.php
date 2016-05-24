@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Sys\File;
 
-use App\Repositories\Core\Sys\FileRepository;
+use App\Repositories\Core\Sys\FileDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -21,9 +21,9 @@ class FileController extends Controller
     protected $handler;
     /**
      * /
-     * @param FileRepository $files [description]
+     * @param FileDAO $files [description]
      */
-    public function __construct(ResponseHandler $handler, FileRepository $files)
+    public function __construct(ResponseHandler $handler, FileDAO $files)
     {
         $handler->setPrefix('core.sys');
         $this->handler = $handler;

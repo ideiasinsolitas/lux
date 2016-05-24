@@ -1,6 +1,19 @@
 <?php
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+namespace App\Http\Controllers\Core\Term;
+
+use App\Repositories\Core\Term\TermDAO;
+
+use App\Http\Requests\Generic\StoreRequest;
+use App\Http\Requests\Generic\UpdateRequest;
+use App\Http\Requests\Generic\DeleteRequest;
+
+use App\Services\ResponseHandler;
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 namespace App\Http\Controllers\Core\Interaction\Folksonomy;
 
 use App\Http\Controllers\Controller;
@@ -12,6 +25,7 @@ use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
 use Carbon\Carbon;
+<<<<<<< HEAD
 =======
 namespace App\Http\Controllers\Core\Term;
 
@@ -23,10 +37,14 @@ use App\Http\Requests\Generic\DeleteRequest;
 
 use App\Services\ResponseHandler;
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 
 class TermController extends Controller
 {
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * [$rest description]
      * @var [type]
@@ -36,6 +54,8 @@ class TermController extends Controller
     /**
 =======
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * [$terms description]
      * @var [type]
      */
@@ -56,9 +76,9 @@ class TermController extends Controller
     protected $handler;
     /**
      * /
-     * @param TermRepository $terms [description]
+     * @param TermDAO $terms [description]
      */
-    public function __construct(ResponseHandler $handler, TermRepository $terms)
+    public function __construct(ResponseHandler $handler, TermDAO $terms)
     {
         $handler->setPrefix('core.taxonomy');
         $this->handler = $handler;
@@ -83,7 +103,33 @@ class TermController extends Controller
             ->apiResponse($calendar, 'stored');
     }
 
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+     * [$rest description]
+     * @var [type]
+     */
+    protected $rest;
+
+    /**
+     * [$terms description]
+     * @var [type]
+     */
+    protected $terms;
+
+    /**
+     * /
+     * @param FolksonomyDAO $terms [description]
+     */
+    public function __construct(RestProcessor $rest, TermDAOContract $terms)
+    {
+        $this->rest = $rest;
+        $this->terms = $terms;
+    }
+    
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     /**
      * Display a listing of the resource.
      * @param  integer $page [description]
@@ -92,9 +138,12 @@ class TermController extends Controller
     public function index()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $terms = $this->terms->getAll();
         return $this->rest->process($terms);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         $terms = $this->terms
             ->getTermsPaginated(config('core.taxonomy.term.default_per_page'))
             ->items();
@@ -138,12 +187,34 @@ class TermController extends Controller
 
         return $this->handler
             ->apiResponse($calendar);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+        $terms = $this->terms->getAll();
+        return $this->rest->process($terms);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 
     /**
      * /
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+     * @param  [type]        $id      [description]
+     * @param  DeleteRequest $request [description]
+     * @return [type]                 [description]
+     */
+    public function destroy($id, DeleteRequest $request)
+    {
+        $calendar = $this->terms
+            ->delete($id);
+
+        return $this->handler
+            ->apiResponse($calendar, 'deleted');
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * @param  StoreRequest $request [description]
      * @return [type]                [description]
      */
@@ -157,6 +228,7 @@ class TermController extends Controller
             $term = $this->terms->insert($input);
         }
         return $this->rest->process($term);
+<<<<<<< HEAD
 =======
      * @param  [type]        $id      [description]
      * @param  DeleteRequest $request [description]
@@ -170,10 +242,14 @@ class TermController extends Controller
         return $this->handler
             ->apiResponse($calendar, 'deleted');
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 
     /**
      * /
+<<<<<<< HEAD
 <<<<<<< HEAD
      * @param  [type]        $pk      [description]
      * @param  DeleteRequest $request [description]
@@ -184,6 +260,8 @@ class TermController extends Controller
         $term = $this->terms->update(['activity' => 0], (int) $pk);
         return $this->rest->process($term);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * @param  [type]        $id      [description]
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]
@@ -225,6 +303,19 @@ class TermController extends Controller
             
         return $this->handler
             ->apiResponse($calendar, 'marked');
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+     * @param  [type]        $pk      [description]
+     * @param  DeleteRequest $request [description]
+     * @return [type]                 [description]
+     */
+    public function destroy($pk, DeleteRequest $request)
+    {
+        $term = $this->terms->update(['activity' => 0], (int) $pk);
+        return $this->rest->process($term);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 }

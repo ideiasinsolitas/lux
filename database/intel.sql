@@ -24,13 +24,14 @@ CREATE TABLE `intel_events` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `intel_projects`;
+CREATE TABLE `intel_projects` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `description` BLOB NOT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, /* 0 = deleted, 1 = unassigned, 2 = open, 3 = active, 4 = closed, 5 = charged */
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `deleted` datetime NULL,
-CREATE TABLE `intel_people` (
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `intel_intelligence`;
@@ -40,11 +41,11 @@ CREATE TABLE `intel_intelligence` (
   `intelligence_id` int(10) unsigned NOT NULL,
   `marked` int(10) unsigned NOT NULL,
   `description` int(10) unsigned NOT NULL,
-  UNIQUE(`user_id`, `intelligence_type`, `intelligence_id`)
+  UNIQUE(`intelligence_type`, `intelligence_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `intel_facts`;
-CREATE TABLE `intel_people` (
+CREATE TABLE `intel_facts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(120) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` BLOB NOT NULL,
@@ -147,11 +148,11 @@ CREATE TABLE `intel_estates` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---many2many
+/*many2many*/
 DROP TABLE IF EXISTS `intel_brokers_estates`;
 CREATE TABLE `intel_brokers_estates` (
   `broker_id` int(10) unsigned NOT NULL,
-  `estate_id` int(10) unsigned NOT NULL,
+  `estate_id` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /* places can have same address */

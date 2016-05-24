@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Interaction\Vote;
 
-use App\Repositories\Core\Interaction\VoteRepository;
+use App\Repositories\Core\Interaction\VoteDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class VoteController extends Controller
 
     /**
      * /
-     * @param VoteRepository $votes [description]
+     * @param VoteDAO $votes [description]
      */
-    public function __construct(VoteRepository $votes)
+    public function __construct(VoteDAO $votes)
     {
         $this->votes = $votes;
     }

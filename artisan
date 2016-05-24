@@ -32,12 +32,21 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 $status = $kernel->handle(
 <<<<<<< HEAD
+<<<<<<< HEAD
     $input = new Symfony\Component\Console\Input\ArgvInput,
     new Symfony\Component\Console\Output\ConsoleOutput
 =======
 	$input = new Symfony\Component\Console\Input\ArgvInput,
 	new Symfony\Component\Console\Output\ConsoleOutput
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+	$input = new Symfony\Component\Console\Input\ArgvInput,
+	new Symfony\Component\Console\Output\ConsoleOutput
+=======
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 );
 
 /*
@@ -57,4 +66,8 @@ $kernel->terminate($input, $status);
 exit($status);
 =======
 exit($status);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd

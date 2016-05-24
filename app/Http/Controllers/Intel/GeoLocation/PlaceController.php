@@ -10,8 +10,8 @@ use App\Http\Requests\Core\GeoLocation\DeletePlaceRequest;
 use App\Http\Requests\Core\GeoLocation\StorePlaceRequest;
 use App\Http\Controllers\Controller;
 
-use App\Repositories\Core\GeoLocation\PlaceRepository;
-use App\Repositories\Core\GeoLocation\AddressRepository;
+use App\Repositories\Core\GeoLocation\PlaceDAO;
+use App\Repositories\Core\GeoLocation\AddressDAO;
 
 use App\Services\LocationConverter;
 use App\Services\ResponseHandler;
@@ -20,13 +20,13 @@ class PlaceController extends Controller
 {
     /**
      * [$places description]
-     * @var PlaceRepository
+     * @var PlaceDAO
      */
     protected $places;
 
     /**
      * [$addresses description]
-     * @var AddressRepository
+     * @var AddressDAO
      */
     protected $addresses;
 
@@ -38,11 +38,11 @@ class PlaceController extends Controller
 
     /**
      * /
-     * @param PlaceRepository   $places    [description]
-     * @param AddressRepository $addresses [description]
+     * @param PlaceDAO   $places    [description]
+     * @param AddressDAO $addresses [description]
      * @param LocationConverter $location  [description]
      */
-    public function __construct(ResponseHandler $handler, PlaceRepository $places, AddressRepository $addresses, LocationConverter $location)
+    public function __construct(ResponseHandler $handler, PlaceDAO $places, AddressDAO $addresses, LocationConverter $location)
     {
         $handler->setPrefix('intel.geolocation');
         $this->handler = $handler;

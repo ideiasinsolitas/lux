@@ -7,6 +7,9 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
  * @package App\Http
  */
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 class Kernel extends HttpKernel
 {
 
@@ -16,6 +19,18 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \App\Http\Middleware\EncryptCookies::class,
+        \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\LocaleMiddleware::class,
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         \App\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
@@ -25,6 +40,10 @@ class Kernel extends HttpKernel
 //        \App\Http\Middleware\VerifyCsrfToken::class,
 //        \App\Http\Middleware\LocaleMiddleware::class,
 //        \App\Http\Middleware\CustomAuthMiddleware::class,
+<<<<<<< HEAD
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     ];
 
     /**
@@ -36,10 +55,20 @@ class Kernel extends HttpKernel
         /**
          * Default laravel route middleware
          */
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 
         /**
          * Access Middleware
          */
+<<<<<<< HEAD
     ];
 }
 =======
@@ -81,3 +110,12 @@ class Kernel extends HttpKernel {
 	];
 }
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+<<<<<<< HEAD
+        'access.routeNeedsRole' => \App\Http\Middleware\RouteNeedsRole::class,
+        'access.routeNeedsPermission' => \App\Http\Middleware\RouteNeedsPermission::class,
+=======
+>>>>>>> core-develop
+    ];
+}
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd

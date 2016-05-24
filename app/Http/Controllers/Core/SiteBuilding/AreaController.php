@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding\Area;
 
-use App\Repositories\Core\SiteBuilding\AreaRepository;
+use App\Repositories\Core\SiteBuilding\AreaDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class AreaController extends Controller
 
     /**
      * /
-     * @param AreaRepository $areas [description]
+     * @param AreaDAO $areas [description]
      */
-    public function __construct(AreaRepository $areas)
+    public function __construct(AreaDAO $areas)
     {
         $this->areas = $areas;
     }

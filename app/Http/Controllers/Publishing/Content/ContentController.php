@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Publishing\ContentManagement;
 
-use App\Repositories\Publishing\ContentManagement\ContentRepository;
+use App\Repositories\Publishing\ContentManagement\ContentDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -21,9 +21,9 @@ class ContentController extends Controller
     protected $handler;
     /**
      * /
-     * @param ContentRepository $contents [description]
+     * @param ContentDAO $contents [description]
      */
-    public function __construct(ResponseHandler $handler, ContentRepository $contents)
+    public function __construct(ResponseHandler $handler, ContentDAO $contents)
     {
         $handler->setPrefix('publishing.content_management');
         $this->handler = $handler;

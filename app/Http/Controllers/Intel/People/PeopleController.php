@@ -3,7 +3,7 @@
 
 namespace App\Http\Controllers\Package\Name;
 
-use App\Repositories\Package\NameRepository;
+use App\Repositories\Package\NameDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -21,9 +21,9 @@ class NameController extends Controller
 
     /**
      * /
-     * @param NameRepository $names [description]
+     * @param NameDAO $names [description]
      */
-    public function __construct(NameRepository $names)
+    public function __construct(NameDAO $names)
     {
         $this->names = $names;
     }

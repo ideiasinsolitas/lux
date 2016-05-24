@@ -3,6 +3,21 @@
 namespace App\Http\Controllers\Core\Sys\Type;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+use App\Repositories\Core\Sys\TypeDAO;
+
+use App\Http\Requests\Generic\CreateRequest;
+use App\Http\Requests\Generic\StoreRequest;
+use App\Http\Requests\Generic\EditRequest;
+use App\Http\Requests\Generic\UpdateRequest;
+use App\Http\Requests\Generic\DeleteRequest;
+
+class TypeController extends Controller
+{
+    /**
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 use App\Http\Controllers\Controller;
 
 use App\DAL\Core\Sys\Contracts\TypeDAOContract;
@@ -22,6 +37,7 @@ class TypeController extends Controller
     protected $rest;
 
     /**
+<<<<<<< HEAD
 =======
 use App\Repositories\Core\Sys\TypeRepository;
 
@@ -35,6 +51,9 @@ class TypeController extends Controller
 {
     /**
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * [$types description]
      * @var [type]
      */
@@ -42,6 +61,7 @@ class TypeController extends Controller
 
     /**
      * /
+<<<<<<< HEAD
 <<<<<<< HEAD
      * @param TypeDAO $types [description]
      */
@@ -53,8 +73,12 @@ class TypeController extends Controller
     
 =======
      * @param TypeRepository $types [description]
+=======
+     * @param TypeDAO $types [description]
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      */
-    public function __construct(TypeRepository $types)
+<<<<<<< HEAD
+    public function __construct(TypeDAO $types)
     {
         $this->types = $types;
     }
@@ -68,7 +92,18 @@ class TypeController extends Controller
         return view('core.sys.type');
     }
 
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+    public function __construct(RestProcessor $rest, TypeDAOContract $types)
+    {
+        $this->rest = $rest;
+        $this->types = $types;
+    }
+    
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     /**
      * Display a listing of the resource.
      * @param  integer $page [description]
@@ -77,16 +112,26 @@ class TypeController extends Controller
     public function index()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $types = $this->types->getAll();
         return $this->rest->process($types);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         $types = $this->types->getTypesPaginated(config('core.sys.type.default_per_page'))->items();
         $res = [
             'status' => $types ? 'OK' : 'error',
             'result' => $types,
         ];
         return response()->json($res);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+        $types = $this->types->getAll();
+        return $this->rest->process($types);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 
     /**
@@ -97,6 +142,7 @@ class TypeController extends Controller
     public function store(StoreRequest $request)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $input = $request->only(['class', 'name']);
         if ($request->has('pk')) {
             $type = $this->types->update($input, (int) $request->get('pk'));
@@ -105,6 +151,8 @@ class TypeController extends Controller
         }
         return $this->rest->process($type);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         $input = $request->only(['id', 'class', 'name']);
         if (isset($input['id'])) {
             $type = $this->types->create($input);
@@ -117,11 +165,24 @@ class TypeController extends Controller
             'result' => $type,
         ];
         return response()->json($res);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+        $input = $request->only(['class', 'name']);
+        if ($request->has('pk')) {
+            $type = $this->types->update($input, (int) $request->get('pk'));
+        } else {
+            $type = $this->types->insert($input);
+        }
+        return $this->rest->process($type);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 
     /**
      * Display the specified resource.
+<<<<<<< HEAD
 <<<<<<< HEAD
      * @param  int  $pk
      * @return Response
@@ -131,6 +192,8 @@ class TypeController extends Controller
         $type = $this->types->getOne(['pk' => (int) $pk]);
         return $this->rest->process($type);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * @param  int  $id
      * @return Response
      */
@@ -142,11 +205,24 @@ class TypeController extends Controller
             'result' => $type,
         ];
         return response()->json($res);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+     * @param  int  $pk
+     * @return Response
+     */
+    public function show($pk)
+    {
+        $type = $this->types->getOne(['pk' => (int) $pk]);
+        return $this->rest->process($type);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 
     /**
      * /
+<<<<<<< HEAD
 <<<<<<< HEAD
      * @param  [type]        $pk      [description]
      * @param  DeleteRequest $request [description]
@@ -157,6 +233,8 @@ class TypeController extends Controller
         $type = $this->types->delete((int) $pk);
         return $this->rest->process($type);
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
      * @param  [type]        $id      [description]
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]
@@ -263,6 +341,19 @@ class TypeController extends Controller
             'result' => $types,
         ];
         return response()->json($res);
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+     * @param  [type]        $pk      [description]
+     * @param  DeleteRequest $request [description]
+     * @return [type]                 [description]
+     */
+    public function destroy($pk, DeleteRequest $request)
+    {
+        $type = $this->types->delete((int) $pk);
+        return $this->rest->process($type);
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     }
 }

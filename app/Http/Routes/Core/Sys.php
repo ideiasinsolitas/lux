@@ -1,6 +1,7 @@
 <?php
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 $router->group(['namespace' => 'Sys', 'prefix' => 'sys'], function () use ($router) {
     $router->group(['prefix' => 'user'], function () {
         Route::get('/', 'UserController@index')->name('core.sys.user.list');
@@ -22,6 +23,8 @@ $router->group(['namespace' => 'Sys', 'prefix' => 'sys'], function () use ($rout
         Route::post('/', 'TypeController@store')->name('core.sys.type.save');
         Route::delete('/{pk}', 'TypeController@destroy')->name('core.sys.type.delete');
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'auth'], function () use ($router) {
     $router->group(['namespace' => 'Sys', 'prefix' => 'sys'], function () use ($router) {
         $router->group(['middleware' => 'access.routeNeedsPermission:view-backend'], function () use ($router) {
@@ -66,6 +69,31 @@ $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'aut
             });
 
         });
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+$router->group(['namespace' => 'Sys', 'prefix' => 'sys'], function () use ($router) {
+    $router->group(['prefix' => 'user'], function () {
+        Route::get('/', 'UserController@index')->name('core.sys.user.list');
+        Route::get('/{pk}', 'UserController@show')->name('core.sys.user.show');
+        Route::post('/', 'UserController@store')->name('core.sys.user.store');
+        Route::delete('/{pk}', 'UserController@destroy')->name('core.sys.user.delete');
+    });
+
+    $router->group(['prefix' => 'config'], function () {
+        Route::get('/', 'ConfigController@index')->name('core.sys.config.list');
+        Route::get('/{pk}', 'ConfigController@show')->name('core.sys.config.show');
+        Route::post('/', 'ConfigController@store')->name('core.sys.config.store');
+        Route::delete('/{pk}', 'ConfigController@destroy')->name('core.sys.config.delete');
+    });
+
+    $router->group(['prefix' => 'type'], function () {
+        Route::get('/', 'TypeController@index')->name('core.sys.type.list');
+        Route::get('/{pk}', 'TypeController@show')->name('core.sys.type.show');
+        Route::post('/', 'TypeController@store')->name('core.sys.type.save');
+        Route::delete('/{pk}', 'TypeController@destroy')->name('core.sys.type.delete');
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     });
 });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Sys\Resource;
 
-use App\Repositories\Core\Sys\ResourceRepository;
+use App\Repositories\Core\Sys\ResourceDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -22,9 +22,9 @@ class ResourceController extends Controller
 
     /**
      * /
-     * @param ResourceRepository $resources [description]
+     * @param ResourceDAO $resources [description]
      */
-    public function __construct(ResponseHandler $handler, ResourceRepository $resources)
+    public function __construct(ResponseHandler $handler, ResourceDAO $resources)
     {
         $handler->setPrefix('core.sys');
         $this->handler = $handler;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Interaction\Followership;
 
-use App\Repositories\Core\Interaction\FollowershipRepository;
+use App\Repositories\Core\Interaction\FollowershipDAO;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\UpdateRequest;
@@ -18,12 +18,17 @@ class FollowershipController extends Controller
      */
     protected $followerships;
 
+    /**
+     * [$handler description]
+     * @var [type]
+     */
     protected $handler;
+    
     /**
      * /
-     * @param FollowershipRepository $followerships [description]
+     * @param FollowershipDAO $followerships [description]
      */
-    public function __construct(ResponseHandler $handler, FollowershipRepository $followerships)
+    public function __construct(ResponseHandler $handler, FollowershipDAO $followerships)
     {
         $handler->setPrefix('core.interaction');
         $this->handler = $handler;

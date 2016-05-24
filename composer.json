@@ -40,6 +40,7 @@
     },
     "autoload-dev": {
 <<<<<<< HEAD
+<<<<<<< HEAD
         "psr-4": {
             "Testing\\": "tests/"
         }
@@ -48,6 +49,16 @@
             "tests/TestCase.php"
         ]
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+=======
+        "psr-4": {
+            "Testing\\": "tests/"
+        }
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     },
     "scripts": {
         "post-install-cmd": [

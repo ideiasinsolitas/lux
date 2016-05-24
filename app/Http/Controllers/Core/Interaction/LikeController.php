@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Core\Interaction\Like;
 
-use App\Repositories\Core\Interaction\LikeRepository;
+use App\Repositories\Core\Interaction\LikeDAO;
 
 use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
@@ -20,9 +20,9 @@ class LikeController extends Controller
 
     /**
      * /
-     * @param LikeRepository $likes [description]
+     * @param LikeDAO $likes [description]
      */
-    public function __construct(LikeRepository $likes)
+    public function __construct(LikeDAO $likes)
     {
         $this->likes = $likes;
     }

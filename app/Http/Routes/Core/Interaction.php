@@ -1,6 +1,7 @@
 <?php
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 $router->group(['namespace' => 'Interaction', 'prefix' => 'interaction'], function () use ($router) {
 
     $router->group(['prefix' => 'comment'], function () {
@@ -9,6 +10,8 @@ $router->group(['namespace' => 'Interaction', 'prefix' => 'interaction'], functi
         Route::post('/', 'CommentController@store')->name('core.sys.comment.save');
         Route::delete('/{pk}', 'CommentController@destroy')->name('core.sys.comment.delete');
 =======
+=======
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 use Illuminate\Routing\Route;
 
 $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'auth'], function () use ($router) {
@@ -29,6 +32,18 @@ $router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'aut
                 Route::get('/deactivated', 'VoteController@deactivated')->name('core.interaction.vote.deactivated');
             });
         });
+<<<<<<< HEAD
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+=======
+$router->group(['namespace' => 'Interaction', 'prefix' => 'interaction'], function () use ($router) {
+
+    $router->group(['prefix' => 'comment'], function () {
+        Route::get('/', 'CommentController@index')->name('core.sys.comment.list');
+        Route::get('/{pk}', 'CommentController@show')->name('core.sys.comment.show');
+        Route::post('/', 'CommentController@store')->name('core.sys.comment.save');
+        Route::delete('/{pk}', 'CommentController@destroy')->name('core.sys.comment.delete');
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
     });
 });

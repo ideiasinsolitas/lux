@@ -150,24 +150,45 @@ return [
 		 * Application Service Providers...
 		 */
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        'App\Providers\AccessServiceProvider',
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         'App\Providers\AppServiceProvider',
 =======
         'App\Providers\AccessServiceProvider',
         'App\Providers\AppServiceProvider',
+<<<<<<< HEAD
         'App\Providers\BillingServiceProvider',
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         'App\Providers\BusServiceProvider',
         'App\Providers\ConfigServiceProvider',
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         'App\Providers\MacroServiceProvider',
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+        'App\Providers\MacroServiceProvider',
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
 
         /*
 		 * Third party service providers
 		 */
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        'Arcanedev\LogViewer\LogViewerServiceProvider',
+=======
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
         'Creativeorange\Gravatar\GravatarServiceProvider',
         'HieuLe\Active\ActiveServiceProvider',
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',

@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Business\Logistics\Shipping;
 
-use App\Repositories\Business\Logistics\ShippingRepository;
+use App\Repositories\Business\BusinessManager;
 
-use App\Http\Requests\Generic\CreateRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
 use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
-
-use App\Services\Format;
+use App\Services\ResponseHandler;
 
 class ShippingController extends Controller
 {
@@ -20,22 +17,33 @@ class ShippingController extends Controller
      */
     protected $shippings;
 
+    protected $handler;
     /**
      * /
-     * @param ShippingRepository $shippings [description]
+     * @param BusinessManager $shippings [description]
      */
-    public function __construct(ShippingRepository $shippings)
+    public function __construct(ResponseHandler $handler, BusinessManager $manager)
     {
-        $this->shippings = $shippings;
+        $handler->setPrefix('business.logistics');
+        $this->handler = $handler;
+        $this->shippings = $manager->getDAO('shippings');
     }
 
     /**
      * /
-     * @return [type] [description]
+     * @param  StoreRequest $request [description]
+     * @return [type]                [description]
      */
-    public function app()
+    public function store(StoreRequest $request)
     {
-        return view('businnes.logistics.shipping');
+        $shipping = $request->has('id')
+            ? $this->shippings
+                ->update($input)
+            : $this->shippings
+                ->create($input);
+
+        return $this->handler
+            ->apiResponse($shipping, 'stored');
     }
 
     /**
@@ -46,23 +54,34 @@ class ShippingController extends Controller
     public function index()
     {
         $shippings = $this->shippings
-            ->getShippingsPaginated(config('businnes.logistics.shipping.default_per_page'))
+            ->getPaginated(config('business.logistics.shipping.default_per_page'))
             ->items();
-        return Format::apiResponse($shippings);
+        return $this->handler
+            ->apiResponse($shippings);
     }
 
     /**
-     * /
-     * @param  StoreRequest $request [description]
-     * @return [type]                [description]
+     * @return mixed
      */
-    public function store(StoreRequest $request)
+    public function deactivated()
     {
-        $input = $request->only(['id', 'order_id', 'type_id']);
-        $shipping = isset($input['id'])
-            ? $this->shippings->create($input)
-            : $this->shippings->update($input);
-        return Format::apiResponse($shipping, trans('alerts.shipping.stored'));
+        $shippings = $this->shippings
+            ->getDeactivatedPaginated(config('business.logistics.shipping.default_per_page'));
+            
+        return $this->handler
+            ->apiResponse($shippings);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function deleted()
+    {
+        $shippings = $this->shippings
+            ->getDeletedPaginated(config('business.logistics.shipping.default_per_page'));
+            
+        return $this->handler
+            ->apiResponse($shippings);
     }
 
     /**
@@ -72,8 +91,11 @@ class ShippingController extends Controller
      */
     public function show($id)
     {
-        $shipping = $this->shippings->findOrFail($id, true);
-        return Format::apiResponse($shipping);
+        $shipping = $this->shippings
+            ->findOne($id, true);
+
+        return $this->handler
+            ->apiResponse($shipping);
     }
 
     /**
@@ -84,8 +106,11 @@ class ShippingController extends Controller
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $shipping = $this->shippings->delete($id);
-        return Format::apiResponse($shipping, trans('alerts.shipping.deleted'));
+        $shipping = $this->shippings
+            ->delete($id);
+
+        return $this->handler
+            ->apiResponse($shipping, 'deleted');
     }
 
     /**
@@ -97,8 +122,11 @@ class ShippingController extends Controller
     public function deleteMany(DeleteRequest $request)
     {
         $ids = $request->only('ids');
-        $shippings = $this->shippings->deleteMany($var['ids']);
-        return Format::apiResponse($shipping, trans('alerts.shipping.deleted_many'));
+        $shippings = $this->shippings
+            ->deleteMany($ids);
+            
+        return $this->handler
+            ->apiResponse($shippings, 'deleted_many');
     }
 
     /**
@@ -108,8 +136,11 @@ class ShippingController extends Controller
      */
     public function restore($id, UpdateRequest $request)
     {
-        $shipping = $this->shippings->restore($id);
-        return Format::apiResponse($shipping, trans('alerts.shipping.restored'));
+        $shipping = $this->shippings
+            ->restore($id);
+            
+        return $this->handler
+            ->apiResponse($shipping, 'restored');
     }
 
     /**
@@ -120,25 +151,10 @@ class ShippingController extends Controller
      */
     public function mark($id, $status, UpdateRequest $request)
     {
-        $shipping = $this->shippings->mark($id, $status);
-        return Format::apiResponse($shipping, trans('alerts.shipping.marked'));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function deactivated()
-    {
-        $shippings = $this->shippings->getShippingsPaginated();
-        return Format::apiResponse($shippings);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function deleted()
-    {
-        $shippings = $this->shippings->getDeletedShippingsPaginated();
-        return Format::apiResponse($shippings);
+        $shipping = $this->shippings
+            ->mark($id, $status);
+            
+        return $this->handler
+            ->apiResponse($shipping, 'marked');
     }
 }

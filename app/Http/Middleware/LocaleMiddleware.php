@@ -24,11 +24,19 @@ class LocaleMiddleware
     public function handle($request, Closure $next)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (session()->has('locale') && in_array(session()->get('locale'), $this->languages)) {
 =======
         if(session()->has('locale') && in_array(session()->get('locale'), $this->languages))
         {
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
+=======
+        if(session()->has('locale') && in_array(session()->get('locale'), $this->languages))
+        {
+=======
+        if (session()->has('locale') && in_array(session()->get('locale'), $this->languages)) {
+>>>>>>> core-develop
+>>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
             app()->setLocale(session()->get('locale'));
         }
 
