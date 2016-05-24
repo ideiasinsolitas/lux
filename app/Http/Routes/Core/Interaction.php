@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< HEAD
 $router->group(['namespace' => 'Interaction', 'prefix' => 'interaction'], function () use ($router) {
 
     $router->group(['prefix' => 'comment'], function () {
@@ -8,27 +7,5 @@ $router->group(['namespace' => 'Interaction', 'prefix' => 'interaction'], functi
         Route::get('/{pk}', 'CommentController@show')->name('core.sys.comment.show');
         Route::post('/', 'CommentController@store')->name('core.sys.comment.save');
         Route::delete('/{pk}', 'CommentController@destroy')->name('core.sys.comment.delete');
-=======
-use Illuminate\Routing\Route;
-
-$router->group(['namespace' => 'Core', 'prefix' => 'admin', 'middleware' => 'auth'], function () use ($router) {
-    $router->group(['namespace' => 'Interaction', 'prefix' => 'interaction', 'middleware' => 'access.routeNeedsPermission:view-backend'], function () use ($router) {
-
-        Route::get('', 'InteractionController@admin')->name('core.interaction.admin');
-
-        $router->group(['namespace' => 'Vote'], function () {
-
-            // REST: index, store, show, destroy
-            Route::resource('vote', 'VoteController', ['except' => ['create', 'update', 'edit']]);
-
-            $router->group(['prefix' => 'vote'], function () {
-                Route::get('/{id}/restore', 'VoteController@delete')->name('core.interaction.vote.delete');
-                Route::post('/delete', 'VoteController@deleteMany')->name('core.interaction.vote.delete.many');
-                Route::post('/mark', 'VoteController@mark')->name('core.interaction.vote.mark');
-                Route::get('/deleted', 'VoteController@deleted')->name('core.interaction.vote.deleted');
-                Route::get('/deactivated', 'VoteController@deactivated')->name('core.interaction.vote.deactivated');
-            });
-        });
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
     });
 });

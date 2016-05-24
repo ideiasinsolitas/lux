@@ -149,21 +149,11 @@ return [
         /*
 		 * Application Service Providers...
 		 */
-<<<<<<< HEAD
         'App\Providers\AppServiceProvider',
-=======
-        'App\Providers\AccessServiceProvider',
-        'App\Providers\AppServiceProvider',
-        'App\Providers\BillingServiceProvider',
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
         'App\Providers\BusServiceProvider',
         'App\Providers\ConfigServiceProvider',
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
-<<<<<<< HEAD
-=======
-        'App\Providers\MacroServiceProvider',
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 
         /*
 		 * Third party service providers
