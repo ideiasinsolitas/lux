@@ -5,12 +5,24 @@ namespace Testing\DAL;
 use Testing\Cases\TestCase;
 
 use App\Models\Core\Sys\TypeDAO;
+use App\Models\Core\Sys\Tables\TypeTable;
 
 class TypeDALTest extends TestCase
 {
     public function setUp()
     {
-        
+        $table = new TypeTable();
+        if (!$table->create()) {
+            throw new \Exception("Could not create table", 1);
+        }
+    }
+
+    public function tearDown()
+    {
+        $table = new TypeTable();
+        if (!$table->drop()) {
+            throw new \Exception("Could not drop table", 1);
+        }
     }
 
     public function testDAO()

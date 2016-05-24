@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* user management
  */
 DROP TABLE IF EXISTS `core_users`;
@@ -28,28 +27,17 @@ CREATE TABLE `core_user_profiles` (
   `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-=======
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 /* Everything that has a type id points here */
 DROP TABLE IF EXISTS `core_types`;
 CREATE TABLE `core_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-<<<<<<< HEAD
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-=======
   `class` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   PRIMARY KEY (`id`),
   UNIQUE(`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-<<<<<<< HEAD
 INSERT INTO `core_types` (name, class) VALUES
-=======
-INSERT INTO `core_types` (name, item_name) VALUES
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ("Image", "File"),
 ("Document", "File"),
 ("Url", "Resource"),
@@ -61,14 +49,8 @@ INSERT INTO `core_types` (name, item_name) VALUES
 ("Album", "Collection"),
 ("Folder", "Collection"),
 ("Category", "Term"),
-<<<<<<< HEAD
 ("Taxonomy", "Term"),
 ("Folksonomy", "Term"),
-=======
-("OwnerTag", "Term"),
-("UserTag", "Term"),
-("Vote", "Term"),
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ("Pagseguro", "Payment"),
 ("Boleto", "Payment"),
 ("Credito", "Payment"),
@@ -86,11 +68,7 @@ INSERT INTO `core_types` (name, item_name) VALUES
 ("Personal", "Project"),
 ("Feature", "Ticket"),
 ("Emergency", "Ticket"),
-<<<<<<< HEAD
-("Support", "Ticket"),
-=======
 ("Support", "Ticket")
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 ("SignUp", "Token"),
 ("Invitation", "Token");
 
@@ -98,50 +76,15 @@ INSERT INTO `core_types` (name, item_name) VALUES
 DROP TABLE IF EXISTS `core_config`;
 CREATE TABLE `core_config` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-<<<<<<< HEAD
   `user_id` int(11) unsigned NOT NULL DEFAULT 0,
   `key` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `value` BLOB NOT NULL,
   `format` tinyint(1) unsigned NOT NULL DEFAULT 0, -- 0 = string, 1 = serialized, 2 = json
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, -- 0 = active, 1 = autoload, 
-=======
-  `key` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `value` BLOB NOT NULL,
-  `format` tinyint(1) unsigned NOT NULL DEFAULT 0, -- 0 = string, 1 = serialized, 2 = json
-  `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = active, 1 = autoload, 
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
   PRIMARY KEY (`id`),
   UNIQUE(`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-<<<<<<< HEAD
-INSERT INTO `core_config` (`key`, `value`) VALUES 
-("site.title", "bla bla bla"),
-("site.tagline", "bla bla bla bla bla"),
-("system.email", "pedrokoblitz@gmail.com"),
-("per.page", "12"),
-("upload.dir", "/public/media"),
-("app.web.root", "/"),
-("app.abs.path", "/var/www/html/"),
-("panel.log.quantity", "15"),
-("panel.content.quantity", "10"),
-("panel.collection.quantity", "5"),
-("panel.resource.quantity", "5"),
-("panel.term.quantity", "5"),
-("facebook.app.id", ""),
-("facebook.app.key", ""),
-("facebook.app.secret", ""),
-("twitter.app.id", ""),
-("twitter.app.key", ""),
-("twitter.app.secret", ""),
-("flickr.profile.url", "http://flickr.com.br/photos/pedrokoblitz"),
-("tumblr.profile.url", "http://pedrokoblitz.tumblr.com"),
-("facebook.profile.url", "https://facebook.com/pedrokoblitz"),
-("facebook.page.url", "https://facebook.com/ideiasinsolitas"),
-("twitter.profile.url", "http://twitter.com/pedrokoblitz"),
-("linkedin.profile.url", "http://br.linkedin.com/pedrokoblitz"),
-("pinterest.profile.url", "http://pinterest.com/pedrokoblitz");
-=======
 INSERT INTO `core_config` (`key`, `value`, `activity`, `created`, `modified`) VALUES 
 ("site.title", "bla bla bla", 2, NOW(), NOW()),
 ("site.tagline", "bla bla bla bla bla", 2, NOW(), NOW()),
@@ -168,7 +111,6 @@ INSERT INTO `core_config` (`key`, `value`, `activity`, `created`, `modified`) VA
 ("twitter.profile.url", "http://twitter.com/pedrokoblitz", 2, NOW(), NOW()),
 ("linkedin.profile.url", "http://br.linkedin.com/pedrokoblitz", 2, NOW(), NOW()),
 ("pinterest.profile.url", "http://pinterest.com/pedrokoblitz", 2, NOW(), NOW());
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 
 /* authentication tokens */
 DROP TABLE IF EXISTS `core_tokens`;
@@ -184,8 +126,6 @@ CREATE TABLE `core_tokens` (
   UNIQUE(`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-<<<<<<< HEAD
-=======
 /* user management
 DROP TABLE IF EXISTS `core_users`;
 CREATE TABLE `core_users` (
@@ -210,7 +150,6 @@ INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`disp
 (1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
  */
 
->>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 /*
 store text based content for all entities and group by language
 Polymorphic

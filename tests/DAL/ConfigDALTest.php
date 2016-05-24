@@ -5,12 +5,24 @@ namespace Testing\DAL;
 use Testing\Cases\TestCase;
 
 use App\Models\Core\Sys\ConfigDAO;
+use App\Models\Core\Sys\Tables\ConfigTable;
 
 class ConfigDALTest extends TestCase
 {
     public function setUp()
     {
-        
+        $table = new ConfigTable();
+        if (!$table->create()) {
+            throw new \Exception("Could not create table", 1);
+        }
+    }
+
+    public function tearDown()
+    {
+        $table = new ConfigTable();
+        if (!$table->drop()) {
+            throw new \Exception("Could not drop table", 1);
+        }
     }
 
     public function testDAO()
@@ -21,6 +33,9 @@ class ConfigDALTest extends TestCase
         $pk = 1;
         $user_id = 1;
         $activity = 3;
+        $key = "";
+        $value = "";
+        $format = "";
         
         $result = $dao->create($input);
 
