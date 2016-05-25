@@ -13,7 +13,6 @@ use App\Events\Core\Sys\LogEvent;
  */
 class LogHandler implements ShouldQueue
 {
-
     use InteractsWithQueue;
 
     /**
