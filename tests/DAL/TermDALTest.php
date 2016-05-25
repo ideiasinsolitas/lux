@@ -4,7 +4,7 @@ namespace Testing\DAL;
 
 use Testing\Cases\TestCase;
 
-use App\Models\Core\Sys\TermDAO;
+use App\DAL\Core\Taxonomy\TermDAO;
 
 class TermDALTest extends TestCase
 {

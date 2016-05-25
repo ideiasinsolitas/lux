@@ -4,8 +4,8 @@ namespace Testing\DAL;
 
 use Testing\Cases\TestCase;
 
-use App\Models\Core\Sys\TypeDAO;
-use App\Models\Core\Sys\Tables\TypeTable;
+use App\DAL\Core\Sys\TypeDAO;
+use App\DAL\Core\Sys\Tables\TypeTable;
 
 class TypeDALTest extends TestCase
 {

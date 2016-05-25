@@ -5,7 +5,7 @@ use Testing\Cases\TestCase;
 
 use \stdClass;
 use Illuminate\Support\Collection;
-use App\Models\Core\Sys\CommentDAO;
+use App\DAL\Core\Interaction\CommentDAO;
 
 class CommentDALTest extends TestCase
 {

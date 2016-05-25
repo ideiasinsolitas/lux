@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DAL\Relationships\Common;
+namespace App\DAL\Common\Relationships;
 
 trait Commentable
 {

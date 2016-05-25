@@ -4,8 +4,8 @@ namespace Testing\DAL;
 
 use Testing\Cases\TestCase;
 
-use App\Models\Core\Sys\TokenDAO;
-use App\Models\Core\Sys\Tables\TokenTable;
+use App\DAL\Core\Sys\TokenDAO;
+use App\DAL\Core\Sys\Tables\TokenTable;
 
 class TokenDALTest extends TestCase
 {

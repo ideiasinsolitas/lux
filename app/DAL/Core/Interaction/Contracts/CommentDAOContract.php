@@ -36,7 +36,7 @@ interface CommentDAOContract
 
     public function delete($pk);
 
-    public function deleteMany($ids);
+    public function deleteMany(array $pks);
 
     public function getOne(array $filters);
 
@@ -58,11 +58,11 @@ interface CommentDAOContract
 
     public function getBranch($leaf_id);
 
-    public function getLeafs($branch_id);
+    public function getLeaves($branch_id);
 
     public function addLeaf($branch_id, $leaf_id);
 
-    public function addLeaves($branch_id, $leaves_id);
+    public function addLeaves($branch_id, array $leaves_id);
 
     public function removeLeaf($leaf_id);
 }

@@ -4,8 +4,8 @@ namespace Testing\DAL;
 
 use Testing\Cases\TestCase;
 
-use App\Models\Core\Sys\ConfigDAO;
-use App\Models\Core\Sys\Tables\ConfigTable;
+use App\DAL\Core\Sys\ConfigDAO;
+use App\DAL\Core\Sys\Tables\ConfigTable;
 
 class ConfigDALTest extends TestCase
 {

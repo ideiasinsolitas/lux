@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models\Core\Sys\Tables;
+namespace App\DAL\Core\Sys\Tables;
 
-use App\Models\Core\Sys\AbstractTable;
-use App\Models\Core\Sys\TableTrait;
+use App\DAL\AbstractTable;
+use App\DAL\TableTrait;
 
 class TokenTable extends AbstractTable
 {

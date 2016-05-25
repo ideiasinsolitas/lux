@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DAL\Core\Taxonomy;
+namespace App\DAL\Core\Taxonomy\Contracts;
 
 interface TermDAOContract
 {

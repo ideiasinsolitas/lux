@@ -8,5 +8,6 @@ trait CommentAction
 {
     use CommonActions\DefaultModifier,
         CommonActions\DefaultDeleter,
-        CommonActions\Hierarchical;
+        CommonActions\DefaultSelector,
+        CommonActions\Tree;
 }
