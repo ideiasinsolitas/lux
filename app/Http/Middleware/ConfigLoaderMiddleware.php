@@ -13,7 +13,7 @@ class ConfigLoaderMiddleware
         $this->service = $service;
     }
 
-    public function handle($request, Closure $next)
+    public function handle($request, \Closure $next)
     {
         return $next($request);
     }

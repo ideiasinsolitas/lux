@@ -18,7 +18,7 @@ class TermDAO extends AbstractDAO implements TermDAOContract
     {
         $filters = [
             'per_page' => 20,
-            'sort' => 'date_pub,desc'
+            'sort' => self::PK . ',asc'
         ];
 
         parent::__construct($filters);
