@@ -17,7 +17,6 @@ class ConfigDAO extends AbstractDAO implements ConfigDAOContract
     public function __construct()
     {
         $filters = [
-            'per_page' => 20,
             'sort' => 'key,asc'
         ];
 

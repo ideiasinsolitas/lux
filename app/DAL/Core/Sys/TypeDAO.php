@@ -16,7 +16,6 @@ class TypeDAO extends AbstractDAO implements TypeDAOContract
     public function __construct()
     {
         $filters = [
-            'per_page' => 20,
             'sort' => 'name,asc'
         ];
 

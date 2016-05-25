@@ -15,7 +15,6 @@ class UserDAO extends AbstractDAO implements UserDAOContract
     public function __construct()
     {
         $filters = [
-            'per_page' => 20,
             'sort' => 'first_name,asc'
         ];
 

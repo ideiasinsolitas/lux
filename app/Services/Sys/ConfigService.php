@@ -9,21 +9,26 @@ class ConfigService
     protected $config;
     protected $dao;
 
-    public function __construct(ConfigDAOContract $dao, $user_id = null)
+    public function __construct(ConfigDAOContract $dao)
     {
-        $this->user_id = (int) $user_id;
         $this->config = [];
         $this->dao = $dao;
-        $this->load();
     }
 
-    protected function load()
+    public function setUserId($id)
+    {
+        $this->user_id = $id;
+        return $this;
+    }
+
+    public function load()
     {
         $config = $this->dao->getDefaultConfig();
         if ($this->user_id) {
             $config = array_merge($config, $this->dao->getUserConfig($this->user_id));
         }
         $this->config = $config;
+        return $this;
     }
 
     public function all()
@@ -31,8 +36,14 @@ class ConfigService
         return $this->config;
     }
 
-    public function get($key)
+    public function get($key = null)
     {
-        return $this->config[$key];
+        if (!$key) {
+            return $this->config;
+        }
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+        throw new \Exception("Error Processing Request", 1);
     }
 }

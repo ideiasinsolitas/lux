@@ -43,7 +43,7 @@ class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
         return $request->all();
     }
 
-    public function process($data = null, $code = null, $errors = null)
+    public function process(array $data, $code = 200, $errors = null)
     {
         // not found exception
         if ($data === null && $code === null) {
