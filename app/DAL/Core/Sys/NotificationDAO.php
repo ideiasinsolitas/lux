@@ -3,7 +3,7 @@
 namespace App\DAL\Core\Sys;
 
 use App\DAL\AbstractDAO;
-
+use Illuminate\Support\DB;
 use App\DAL\Core\Sys\Contracts\NotificationDAOContract;
 
 class NotificationDAO implements NotificationDAOContract

@@ -11,7 +11,6 @@ use App\DAL\Core\Sys\Contracts\UserDAOContract;
 
 class UserDAO extends AbstractDAO implements UserDAOContract
 {
-
     public function __construct()
     {
         $filters = [
@@ -52,7 +51,7 @@ class UserDAO extends AbstractDAO implements UserDAOContract
         if (isset($filters['activity_greater'])) {
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
-
+        
         return $this->finish($filters);
     }
 
@@ -68,8 +67,12 @@ class UserDAO extends AbstractDAO implements UserDAOContract
         list($userInput, $userProfileInput) = $this->handleInput($input);
         $user_id = DB::table(self::TABLE)->insertGetId($userInput);
         $userProfileInput['user_id'] = $user_id;
-        return DB::table('core_user_profiles')
+        $insertProfile = DB::table('core_user_profiles')
             ->insert($userProfileInput);
+        if ($user_id && $insertProfile) {
+            return $user_id;
+        }
+        throw new \Exception("Error Processing Request", 1);
     }
 
     public function update(array $input, $pk)

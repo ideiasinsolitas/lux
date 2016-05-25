@@ -3,10 +3,10 @@
 namespace App\Http\Middleware;
 
 use App\Services\Sys\ConfigService;
-
+use App\Http\Requests\Generic\GenericRequest;
 use Auth;
 
-class ConfigLoaderMiddleware
+class ServiceLoaderMiddleware
 {
     protected $configService;
     
@@ -19,8 +19,9 @@ class ConfigLoaderMiddleware
         $this->configService = $configService->load();
     }
 
-    public function handle($request, \Closure $next)
+    public function handle(GenericRequest $request, \Closure $next)
     {
+        $request->addService('config', $this->configService);
         return $next($request);
     }
 }

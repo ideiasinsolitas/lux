@@ -6,5 +6,5 @@ use App\DAL\Common\Actions as CommonActions;
 
 trait UserAction
 {
-    use CommonActions;
+    // use CommonActions;
 }

@@ -9,6 +9,35 @@ use App\DAL\Core\Sys\Contracts\AuthDAOContract;
 
 class AuthDAO implements AuthDAOContract
 {
+    protected $user;
+    protected $token;
+
+    public function __construct(UserDAOContract $user, TokenDAOContract $token)
+    {
+        $this->user = $user;
+        $this->token = $token;
+    }
+
+    public function insertUser(array $input)
+    {
+        return $this->user->insert($input);
+    }
+
+    public function createConfirmationToken($user_id)
+    {
+        return $this->token->generate($user_id, 'confirmation');
+    }
+
+    public function createForgotPasswordToken($user_id)
+    {
+        return $this->token->generate($user_id, 'confirmation');
+    }
+
+    public function resetPassword($user_id, $password)
+    {
+        return $this->user->update($user_id, ['password' => $password]);
+    }
+
     public function checkCredentials($email, $hashedPassword)
     {
         if (!is_string($email) && !is_string($hashedPassword)) {

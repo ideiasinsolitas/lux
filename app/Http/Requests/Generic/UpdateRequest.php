@@ -1,12 +1,8 @@
-<?php namespace App\Http\Requests\Generic;
+<?php
 
-use App\Http\Requests\Request;
+namespace App\Http\Requests\Generic;
 
-/**
- * Class CreatePermissionGroupRequest
- * @package App\Http\Requests\Core\Access\Permission\Group
- */
-class UpdateRequest extends Request
+class UpdateRequest extends GenericRequest
 {
 
 }
