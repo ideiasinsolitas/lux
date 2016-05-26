@@ -2,13 +2,8 @@
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
-/**
- * Class Kernel
- * @package App\Http
- */
 class Kernel extends HttpKernel
 {
-
     /**
      * The application's global HTTP middleware stack.
      *

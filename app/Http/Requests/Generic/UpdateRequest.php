@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Generic;
 
-class UpdateRequest extends GenericRequest
+class UpdateRequest extends Request
 {
 
 }

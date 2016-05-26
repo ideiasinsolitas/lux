@@ -8,7 +8,6 @@ use Closure;
  */
 class LocaleMiddleware
 {
-
     /**
      * @var array
      */

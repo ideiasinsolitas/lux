@@ -2,19 +2,9 @@
 
 namespace App\Http\Requests\Generic;
 
-use App\Http\Requests\Request;
+use Illuminate\Foundation\Http\Request as LaravelRequest;
 
-class GenericRequest extends Request
+class GenericRequest extends LaravelRequest
 {
-    protected $services = array();
-
-    public function setServices(array $services)
-    {
-        $this->services = $services;
-    }
-
-    public function addService($name, $service)
-    {
-        $this->services[$name] = $service;
-    }
+    use ResponseTrait;
 }

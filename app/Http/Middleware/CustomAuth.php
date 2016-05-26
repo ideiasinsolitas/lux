@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-class CustomAuthMiddleware
+class CustomAuth
 {
     public function handle($request, Closure $next)
     {

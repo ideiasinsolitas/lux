@@ -17,7 +17,7 @@ interface HttpStatusCodesContract
     const MESSAGE_UNAUTHORIZED = 'não autorizado';
     const MESSAGE_FORBIDDEN = 'proibido';
     const MESSAGE_NOT_FOUND = 'não econtrado';
-    const MESSAGE_METHOD_NOT_ALLOWED = 'método não';
+    const MESSAGE_METHOD_NOT_ALLOWED = 'método não permitido';
     const MESSAGE_GONE = 'o recurso não está mais neste endereço';
     const MESSAGE_UNSUPORTED_MEDIA_TYPE = 'mídia não suportada';
     const MESSAGE_UNPROCESSABLE_ENTITY = 'entidade não pôde ser processada';

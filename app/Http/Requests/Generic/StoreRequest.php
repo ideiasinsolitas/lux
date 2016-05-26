@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Generic;
 
-class StoreRequest extends GenericRequest
+class StoreRequest extends Request
 {
 
 }

@@ -1,7 +1,6 @@
 <?php
 
 $router->group(['namespace' => 'Interaction', 'prefix' => 'interaction'], function () use ($router) {
-
     $router->group(['prefix' => 'comment'], function () {
         Route::get('/', 'CommentController@index')->name('core.sys.comment.list');
         Route::get('/{pk}', 'CommentController@show')->name('core.sys.comment.show');
