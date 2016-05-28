@@ -19,7 +19,6 @@ class ResourceDAO extends AbstractDAO
     public function __construct()
     {
         $filters = [
-            'per_page' => 20,
             'sort' => 'created,desc'
         ];
 

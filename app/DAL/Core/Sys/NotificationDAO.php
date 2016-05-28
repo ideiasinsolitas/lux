@@ -25,7 +25,6 @@ class NotificationDAO implements NotificationDAOContract
     {
         return DB::table(self::TABLE)
             ->where('seen', null)
-            ->take($filters['limit'])
             ->get();
     }
 

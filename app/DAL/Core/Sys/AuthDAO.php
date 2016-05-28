@@ -35,6 +35,18 @@ class AuthDAO implements AuthDAOContract
             ->first();
     }
 
+    public function getUserByCredentials($email, $password)
+    {
+        if (!is_string($email) && is_string($password)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
+        return DB::table(self::TABLE)
+            ->select(self::TABLE . '.' . self::PK, self::TABLE . '.email', self::TABLE . '.password')
+            ->where('email', $email)
+            ->where('password', $password)
+            ->first();
+    }
+    
     public function registerUser(array $input)
     {
         return $this->user->insert($input);
@@ -66,18 +78,6 @@ class AuthDAO implements AuthDAOContract
             return true;
         }
         return false;
-    }
-
-    public function getByCredentials($email, $password)
-    {
-        if (!is_string($email) && is_string($password)) {
-            throw new \Exception("Error Processing Request", 1);
-        }
-        return DB::table(self::TABLE)
-            ->select(self::TABLE . '.' . self::PK, self::TABLE . '.email', self::TABLE . '.password')
-            ->where('email', $email)
-            ->where('password', $password)
-            ->first();
     }
 
     public function regenerateRememberToken($user_id, $token)

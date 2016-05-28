@@ -15,7 +15,7 @@ class AuthController extends Controller
     protected $rest;
     protected $auth;
 
-    public function __construct(RestProcessor $rest, AuthDAOContract $auth)
+    public function __construct(RestProcessor $rest, AuthService $auth)
     {
         $this->rest = $rest;
         $this->auth = $auth;
@@ -29,6 +29,7 @@ class AuthController extends Controller
     public function login(StoreRequest $request)
     {
         $input = $request->only(['email', 'password']);
+        
         return $this->rest->process();
     }
 

@@ -17,7 +17,6 @@ class CollectionDAO extends AbstractDAO implements CollectionDAOContract
     public function __construct()
     {
         $filters = [
-            'per_page' => 20,
             'sort' => 'created,desc'
         ];
 

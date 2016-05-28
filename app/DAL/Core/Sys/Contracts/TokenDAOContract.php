@@ -10,5 +10,7 @@ interface TokenDAOContract
 
     public function generate($user_id, $type);
 
+    public function regenerate($user_id, $type);
+
     public function validate(array $token, $type);
 }

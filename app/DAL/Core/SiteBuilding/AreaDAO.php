@@ -17,7 +17,6 @@ class AreaDAO extends AbstractDAO implements AreaDAOContract
     public function __construct()
     {
         $filters = [
-            'per_page' => 20,
             'sort' => 'name,asc'
         ];
 
