@@ -4,10 +4,10 @@ namespace App\Events\Core;
 
 class UserRegistered
 {
-    protected $user_id;
+    use UserEventTrait;
 
-    public function __construct($user_id)
+    public function getTemplate()
     {
-        $this->user_id = $user_id;
+        return 'emails.confirmation';
     }
 }

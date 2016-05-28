@@ -69,11 +69,16 @@ class RestMessage implements RestMessageContract
     
     public function toArray()
     {
-        return [
+        return array_filter([
             'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message,
             'errors' => $this->errors,
-        ];
+        ], function ($k, $v) {
+            if ($v === null || $v === false) {
+                return false;
+            }
+            return true;
+        });
     }
 }

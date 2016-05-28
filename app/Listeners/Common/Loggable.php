@@ -4,8 +4,8 @@ namespace App\Listeners\Common;
 
 trait Loggable
 {
-    public function log($level, $message)
+    public function log($event)
     {
-        \Log::$level($message);
+        return \Log::$level($message);
     }
 }

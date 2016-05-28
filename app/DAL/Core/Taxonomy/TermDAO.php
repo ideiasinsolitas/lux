@@ -28,14 +28,14 @@ class TermDAO extends AbstractDAO implements TermDAOContract
     {
         $translatable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table(self::TABLE)
-            ->join('core_translations', function ($q) use ($translatable_type) {
-                return $q->on('core_translations.translatable_type', $translatable_type)
-                    ->where('core_translations.translatable_id', self::TABLE . '.' . self::PK);
+            ->join(self::TRANSLATIONS_TABLE, function ($q) use ($translatable_type) {
+                return $q->on(self::TRANSLATIONS_TABLE . '.translatable_type', $translatable_type)
+                    ->where(self::TRANSLATIONS_TABLE . '.translatable_id', self::TABLE . '.' . self::PK);
             })
             ->select(
                 self::TABLE . '.' . self::PK,
                 self::TABLE . '.node_id',
-                'core_translations.name'
+                self::TRANSLATIONS_TABLE . '.name'
             );
     }
 
@@ -54,11 +54,11 @@ class TermDAO extends AbstractDAO implements TermDAOContract
         }
 
         if (isset($filters['lang'])) {
-            $this->builder->where('core_translations.translatable_type', self::INTERNAL_TYPE);
+            $this->builder->where(self::TRANSLATIONS_TABLE . '.translatable_type', self::INTERNAL_TYPE);
             if (isset($filters['pk'])) {
-                $this->builder->where('core_translations.translatable_id', $filters['pk']);
+                $this->builder->where(self::TRANSLATIONS_TABLE . '.translatable_id', $filters['pk']);
             }
-            $this->builder->where('core_translations.language', $filters['lang']);
+            $this->builder->where(self::TRANSLATIONS_TABLE . '.language', $filters['lang']);
         }
         return $this->finish($filters);
     }

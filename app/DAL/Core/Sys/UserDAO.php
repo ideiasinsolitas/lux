@@ -27,9 +27,9 @@ class UserDAO extends AbstractDAO implements UserDAOContract
             ->select(
                 self::TABLE . '.' . self::PK,
                 self::TABLE . '.email',
-                'core_user_profiles.first_name',
-                'core_user_profiles.middle_name',
-                'core_user_profiles.last_name',
+                self::PROFILE_TABLE . '.first_name',
+                self::PROFILE_TABLE . '.middle_name',
+                self::PROFILE_TABLE . '.last_name',
                 self::TABLE . '.display_name',
                 self::TABLE . '.activity',
                 self::TABLE . '.created',
@@ -81,10 +81,12 @@ class UserDAO extends AbstractDAO implements UserDAOContract
             throw new \Exception("Error Processing Request", 1);
         }
         list($userInput, $userProfileInput) = $this->handleInput($input);
-        DB::table(self::TABLE)
+        $result = DB::table(self::TABLE)
             ->where(self::PK, $pk)
             ->update($userInput);
-        $userProfileInput['user_id'] = $user_id;
+        if (!$result) {
+            throw new \Exception("Error Processing Request", 1);
+        }
         return DB::table('core_user_profiles')
             ->where('user_id', $pk)
             ->update($userProfileInput);

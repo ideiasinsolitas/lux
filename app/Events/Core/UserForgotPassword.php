@@ -2,9 +2,12 @@
 
 namespace App\Events\Core;
 
-use App\Events\Common\Mailable;
-
 class UserForgotPassword
 {
-    use Mailable;
+    use UserEventTrait;
+
+    public function getTemplate()
+    {
+        return 'emails.resetpassword';
+    }
 }

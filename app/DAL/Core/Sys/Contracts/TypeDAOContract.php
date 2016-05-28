@@ -8,14 +8,17 @@ interface TypeDAOContract
     
     const PK = "id";
 
+    // DefaultModifier
     public function insert(array $input);
 
     public function update(array $input, $pk);
 
+    // DefaultDeleter
     public function delete($pk);
 
     public function deleteMany(array $pks);
 
+    // DefaultSelector
     public function getOne(array $filters);
 
     public function getAll(array $filters = array());

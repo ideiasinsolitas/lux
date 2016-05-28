@@ -2,9 +2,12 @@
 
 namespace App\Events\Core;
 
-use App\Events\Common\Notifiable;
-
 class UserPasswordChanged
 {
-    use Notifiable;
+    use UserEventTrait;
+
+    public function getTemplate()
+    {
+        return 'emails.passwordchanged';
+    }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Events\Core;
 
-use App\Events\Common\Notifiable;
-
-class UserRegistered
+class UserAccountConfirmed
 {
-    use Notifiable;
+    use UserEventTrait;
+
+    public function getNotification()
+    {
+        return "Sua conta foi confirmada com sucesso.";
+    }
 }

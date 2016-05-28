@@ -6,5 +6,5 @@ use Illuminate\Foundation\Http\Request as LaravelRequest;
 
 class GenericRequest extends LaravelRequest
 {
-    use ResponseTrait;
+    use RequestTrait;
 }

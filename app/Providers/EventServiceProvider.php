@@ -19,21 +19,23 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\Core\UserLoggedIn' => [
-            'App\Listeners\LoggerListener',
+            'App\Listeners\Logger',
         ],
         'App\Events\Core\UserLoggedOut' => [
-            'App\Listeners\LoggerListener',
+            'App\Listeners\Logger',
         ],
         'App\Events\Core\UserRegistered' => [
-            'App\Listeners\PostmanListener',
-            'App\Listeners\NotificationListener',
-            'App\Listeners\LoggerListener',
+            'App\Listeners\Postman',
+            'App\Listeners\Logger',
         ],
         'App\Events\Core\UserForgotPassword' => [
-            'App\Listeners\NotificationListener',
+            'App\Listeners\Postman',
         ],
         'App\Events\Core\UserPasswordChanged' => [
-            'App\Listeners\PostmanListener',
+            'App\Listeners\Notification',
+        ],
+        'App\Events\Core\UserAccountConfirmed' => [
+            'App\Listeners\Notification',
         ]
     ];
 

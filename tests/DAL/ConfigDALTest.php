@@ -29,13 +29,13 @@ class ConfigDALTest extends TestCase
     {
         $dao = new ConfigDAO();
 
-        $input = [];
         $pk = 1;
         $user_id = 1;
         $activity = 3;
         $key = "";
         $value = "";
         $format = "";
+        $input = [];
         
         $result = $dao->create($input);
 

@@ -10,12 +10,25 @@ interface CommentDAOContract
 
     const INTERNAL_TYPE = "Comment";
 
-    public function createNode();
-
+    // DefaultModifier
     public function insert(array $input);
 
     public function update(array $input, $pk);
 
+    // DefaultDeleter
+    public function delete($pk);
+
+    public function deleteMany(array $pks);
+
+    // DefaultSelector
+    public function getOne(array $filters);
+
+    public function getAll(array $filters = array());
+
+    // Nodable
+    public function createNode();
+
+    // Translatable
     public function addTranslation($item_id, $lang, array $input);
 
     public function updateTranslation($item_id, $lang, array $input);
@@ -34,14 +47,7 @@ interface CommentDAOContract
 
     public function slugExists($slug);
 
-    public function delete($pk);
-
-    public function deleteMany(array $pks);
-
-    public function getOne(array $filters);
-
-    public function getAll(array $filters = array());
-
+    // Ownable
     public function own($user_id, $item_id);
 
     public function changeOwner($user_id, $item_id);
@@ -50,6 +56,7 @@ interface CommentDAOContract
 
     public function isOwner($user_id, $item_id);
 
+    // Tree
     public function generateTree(array $items);
 
     public function buildTree($branch_id = 0);

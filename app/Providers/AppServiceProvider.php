@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
 
-        $daos = array(
+        $domains = array(
             'Config',
             'Type',
             'User',
@@ -40,16 +40,16 @@ class AppServiceProvider extends ServiceProvider
             'Token'
         );
 
-        foreach ($daos as $dao) {
-            if (!interface_exists("App\DAL\Core\Sys\Contracts\\{$dao}DAOContract")) {
-                throw new \Exception("Contract ${dao}DAOContract not Found", 1);
+        foreach ($domains as $domain) {
+            if (!interface_exists("App\DAL\Core\Sys\Contracts\\{$domain}DAOContract")) {
+                throw new \Exception("Contract ${domain}DAOContract not Found", 1);
             }
 
-            if (!class_exists("App\DAL\Core\Sys\\{$dao}DAO")) {
-                throw new \Exception("Class ${dao}DAO not Found", 1);
+            if (!class_exists("App\DAL\Core\Sys\\{$domain}DAO")) {
+                throw new \Exception("Class ${domain}DAO not Found", 1);
             }
 
-            $this->app->bind("App\DAL\Core\Sys\Contracts\\{$dao}DAOContract", "App\DAL\Core\Sys\\{$dao}DAO");
+            $this->app->bind("App\DAL\Core\Sys\Contracts\\{$domain}DAOContract", "App\DAL\Core\Sys\\{$domain}DAO");
         }
 
         if ($this->app->environment() == 'local') {

@@ -10,29 +10,45 @@ class NotificationDAO implements NotificationDAOContract
 {
     public function insert(array $item)
     {
-        
+        return DB::table(self::TABLE)
+            ->insert($item);
     }
 
     public function getAll(array $filters)
     {
-
+        return DB::table(self::TABLE)
+            ->take($filters['limit'])
+            ->get();
     }
 
-    public function markAsSeen($user_id, $datetime)
+    public function getUnseen(array $filters)
     {
-        if (!is_int($user_id)) {
+        return DB::table(self::TABLE)
+            ->where('seen', null)
+            ->take($filters['limit'])
+            ->get();
+    }
+
+    public function markAsSeen($user_id, $notification_id, $datetime)
+    {
+        if (!is_int($user_id) || !is_int($notification_id) || !is_string($datetime)) {
             throw new \Exception("Error Processing Request", 1);
         }
+        return DB::table(self::TABLE)
+            ->where(self::TABLE . '.user_id', $user_id)
+            ->where(self::TABLE . '.notification_id', $notification_id)
+            ->update(['seen' => $datetime]);
 
     }
 
     public function markAllAsSeen($user_id, $datetime)
     {
-        if (!is_int($user_id)) {
+        if (!is_int($user_id) || !is_string($datetime)) {
             throw new \Exception("Error Processing Request", 1);
         }
 
         return DB::table(self::TABLE)
-            ->where();
+            ->where(self::TABLE . '.user_id', $user_id)
+            ->update(['seen' => $datetime]);
     }
 }

@@ -18,7 +18,7 @@ class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
 
     protected $code;
 
-    public function __construct(Message $message)
+    public function __construct(RestMessage $message)
     {
         $this->body = $message;
 
@@ -32,7 +32,7 @@ class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
         ];
     }
 
-    public function resolveRequest($request)
+    protected function resolveRequest($request)
     {
         $json = $request->json()->all();
 
@@ -41,6 +41,12 @@ class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
         }
         
         return $request->all();
+    }
+
+    protected function send()
+    {
+        $data = $this->body->toArray();
+        return ResponseFactory::make($data, $this->code);
     }
 
     public function process(array $data, $code = 200, $errors = null)
@@ -78,11 +84,5 @@ class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
         }
 
         return $this->send();
-    }
-
-    public function send()
-    {
-        $data = $this->body->toArray();
-        return ResponseFactory::make(array_filter($data), $this->code);
     }
 }

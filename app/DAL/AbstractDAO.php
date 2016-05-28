@@ -2,6 +2,8 @@
 
 namespace App\DAL;
 
+use Illuminate\Support\DB;
+
 abstract class AbstractDAO
 {
     protected $filters;
@@ -33,6 +35,11 @@ abstract class AbstractDAO
         }
 
         return $this->builder->get();
+    }
+
+    public function getLastInsertId()
+    {
+        return DB::table(self::TABLE)->lastInsertId();
     }
 
     abstract public function getBuilder();

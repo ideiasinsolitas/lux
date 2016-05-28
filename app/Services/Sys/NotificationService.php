@@ -14,7 +14,7 @@ class NotificationService
         $this->dao = $dao;
     }
 
-    public function notify($user_id, $notification)
+    public function send($user_id, $notification)
     {
         if (!is_int($user_id) && !is_string($notification)) {
             throw new \Exception("Error Processing Request", 1);
