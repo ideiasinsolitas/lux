@@ -51,6 +51,10 @@ trait AuthTrait
      */
     public function validate(array $credentials = array())
     {
+        $user = $this->getUser();
+        if ($user->email === $credentials['email'] && $user->password === bcrypt($credentials['password'])) {
+            return true;
+        }
         return false;
     }
 

@@ -15,7 +15,7 @@ class AuthController extends Controller
     protected $rest;
     protected $auth;
 
-    public function __construct(RestProcessor $rest, AuthService $auth)
+    public function __construct(RestProcessorContract $rest, AuthServiceContract $auth)
     {
         $this->rest = $rest;
         $this->auth = $auth;
@@ -23,40 +23,66 @@ class AuthController extends Controller
 
     public function form()
     {
-        return view('auth.form');
+        if ($this->auth->guest()) {
+            return view('auth.form');
+        }
+        throw new \Exception("You cannot do that.", 1);
+        
     }
 
     public function login(StoreRequest $request)
     {
-        $input = $request->only(['email', 'password']);
-        
-        return $this->rest->process();
+        if ($this->auth->guest()) {
+            $input = $request->only(['email', 'password']);
+            $result = $this->auth->func();
+            return $this->rest->process($result);
+        }
+        throw new \Exception("You cannot do that.", 1);
     }
 
     public function register(StoreRequest $request)
     {
-        $input = $request->only(['first_name', 'last_name', 'email', 'password', 'password_confirmation']);
-        return $this->rest->process();
+        if ($this->auth->guest()) {
+            $input = $request->only(['first_name', 'last_name', 'email', 'password', 'password_confirmation']);
+            $result = $this->auth->func();
+            return $this->rest->process($result);
+        }
+        throw new \Exception("You cannot do that.", 1);
     }
 
     public function forgotPassword(GenericRequest $request)
     {
-        $input = $request->only(['email']);
-        return $this->rest->process();
+        if ($this->auth->guest()) {
+            $input = $request->only(['email']);
+            $result = $this->auth->func();
+            return $this->rest->process($result);
+        }
+        throw new \Exception("You cannot do that.", 1);
     }
 
     public function forgotPasswordForm()
     {
-        return view('auth.password');
+        if ($this->auth->guest()) {
+            return view('auth.password');
+        }
+        throw new \Exception("You cannot do that.", 1);
     }
 
     public function resetForm()
     {
-        return view('auth.reset');
+        if ($this->auth->guest()) {
+            return view('auth.reset');
+        }
+        throw new \Exception("You cannot do that.", 1);
     }
 
     public function resetPassword(StoreRequest $request)
     {
-        $input = $request->only(['token']);
+        if ($this->auth->guest()) {
+            $input = $request->only(['token']);
+            $result = $this->auth->func();
+            return $this->rest->process($result);
+        }
+        throw new \Exception("You cannot do that.", 1);
     }
 }

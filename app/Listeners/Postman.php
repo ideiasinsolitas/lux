@@ -8,6 +8,6 @@ class PostmanListener
 
     public function handle($event)
     {
-        return $this->send($event);
+        return $this->email($event);
     }
 }

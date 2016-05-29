@@ -44,11 +44,6 @@ class AreaController extends Controller
     public function index()
     {
         $areas = $this->areas->getAreasPaginated(config('core.site_building.area.default_per_page'))->items();
-        $res = [
-            'status' => $areas ? 'OK' : 'error',
-            'result' => $areas,
-        ];
-        return response()->json($res);
     }
 
     /**
@@ -64,12 +59,6 @@ class AreaController extends Controller
         } else {
             $area = $this->areas->update($input);
         }
-        $res = [
-            'status' => $area ? 'OK' : 'error',
-            'message' => trans('alerts.area.stored'),
-            'result' => $area,
-        ];
-        return response()->json($res);
     }
 
     /**
@@ -80,10 +69,6 @@ class AreaController extends Controller
     public function show($id)
     {
         $area = $this->areas->findOrFail($id, true);
-        $res = [
-            'status' => $area ? 'OK' : 'error',
-            'result' => $area,
-        ];
         return response()->json($res);
     }
 
@@ -96,104 +81,5 @@ class AreaController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $area = $this->areas->delete($id);
-        $res = [
-            'status' => $area ? 'OK' : 'error',
-            'message' => trans("alerts.areas.deleted"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * /
-     * @param  [type]        $id      [description]
-     * @param  DeleteRequest $request [description]
-     * @return [type]                 [description]
-     */
-    public function deleteMany(DeleteRequest $request)
-    {
-        $ids = $request->only('ids');
-        $areas = $this->areas->deleteMany($var['ids']);
-        $res = [
-            'status' => $areas ? 'OK' : 'error',
-            'message' => trans("alerts.areas.deleted"),
-            'result' => ['ids' => $ids],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
-     * @param PermanentlyDeleteAreaRequest $request
-     * @return mixed
-     */
-    public function delete($id, PermanentlyDeleteRequest $request)
-    {
-        $this->areas->delete($id);
-        $res = [
-            'status' => $area ? 'OK' : 'error',
-            'message' => trans("alerts.areas.deleted_permanently"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
-     * @param RestoreAreaRequest $request
-     * @return mixed
-     */
-    public function restore($id, UpdateRequest $request)
-    {
-        $this->areas->restore($id);
-        $res = [
-            'status' => $area ? 'OK' : 'error',
-            'message' => trans("alerts.areas.restored"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @param $id
-     * @param $status
-     * @param MarkAreaRequest $request
-     * @return mixed
-     */
-    public function mark($id, $status, UpdateRequest $request)
-    {
-        $this->areas->mark($id, $status);
-        $res = [
-            'status' => $area ? 'OK' : 'error',
-            'message' => trans("alerts.areas.updated"),
-            'result' => ['id' => $id, 'status' => $status],
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function deactivated()
-    {
-        $areas = $this->areas->getAreasPaginated();
-        $res = [
-            'status' => $areas ? 'OK' : 'error',
-            'result' => $areas,
-        ];
-        return response()->json($res);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function deleted()
-    {
-        $areas = $this->areas->getDeletedAreasPaginated();
-        $res = [
-            'status' => $areas ? 'OK' : 'error',
-            'result' => $areas,
-        ];
-        return response()->json($res);
     }
 }

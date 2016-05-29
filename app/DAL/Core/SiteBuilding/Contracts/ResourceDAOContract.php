@@ -10,16 +10,20 @@ interface ResourceDAOContract
 
     const INTERNAL_TYPE = "Resource";
     
+    //
     public function insert(array $input);
 
     public function update(array $input, $pk);
 
+    //
     public function delete($pk);
 
     public function deleteMany($pk);
 
+    //
     public function restore($pk);
 
+    //
     public function getAll(array $filters = array());
 
     public function getActivity($pk);

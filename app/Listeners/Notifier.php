@@ -16,6 +16,6 @@ class NotificationListener
     public function handle($event)
     {
         $user = $event->getUser();
-        return $this->send($user->id, $event->getNotification());
+        return $this->notify($user->id, $event->getNotification());
     }
 }

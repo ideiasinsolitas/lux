@@ -38,7 +38,7 @@ class TokenDAO implements TokenDAOContract
             ->delete();
 
         if (!$result) {
-            throw new Exception("Token does not exist.", 1);
+            throw new \Exception("Token does not exist.", 1);
         }
 
         return $this->generate($user_id, $type);

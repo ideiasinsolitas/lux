@@ -52,4 +52,28 @@ class AuthService implements Guard
         }
         return $this->model;
     }
-}
+
+    protected function randomHash()
+    {
+        return bcrypt(microtime(true));
+    }
+
+    public function authenticate($remember = false)
+    {
+        $user = $this->getUser();
+        $this->request->session->set('authenticated_user_id', $user->id);
+        $this->request->cookie('authenticated_user_id', $user->id);
+        if ($remember) {
+            $this->request->session->set('remember_token', $remember_token);
+            $this->request->cookie('remember_token', $remember_token);
+        }
+        $this->request->session->set('session_token', $session_token);
+        $this->request->cookie('session_token', $session_token);
+    }
+
+    public function isAuthenticated()
+    {
+        $user_id = $this->request->session->get('authenticated_user_id');
+        if ($user_id) {
+        }
+    }

@@ -20,10 +20,7 @@ class AuthDAO implements AuthDAOContract
 
     public function getUserByPk($pk)
     {
-        return DB::table(self::TABLE)
-            ->select(self::TABLE . '.' . self::PK, self::TABLE . '.email', self::TABLE . '.password')
-            ->where(self::PK, $pk)
-            ->first();
+        return $this->user->getOne($pk);
     }
 
     public function getUserByToken($pk, $token)

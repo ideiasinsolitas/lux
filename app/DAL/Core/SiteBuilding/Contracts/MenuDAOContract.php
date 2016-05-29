@@ -8,18 +8,23 @@ interface MenuDAOContract
 
     const PK = "id";
 
+    //
     public function insert(array $input);
 
     public function update(array $input, $pk);
 
+    //
     public function delete($pk);
 
     public function deleteMany($pk);
 
+    //
     public function restore($pk);
 
+    //
     public function getAll(array $filters = array());
 
+    //
     public function getActivity($pk);
 
     public function mark($pk, $activity);
@@ -32,6 +37,7 @@ interface MenuDAOContract
 
     public function promote($pk);
 
+    // Tree
     public function generateTree(array $items);
 
     public function buildTree($branch_id = 0);

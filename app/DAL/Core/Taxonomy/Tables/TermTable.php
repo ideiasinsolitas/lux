@@ -5,7 +5,7 @@ namespace App\DAL\Core\Sys\Tables;
 use App\DAL\AbstractTable;
 use App\DAL\TableTrait;
 
-class NotificationTable extends AbstractTable
+class TermTable extends AbstractTable
 {
     use TableTrait;
 
