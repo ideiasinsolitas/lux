@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Auth\Guard;
+
 use App\DAL\Core\Sys\Contracts\AuthDAOContract;
 use App\DAL\Core\Sys\Contracts\TokenDAOContract;
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
@@ -15,7 +17,7 @@ class AuthController extends Controller
     protected $rest;
     protected $auth;
 
-    public function __construct(RestProcessorContract $rest, AuthServiceContract $auth)
+    public function __construct(RestProcessorContract $rest, Guard $auth)
     {
         $this->rest = $rest;
         $this->auth = $auth;
@@ -26,7 +28,7 @@ class AuthController extends Controller
         if ($this->auth->guest()) {
             return view('auth.form');
         }
-        throw new \Exception("You cannot do that.", 1);
+        return redirect('/dashboard');
         
     }
 
@@ -34,10 +36,12 @@ class AuthController extends Controller
     {
         if ($this->auth->guest()) {
             $input = $request->only(['email', 'password']);
-            $result = $this->auth->func();
-            return $this->rest->process($result);
+            $result = $this->auth->validate($input);
+            if (!$result) {
+                return redirect('/login');
+            }
         }
-        throw new \Exception("You cannot do that.", 1);
+        return redirect('/dashboard');
     }
 
     public function register(StoreRequest $request)
@@ -45,19 +49,19 @@ class AuthController extends Controller
         if ($this->auth->guest()) {
             $input = $request->only(['first_name', 'last_name', 'email', 'password', 'password_confirmation']);
             $result = $this->auth->func();
-            return $this->rest->process($result);
+            return redirect('/login');
         }
-        throw new \Exception("You cannot do that.", 1);
+        return redirect('/dashboard');
     }
 
     public function forgotPassword(GenericRequest $request)
     {
         if ($this->auth->guest()) {
             $input = $request->only(['email']);
-            $result = $this->auth->func();
-            return $this->rest->process($result);
+            $result = $this->auth->register($input);
+            return redirect('/');
         }
-        throw new \Exception("You cannot do that.", 1);
+        return redirect('/dashboard');
     }
 
     public function forgotPasswordForm()
@@ -65,7 +69,7 @@ class AuthController extends Controller
         if ($this->auth->guest()) {
             return view('auth.password');
         }
-        throw new \Exception("You cannot do that.", 1);
+        return redirect('/dashboard');
     }
 
     public function resetForm()
@@ -73,16 +77,16 @@ class AuthController extends Controller
         if ($this->auth->guest()) {
             return view('auth.reset');
         }
-        throw new \Exception("You cannot do that.", 1);
+        return redirect('/dashboard');
     }
 
     public function resetPassword(StoreRequest $request)
     {
         if ($this->auth->guest()) {
             $input = $request->only(['token']);
-            $result = $this->auth->func();
-            return $this->rest->process($result);
+            $result = $this->auth->reset($input);
+            return redirect('/');
         }
-        throw new \Exception("You cannot do that.", 1);
+        return redirect('/dashboard');
     }
 }

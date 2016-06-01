@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Sys;
 use App\Http\Controllers\Controller;
 
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
-use App\Services\Rest\RestProcessor;
+use App\Services\Rest\RestProcessorContract;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
@@ -17,7 +17,7 @@ class UserController extends Controller
     protected $rest;
     protected $users;
 
-    public function __construct(RestProcessor $rest, UserDAOContract $users)
+    public function __construct(RestProcessorContract $rest, UserDAOContract $users)
     {
         $this->rest = $rest;
         $this->users = $users;

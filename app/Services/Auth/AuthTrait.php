@@ -43,6 +43,7 @@ trait AuthTrait
     {
         return $this->getUser()->getId();
     }
+    
     /**
      * Validate a user's credentials.
      *

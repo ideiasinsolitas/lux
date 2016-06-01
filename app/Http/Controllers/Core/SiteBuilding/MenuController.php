@@ -34,12 +34,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = $this->menus->getMenusPaginated(config('core.site_building.menu.default_per_page'))->items();
-        $res = [
-            'status' => $menus ? 'OK' : 'error',
-            'result' => $menus,
-        ];
-        return response()->json($res);
+        $menus = $this->menus->getAll();
+        return $this->rest->process($menus);
     }
 
     /**
@@ -55,12 +51,7 @@ class MenuController extends Controller
         } else {
             $menu = $this->menus->update($input);
         }
-        $res = [
-            'status' => $menu ? 'OK' : 'error',
-            'message' => trans('alerts.menu.stored'),
-            'result' => $menu,
-        ];
-        return response()->json($res);
+        return $this->rest->process($menu);
     }
 
     /**
@@ -71,11 +62,7 @@ class MenuController extends Controller
     public function show($id)
     {
         $menu = $this->menus->findOrFail($id, true);
-        $res = [
-            'status' => $menu ? 'OK' : 'error',
-            'result' => $menu,
-        ];
-        return response()->json($res);
+        return $this->rest->process($menu);
     }
 
     /**
@@ -87,11 +74,6 @@ class MenuController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $menu = $this->menus->delete($id);
-        $res = [
-            'status' => $menu ? 'OK' : 'error',
-            'message' => trans("alerts.menus.deleted"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        return $this->rest->process($menu);
     }
 }

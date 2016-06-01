@@ -51,6 +51,9 @@ class AppServiceProvider extends ServiceProvider
 
             $this->app->bind("App\DAL\Core\Sys\Contracts\\{$domain}DAOContract", "App\DAL\Core\Sys\\{$domain}DAO");
         }
+        
+        $this->app->bind("Illuminate\Contracts\Auth\Guard", "App\Services\Auth\AuthService");
+        $this->app->bind("Illuminate\Contracts\Auth\UserProvider", "App\Services\Auth\UserAuthProvider");
 
         if ($this->app->environment() == 'local') {
             $this->app->register(\Laracasts\Generators\GeneratorsServiceProvider::class);

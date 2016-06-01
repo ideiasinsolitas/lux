@@ -13,8 +13,15 @@ class UserAuthModel implements Authenticatable
 
     public static function createFromUser($user)
     {
-        return new self($user->id, $user->token, $user->password);
+        if (is_object($user)) {
+            return new self($user->id, $user->token, $user->password);
+        }
+        if (is_array($user)) {
+            return new self($user['id'], $user['token'], bcrypt($user['password']));
+        }
+        throw new \Exception("Error Processing Request", 1);
     }
+
 
     public function __construct($id = null, $token = null, $password = null)
     {

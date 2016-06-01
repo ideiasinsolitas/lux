@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Core\SiteBuilding\Area;
 
 use App\Repositories\Core\SiteBuilding\AreaRepository;
-
-use App\Http\Requests\Generic\CreateRequest;
+use App\Services\Rest\RestProcessorContract;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
 class AreaController extends Controller
 {
+    protected $rest;
+
     /**
      * [$areas description]
      * @var [type]
@@ -22,8 +21,9 @@ class AreaController extends Controller
      * /
      * @param AreaRepository $areas [description]
      */
-    public function __construct(AreaRepository $areas)
+    public function __construct(RestProcessorContract $rest, AreaRepository $areas)
     {
+        $this->rest = $rest;
         $this->areas = $areas;
     }
 
@@ -43,7 +43,8 @@ class AreaController extends Controller
      */
     public function index()
     {
-        $areas = $this->areas->getAreasPaginated(config('core.site_building.area.default_per_page'))->items();
+        $areas = $this->areas->getAll();
+        return $this->rest->process($areas);
     }
 
     /**
@@ -59,6 +60,7 @@ class AreaController extends Controller
         } else {
             $area = $this->areas->update($input);
         }
+        return $this->rest->process($area);
     }
 
     /**
@@ -69,7 +71,7 @@ class AreaController extends Controller
     public function show($id)
     {
         $area = $this->areas->findOrFail($id, true);
-        return response()->json($res);
+        return $this->rest->process($area);
     }
 
     /**
@@ -81,5 +83,17 @@ class AreaController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $area = $this->areas->delete($id);
+        return $this->rest->process($area);
+    }
+
+    public function addBlock($area_id, StoreRequest $request)
+    {
+        $block_id = $request->get('block_id');
+        return $this->rest->process($area);
+    }
+
+    public function removeBlock($area_id, $block_id)
+    {
+        return $this->rest->process($area);
     }
 }

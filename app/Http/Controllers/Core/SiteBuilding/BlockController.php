@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Core\SiteBuilding\Block;
 
 use App\Repositories\Core\SiteBuilding\BlockRepository;
-
-use App\Http\Requests\Generic\CreateRequest;
+use App\Services\Rest\RestProcessorContract;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 
 class BlockController extends Controller
 {
+    protected $rest;
+
     /**
      * [$blocks description]
      * @var [type]
@@ -22,8 +21,9 @@ class BlockController extends Controller
      * /
      * @param BlockRepository $blocks [description]
      */
-    public function __construct(BlockRepository $blocks)
+    public function __construct(RestProcessorContract $rest, BlockRepository $blocks)
     {
+        $this->rest = $rest;
         $this->blocks = $blocks;
     }
 
@@ -43,12 +43,8 @@ class BlockController extends Controller
      */
     public function index()
     {
-        $blocks = $this->blocks->getBlocksPaginated(config('core.site_building.block.default_per_page'))->items();
-        $res = [
-            'status' => $blocks ? 'OK' : 'error',
-            'result' => $blocks,
-        ];
-        return response()->json($res);
+        $blocks = $this->blocks->getAll();
+        return $this->rest->process($blocks);
     }
 
     /**
@@ -64,12 +60,7 @@ class BlockController extends Controller
         } else {
             $block = $this->blocks->update($input);
         }
-        $res = [
-            'status' => $block ? 'OK' : 'error',
-            'message' => trans('alerts.block.stored'),
-            'result' => $block,
-        ];
-        return response()->json($res);
+        return $this->rest->process($block);
     }
 
     /**
@@ -79,12 +70,8 @@ class BlockController extends Controller
      */
     public function show($id)
     {
-        $block = $this->blocks->findOrFail($id, true);
-        $res = [
-            'status' => $block ? 'OK' : 'error',
-            'result' => $block,
-        ];
-        return response()->json($res);
+        $block = $this->blocks->getOne($id);
+        return $this->rest->process($block);
     }
 
     /**
@@ -96,11 +83,6 @@ class BlockController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $block = $this->blocks->delete($id);
-        $res = [
-            'status' => $block ? 'OK' : 'error',
-            'message' => trans("alerts.blocks.deleted"),
-            'result' => ['id' => $id],
-        ];
-        return response()->json($res);
+        return $this->rest->process($block);
     }
 }

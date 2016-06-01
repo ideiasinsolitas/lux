@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Core\SiteBuilding;
 use App\Http\Controllers\Controller;
 
 use App\DAL\Core\SiteBuilding\Contracts\FileDAOContract;
-use App\Services\Rest\RestProcessor;
+use App\Services\Rest\RestProcessorContract;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
@@ -30,7 +30,7 @@ class FileController extends Controller
      * /
      * @param FileDAO $files [description]
      */
-    public function __construct(RestProcessor $rest, FileDAOContract $files)
+    public function __construct(RestProcessorContract $rest, FileDAOContract $files)
     {
         $this->rest = $rest;
         $this->files = $files;

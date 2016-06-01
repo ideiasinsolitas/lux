@@ -13,6 +13,11 @@ class UserAuthProvider implements UserProvider
         $this->auth = $auth;
     }
 
+    public function create(array $user)
+    {
+        return $this->auth->registerUser($user);
+    }
+
     /**
      * Retrieve a user by their unique identifier.
      *
@@ -69,6 +74,7 @@ class UserAuthProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        return false;
+        return $user->getEmail() === $credentials['email'] &&
+               $user->getPassword() === $credentials['password'];
     }
 }

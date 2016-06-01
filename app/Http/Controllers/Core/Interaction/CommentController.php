@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Core\Interaction\Comment;
 use App\Http\Controllers\Controller;
 
 use App\DAL\Core\Interaction\Contracts\CommentDAOContract;
-use App\Services\Rest\RestProcessor;
+use App\Services\Rest\RestProcessorContract;
 
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
@@ -28,7 +28,7 @@ class CommentController extends Controller
      * /
      * @param CommentDAO $comments [description]
      */
-    public function __construct(RestProcessor $rest, CommentDAOContract $comments)
+    public function __construct(RestProcessorContract $rest, CommentDAOContract $comments)
     {
         $this->rest = $rest;
         $this->comments = $comments;
