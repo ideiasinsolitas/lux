@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding\Block;
 
-use App\Repositories\Core\SiteBuilding\BlockRepository;
+use Illuminate\Routing\Controller;
+
+use App\DAL\Core\SiteBuilding\BlockRepository;
 use App\Services\Rest\RestProcessorContract;
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;

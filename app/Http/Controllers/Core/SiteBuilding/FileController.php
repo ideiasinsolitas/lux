@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
+use Carbon\Carbon;
 
 use App\DAL\Core\SiteBuilding\Contracts\FileDAOContract;
-use App\Services\Rest\RestProcessorContract;
-
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
-
-use Carbon\Carbon;
+use App\Services\Rest\RestProcessorContract;
 
 class FileController extends Controller
 {

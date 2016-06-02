@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Sys;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
+use Carbon\Carbon;
 
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
-use App\Services\Rest\RestProcessorContract;
-
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
-
-use Carbon\Carbon;
+use App\Services\Rest\RestProcessorContract;
 
 class UserController extends Controller
 {

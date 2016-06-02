@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding\Menu;
 
-use App\Repositories\Core\SiteBuilding\MenuRepository;
+use Illuminate\Routing\Controller;
+use Carbon\Carbon;
 
-use App\Http\Requests\Generic\CreateRequest;
+use App\DAL\Core\SiteBuilding\MenuRepository;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Http\Requests\Generic\EditRequest;
-use App\Http\Requests\Generic\UpdateRequest;
 use App\Http\Requests\Generic\DeleteRequest;
+use App\Services\Rest\RestProcessorContract;
 
 class MenuController extends Controller
 {
@@ -22,8 +22,9 @@ class MenuController extends Controller
      * /
      * @param MenuRepository $menus [description]
      */
-    public function __construct(MenuRepository $menus)
+    public function __construct(RestProcessorContract $rest, MenuRepository $menus)
     {
+        $this->rest = $rest;
         $this->menus = $menus;
     }
 

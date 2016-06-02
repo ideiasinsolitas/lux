@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Core\Sys\Config;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
+use Carbon\Carbon;
 
 use App\DAL\Core\Sys\Contracts\ConfigDAOContract;
-use App\Services\Rest\RestProcessorContract;
-
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
-
-use Carbon\Carbon;
+use App\Services\Rest\RestProcessorContract;
 
 class ConfigController extends Controller
 {
     /**
+     *
      * [$rest description]
      * @var [type]
      */
     protected $rest;
-    
+
     /**
      * [$configs description]
      * @var [config]
@@ -65,9 +64,9 @@ class ConfigController extends Controller
 
     /**
      * /
-     * @param  [config]        $pk      [description]
+     * @param  [config]      $pk      [description]
      * @param  DeleteRequest $request [description]
-     * @return [config]                 [description]
+     * @return [config]               [description]
      */
     public function destroy($pk, DeleteRequest $request)
     {

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Core\Interaction\Folksonomy;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
+use Carbon\Carbon;
 
 use App\DAL\Core\Interaction\Contracts\TermDAOContract;
-use App\Services\Rest\RestProcessorContract;
-
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
-
-use Carbon\Carbon;
+use App\Services\Rest\RestProcessorContract;
 
 class TermController extends Controller
 {
@@ -35,7 +33,7 @@ class TermController extends Controller
         $this->rest = $rest;
         $this->terms = $terms;
     }
-    
+
     /**
      * Display a listing of the resource.
      * @param  integer $page [description]
@@ -66,6 +64,7 @@ class TermController extends Controller
 
     /**
      * /
+     *
      * @param  [type]        $pk      [description]
      * @param  DeleteRequest $request [description]
      * @return [type]                 [description]

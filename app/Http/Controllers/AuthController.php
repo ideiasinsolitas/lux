@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Routing\Controller;
 
 use App\DAL\Core\Sys\Contracts\AuthDAOContract;
 use App\DAL\Core\Sys\Contracts\TokenDAOContract;
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
-use App\Services\Rest\RestProcessor;
-
 use App\Http\Requests\Generic\GenericRequest;
 use App\Http\Requests\Generic\StoreRequest;
+use App\Services\Rest\RestProcessor;
 
 class AuthController extends Controller
 {
@@ -29,7 +29,6 @@ class AuthController extends Controller
             return view('auth.form');
         }
         return redirect('/dashboard');
-        
     }
 
     public function login(StoreRequest $request)

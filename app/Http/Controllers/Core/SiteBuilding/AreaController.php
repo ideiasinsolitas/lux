@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Core\SiteBuilding\Area;
 
-use App\Repositories\Core\SiteBuilding\AreaRepository;
+use Illuminate\Routing\Controller;
+
+use App\DAL\Core\SiteBuilding\AreaRepository;
 use App\Services\Rest\RestProcessorContract;
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
