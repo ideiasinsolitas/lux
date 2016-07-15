@@ -5,13 +5,11 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages', [
+  angular.module('Lux.pages', [
     'ui.router',
-
-    'BlurAdmin.pages.dashboard',
-    'BlurAdmin.pages.core'
-  ])
-      .config(routeConfig);
+    'Lux.pages.dashboard',
+    'Lux.pages.core'
+  ]).config(routeConfig);
 
   /** @ngInject */
   function routeConfig($urlRouterProvider, baSidebarServiceProvider) {

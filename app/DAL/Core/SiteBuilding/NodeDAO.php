@@ -13,11 +13,9 @@ class NodeDAO extends AbstractDAO
 
     public function __construct()
     {
-        $filters = [
+        $this->filters = [
             'sort' => 'modified,desc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()
@@ -31,11 +29,6 @@ class NodeDAO extends AbstractDAO
                 self::TABLE . '.modified',
                 self::TABLE . '.deleted'
             );
-    }
-
-    public function getClassBuilder($pk, $class)
-    {
-
     }
 
     protected function parseFilters(array $filters = array(), $defaults = true)

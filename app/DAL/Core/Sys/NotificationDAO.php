@@ -3,11 +3,14 @@
 namespace App\DAL\Core\Sys;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use Illuminate\Support\DB;
 use App\DAL\Core\Sys\Contracts\NotificationDAOContract;
 
 class NotificationDAO implements NotificationDAOContract
 {
+    use DAOTrait;
+    
     public function insert(array $item)
     {
         return DB::table(self::TABLE)

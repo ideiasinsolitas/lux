@@ -30,12 +30,16 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\Core\UserForgotPassword' => [
             'App\Listeners\Postman',
+            'App\Listeners\Notification',
+            'App\Listeners\Logger',
         ],
         'App\Events\Core\UserPasswordChanged' => [
             'App\Listeners\Notification',
+            'App\Listeners\Logger',
         ],
         'App\Events\Core\UserAccountConfirmed' => [
             'App\Listeners\Notification',
+            'App\Listeners\Logger',
         ]
     ];
 

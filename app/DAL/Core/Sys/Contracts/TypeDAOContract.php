@@ -8,6 +8,8 @@ interface TypeDAOContract
     
     const PK = "id";
 
+    const FK = "type_id";
+
     // DefaultModifier
     public function insert(array $input);
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Core\SiteBuilding\Block;
+namespace App\Http\Controllers\Core\SiteBuilding;
 
 use Illuminate\Routing\Controller;
 
-use App\DAL\Core\SiteBuilding\BlockRepository;
+use App\DAL\Core\SiteBuilding\BlockDAO;
 use App\Services\Rest\RestProcessorContract;
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
@@ -21,21 +21,12 @@ class BlockController extends Controller
 
     /**
      * /
-     * @param BlockRepository $blocks [description]
+     * @param BlockDAO $blocks [description]
      */
-    public function __construct(RestProcessorContract $rest, BlockRepository $blocks)
+    public function __construct(RestProcessorContract $rest, BlockDAO $blocks)
     {
         $this->rest = $rest;
         $this->blocks = $blocks;
-    }
-
-    /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.site_building.block');
     }
 
     /**
@@ -45,8 +36,8 @@ class BlockController extends Controller
      */
     public function index()
     {
-        $blocks = $this->blocks->getAll();
-        return $this->rest->process($blocks);
+        $blocks = $this->blocks->getAll(request()->get("filters"));
+        return $blocks;
     }
 
     /**
@@ -57,12 +48,12 @@ class BlockController extends Controller
     public function store(StoreRequest $request)
     {
         $input = $request->only(['id', 'area_id', 'name']);
-        if (isset($input['id'])) {
+        if ($request->has('id')) {
             $block = $this->blocks->create($input);
         } else {
-            $block = $this->blocks->update($input);
+            $block = $this->blocks->update($input, (int) $request->get('pk'));
         }
-        return $this->rest->process($block);
+        return $block;
     }
 
     /**
@@ -73,7 +64,7 @@ class BlockController extends Controller
     public function show($id)
     {
         $block = $this->blocks->getOne($id);
-        return $this->rest->process($block);
+        return $block;
     }
 
     /**
@@ -85,6 +76,6 @@ class BlockController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $block = $this->blocks->delete($id);
-        return $this->rest->process($block);
+        return $block;
     }
 }

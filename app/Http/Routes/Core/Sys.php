@@ -10,7 +10,6 @@ $router->group(['namespace' => 'Sys', 'prefix' => 'sys'], function () use ($rout
 
     $router->group(['prefix' => 'config'], function () {
         Route::get('/', 'ConfigController@index')->name('core.sys.config.list');
-        Route::get('/{pk}', 'ConfigController@show')->name('core.sys.config.show');
         Route::post('/', 'ConfigController@store')->name('core.sys.config.store');
         Route::delete('/{pk}', 'ConfigController@destroy')->name('core.sys.config.delete');
     });

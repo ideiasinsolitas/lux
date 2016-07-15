@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.theme.components')
+  angular.module('Lux.theme.components')
       .controller('MsgCenterCtrl', MsgCenterCtrl);
 
   /** @ngInject */

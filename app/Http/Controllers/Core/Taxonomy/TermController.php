@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Core\Interaction\Folksonomy;
+namespace App\Http\Controllers\Core\Taxonomy;
 
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
 
-use App\DAL\Core\Interaction\Contracts\TermDAOContract;
+use App\DAL\Core\Taxonomy\Contracts\TermDAOContract;
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 use App\Services\Rest\RestProcessorContract;
@@ -41,8 +41,8 @@ class TermController extends Controller
      */
     public function index()
     {
-        $terms = $this->terms->getAll();
-        return $this->rest->process($terms);
+        $terms = $this->terms->getAll(request()->get("filters"));
+        return $terms;
     }
 
     /**
@@ -59,7 +59,7 @@ class TermController extends Controller
             $input['node_id'] = $this->terms->createNode();
             $term = $this->terms->insert($input);
         }
-        return $this->rest->process($term);
+        return $term;
     }
 
     /**
@@ -72,6 +72,6 @@ class TermController extends Controller
     public function destroy($pk, DeleteRequest $request)
     {
         $term = $this->terms->update(['activity' => 0], (int) $pk);
-        return $this->rest->process($term);
+        return $term;
     }
 }

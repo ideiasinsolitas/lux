@@ -8,6 +8,8 @@ interface MenuDAOContract
 
     const PK = "id";
 
+    const FK = "menu_id";
+
     //
     public function insert(array $input);
 

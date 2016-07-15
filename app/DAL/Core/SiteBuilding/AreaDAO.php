@@ -4,6 +4,7 @@ namespace App\DAL\Core\SiteBuilding;
 use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\SiteBuilding\Contracts\AreaDAOContract;
 use App\DAL\Core\SiteBuilding\Actions\AreaAction;
@@ -12,15 +13,15 @@ use App\DAL\Core\SiteBuilding\Relationships\AreaRelationship;
 class AreaDAO extends AbstractDAO implements AreaDAOContract
 {
     use AreaAction,
-        AreaRelationship;
+        AreaRelationship,
+        DAOTrait;
 
     public function __construct()
     {
-        $filters = [
+        $this->filters = [
             'sort' => 'name,asc'
         ];
-
-        parent::__construct($filters);
+        $this->builder = $this->getBuilder();
     }
 
     public function getBuilder()

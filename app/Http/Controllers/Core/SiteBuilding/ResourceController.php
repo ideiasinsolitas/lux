@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Core\Sys\Resource;
+namespace App\Http\Controllers\Core\SiteBuilding;
 
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
@@ -56,7 +56,7 @@ class ResourceController extends Controller
             $input['created'] = Carbon::now();
             $this->resources->insert($input);
         }
-        return $this->rest->process($resource);
+        return $resource;
     }
 
     /**
@@ -66,8 +66,8 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        $resources = $this->resources->getAll();
-        return $this->rest->process($resources);
+        $resources = $this->resources->getAll(request()->get("filters"));
+        return $resources;
     }
 
     /**
@@ -78,7 +78,7 @@ class ResourceController extends Controller
     public function show($pk)
     {
         $resource = $this->resources->getOne(['pk' => (int) $pk]);
-        return $this->rest->process($resource);
+        return $resource;
     }
 
     /**
@@ -90,6 +90,6 @@ class ResourceController extends Controller
     public function destroy($pk, DeleteRequest $request)
     {
         $resource = $this->resources->update(['activity' => 0, 'deleted' => Carbon::now()], (int) $pk);
-        return $this->rest->process($resource);
+        return $resource;
     }
 }

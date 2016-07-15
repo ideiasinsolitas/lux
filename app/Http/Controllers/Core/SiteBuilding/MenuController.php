@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Core\SiteBuilding\Menu;
+namespace App\Http\Controllers\Core\SiteBuilding;
 
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
 
-use App\DAL\Core\SiteBuilding\MenuRepository;
+use App\DAL\Core\SiteBuilding\MenuDAO;
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
 use App\Services\Rest\RestProcessorContract;
@@ -20,9 +20,9 @@ class MenuController extends Controller
 
     /**
      * /
-     * @param MenuRepository $menus [description]
+     * @param MenuDAO $menus [description]
      */
-    public function __construct(RestProcessorContract $rest, MenuRepository $menus)
+    public function __construct(RestProcessorContract $rest, MenuDAO $menus)
     {
         $this->rest = $rest;
         $this->menus = $menus;
@@ -35,8 +35,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = $this->menus->getAll();
-        return $this->rest->process($menus);
+        $menus = $this->menus->getAll(request()->get("filters"));
+        return $menus;
     }
 
     /**
@@ -47,12 +47,12 @@ class MenuController extends Controller
     public function store(StoreRequest $request)
     {
         $input = $request->only(['id', 'block_id', 'name']);
-        if (isset($input['id'])) {
+        if ($request->has('id')) {
             $menu = $this->menus->create($input);
         } else {
-            $menu = $this->menus->update($input);
+            $menu = $this->menus->update($input, (int) $request->get('pk'));
         }
-        return $this->rest->process($menu);
+        return $menu;
     }
 
     /**
@@ -62,8 +62,8 @@ class MenuController extends Controller
      */
     public function show($id)
     {
-        $menu = $this->menus->findOrFail($id, true);
-        return $this->rest->process($menu);
+        $menu = $this->menus->getOne($id);
+        return $menu;
     }
 
     /**
@@ -75,6 +75,6 @@ class MenuController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $menu = $this->menus->delete($id);
-        return $this->rest->process($menu);
+        return $menu;
     }
 }

@@ -5,25 +5,27 @@ namespace App\DAL\Core\Sys;
 use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Sys\Actions\UserAction;
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
 
 class UserDAO extends AbstractDAO implements UserDAOContract
 {
+    use DAOTrait, UserAction;
+
     public function __construct()
     {
-        $filters = [
+        $this->filters = [
             'sort' => 'first_name,asc'
         ];
-
-        parent::__construct($filters);
+        $this->builder = $this->getBuilder();
     }
 
     public function getBuilder()
     {
         return DB::table(self::TABLE)
-            ->join('core_user_profiles', 'core_user_profiles.user_id', '=', 'core_users.id')
+            ->join(self::PROFILE_TABLE, self::PROFILE_TABLE . '.' . self::FK, '=', self::TABLE . '.' . self::PK)
             ->select(
                 self::TABLE . '.' . self::PK,
                 self::TABLE . '.email',
@@ -66,8 +68,8 @@ class UserDAO extends AbstractDAO implements UserDAOContract
     {
         list($userInput, $userProfileInput) = $this->handleInput($input);
         $user_id = DB::table(self::TABLE)->insertGetId($userInput);
-        $userProfileInput['user_id'] = $user_id;
-        $insertProfile = DB::table('core_user_profiles')
+        $userProfileInput[self::FK] = $user_id;
+        $insertProfile = DB::table(self::PROFILE_TABLE)
             ->insert($userProfileInput);
         if ($user_id && $insertProfile) {
             return $user_id;
@@ -87,8 +89,8 @@ class UserDAO extends AbstractDAO implements UserDAOContract
         if (!$result) {
             throw new \Exception("Error Processing Request", 1);
         }
-        return DB::table('core_user_profiles')
-            ->where('user_id', $pk)
+        return DB::table(self::PROFILE_TABLE)
+            ->where(self::FK, $pk)
             ->update($userProfileInput);
     }
 }

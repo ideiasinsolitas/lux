@@ -8,5 +8,6 @@ trait ConfigAction
 {
     use CommonActions\ActivityRestorer,
         CommonActions\ActivityUpdater,
-        CommonActions\DefaultModifier;
+        CommonActions\DefaultModifier,
+        CommonActions\DefaultDeleter;
 }

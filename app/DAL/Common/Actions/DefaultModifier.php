@@ -2,6 +2,8 @@
 
 namespace App\DAL\Common\Actions;
 
+use Illuminate\Support\Facades\DB;
+
 trait DefaultModifier
 {
     public function insert(array $input)
@@ -17,7 +19,7 @@ trait DefaultModifier
         }
 
         return DB::table(self::TABLE)
-            ->update($input)
-            ->where(self::PK, $pk);
+            ->where(self::PK, $pk)
+            ->update($input);
     }
 }

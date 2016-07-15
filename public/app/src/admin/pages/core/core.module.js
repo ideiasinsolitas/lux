@@ -5,12 +5,11 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.core', [
-    'BlurAdmin.pages.core.config',
-    'BlurAdmin.pages.core.type',
-    'BlurAdmin.pages.core.user',
-  ])
-      .config(routeConfig);
+  angular.module('Lux.pages.core', [
+    'Lux.pages.core.config',
+    'Lux.pages.core.type',
+    'Lux.pages.core.user',
+  ]).config(routeConfig);
 
   /** @ngInject */
 function routeConfig($stateProvider) {

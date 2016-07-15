@@ -21,7 +21,7 @@ class ServiceLoader
 
     public function handle(GenericRequest $request, \Closure $next)
     {
-        $request->addService('config', $this->configService);
+        $request->request->set('config', $this->configService->all());
         return $next($request);
     }
 }

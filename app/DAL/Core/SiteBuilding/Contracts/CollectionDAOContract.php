@@ -10,6 +10,10 @@ interface CollectionDAOContract
 
     const INTERNAL_TYPE = "Collection";
 
+    const FK = "collection_id";
+
+    const COLLECTOR_FK = "collector_id";
+
     // DefaultModifier
     public function insert(array $input);
 

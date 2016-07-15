@@ -4,12 +4,14 @@ angular
     .factory('autoSaveService', autoSaveService);
 
 function autoSaveService() {
+    
     var service = {
         state: state,
         start: start,
         stop: stop,
         stopExecution: stopExecution
     };
+    
     return service;
 
     ////////////
@@ -24,8 +26,8 @@ function autoSaveService() {
         if (s) {
             dataService = s;
         }
-        setTimeout(save, delay);
         state = 1;
+        setTimeout(save, delay);
     }
 
     function change(m) {
@@ -38,12 +40,9 @@ function autoSaveService() {
     }
 
     function save() {
-        if (isChanged === 1) {
+        if (isChanged === 1 && state === 1) {
             dataService.save(model);
             isChanged = 0;
-        }
-        if (state === 1) {
-            run();
         }
     }
 }

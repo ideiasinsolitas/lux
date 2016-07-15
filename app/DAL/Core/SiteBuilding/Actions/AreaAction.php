@@ -7,5 +7,6 @@ use App\DAL\Common\Actions as CommonActions;
 trait AreaAction
 {
     use CommonActions\DefaultModifier,
-        CommonActions\DefaultDeleter;
+        CommonActions\DefaultDeleter,
+        CommonActions\DefaultSelector;
 }

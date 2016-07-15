@@ -3,14 +3,14 @@ angular
     .module('app')
     .controller('PanelCtrl', PanelCtrl);
 
-function PanelCtrl(confingService) {
+function PanelCtrl(configService) {
     var vm = this;
 
-    vm.models = confingService.findAll();
+    vm.models = configService.findAll();
 
     ////////////
 
     function save(index) {
-        confingService.save(vm.models[index]);
+        configService.save(vm.models[index]);
     }
 }

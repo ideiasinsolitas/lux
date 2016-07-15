@@ -1,50 +1,42 @@
 <?php
+/*
+ * This file is part of the AllScorings package.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package AllScorings
+ */
 
 namespace App\DAL;
 
-use Illuminate\Support\DB;
+use App\DAL\Contracts\QueryBuilderContract;
 
 abstract class AbstractDAO
 {
     protected $filters;
+
     protected $builder;
 
-    public function __construct(array $filters = array())
-    {
-        $this->filters = $filters;
-        $this->builder = $this->getBuilder();
-    }
-
-    abstract protected function parseFilters(array $filters, $defaults = true);
-
-    final protected function finish(array $filters = array())
-    {
-        if (!isset($filters['sort'])) {
-            $filters['sort'] = self::PK . ',asc';
-        }
-
-        $sort = explode(',', $filters['sort']);
-        $this->builder->orderBy($sort[0], $sort[1]);
-
-        if (isset($filters['per_page'])) {
-            return $this->builder->paginate($filters['per_page']);
-        }
-
-        if (isset($filters['pk'])) {
-            return $this->builder->where(self::TABLE . '.' . self::PK, $filters['pk'])->first();
-        }
-
-        return $this->builder->get();
-    }
-
-    public function getLastInsertId()
-    {
-        return DB::table(self::TABLE)->lastInsertId();
-    }
-
-    abstract public function getBuilder();
- 
-    abstract public function insert(array $input);
-
-    abstract public function update(array $input, $pk);
+    /**
+     * /
+     * @param  array  $item [description]
+     * @return [type]       [description]
+     */
+    abstract public function insert(array $item);
+   
+    /**
+     * /
+     * @param  array  $item    [description]
+     * @param  [type] $item_id [description]
+     * @return [type]          [description]
+     */
+    abstract public function update(array $item, $item_id);
+    
+    /**
+     * /
+     * @param  [type] $item_id [description]
+     * @return [type]          [description]
+     */
+    abstract public function delete($item_id);
 }

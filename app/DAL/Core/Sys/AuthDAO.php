@@ -3,9 +3,10 @@
 namespace App\DAL\Core\Sys;
 
 use Illuminate\Support\Facades\DB;
-
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Sys\Contracts\AuthDAOContract;
+use App\DAL\Core\Sys\Contracts\UserDAOContract;
+use App\DAL\Core\Sys\Contracts\TokenDAOContract;
 
 class AuthDAO implements AuthDAOContract
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Sys;
+namespace App\Http\Controllers\Core\Sys;
 
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
@@ -23,13 +23,14 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->users->getAll();
-        return $this->rest->process($users);
+        $users = $this->users->getAll(request()->get("filters"));
+        return $users;
     }
 
-    public function store()
+    public function store(StoreRequest $request)
     {
         $input = $request->only(['username', 'email', 'first_name', 'middle_name', 'last_name', 'display_name', 'activity']);
+        dd($input);
         if ($request->has('pk')) {
             $input['modified'] = Carbon::now();
             $user = $this->users->update($input, (int) $request->get('pk'));
@@ -37,18 +38,18 @@ class UserController extends Controller
             $input['created'] = Carbon::now();
             $user = $this->users->insert($input);
         }
-        return $this->rest->process($user);
+        return $user;
     }
 
     public function show($pk)
     {
-        $comment = $this->comments->getOne(['pk' => (int) $pk]);
-        return $this->rest->process($comment);
+        $user = $this->users->getOne(['pk' => (int) $pk]);
+        return $user;
     }
 
     public function delete($pk)
     {
         $user = $this->users->update(['activity' => 0, 'deleted' => Carbon::now()], (int) $pk);
-        return $this->rest->process($user);
+        return $user;
     }
 }

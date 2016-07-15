@@ -63,7 +63,7 @@ class FileController extends Controller
             $input['created'] = Carbon::now();
             $this->files->insert($input);
         }
-        return $this->rest->process($file);
+        return $file;
     }
 
     /**
@@ -73,8 +73,8 @@ class FileController extends Controller
      */
     public function index()
     {
-        $files = $this->files->getAll();
-        return $this->rest->process($files);
+        $files = $this->files->getAll(request()->get("filters"));
+        return $files;
     }
 
     /**
@@ -85,7 +85,7 @@ class FileController extends Controller
     public function show($pk)
     {
         $file = $this->files->getOne(['pk' => (int) $pk]);
-        return $this->rest->process($file);
+        return $file;
     }
 
     /**
@@ -97,6 +97,6 @@ class FileController extends Controller
     public function destroy($pk, DeleteRequest $request)
     {
         $file = $this->files->update(['activity' => 0, 'deleted' => Carbon::now()], (int) $pk);
-        return $this->rest->process($file);
+        return $file;
     }
 }

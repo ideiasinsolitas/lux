@@ -30,7 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
         $domains = array(
             'Config',
             'Type',
@@ -51,10 +50,30 @@ class AppServiceProvider extends ServiceProvider
 
             $this->app->bind("App\DAL\Core\Sys\Contracts\\{$domain}DAOContract", "App\DAL\Core\Sys\\{$domain}DAO");
         }
-        
+/*
+        $components = load_from_file('components.yml');
+        foreach ($components as $component => $domains) {
+            $component_namespace = str_replace('.', '\\', $component);
+
+            foreach ($domains as $domain) {
+                if (!interface_exists("App\DAL\\{$component_namespace}\Contracts\\{$domain}DAOContract")) {
+                    throw new \Exception("Contract ${domain}DAOContract not Found", 1);
+                }
+
+                if (!class_exists("App\DAL\\{$component_namespace}\\{$domain}DAO")) {
+                    throw new \Exception("Class ${domain}DAO not Found", 1);
+                }
+
+                $this->app->bind("App\DAL\\{$component_namespace}\Contracts\\{$domain}DAOContract", "App\DAL\\{$component_namespace}\\{$domain}DAO");
+            }
+        }
+*/
+
         $this->app->bind("Illuminate\Contracts\Auth\Guard", "App\Services\Auth\AuthService");
         $this->app->bind("Illuminate\Contracts\Auth\UserProvider", "App\Services\Auth\UserAuthProvider");
 
+        $this->app->bind("App\Services\Rest\RestProcessorContract", "App\Services\Rest\RestProcessor");
+        
         if ($this->app->environment() == 'local') {
             $this->app->register(\Laracasts\Generators\GeneratorsServiceProvider::class);
         }

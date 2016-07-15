@@ -9,6 +9,8 @@ interface ResourceDAOContract
     const PK = "id";
 
     const INTERNAL_TYPE = "Resource";
+
+    const FK = "resource_id";
     
     //
     public function insert(array $input);
@@ -26,6 +28,7 @@ interface ResourceDAOContract
     //
     public function getAll(array $filters = array());
 
+    //
     public function getActivity($pk);
 
     public function mark($pk, $activity);

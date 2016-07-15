@@ -15,11 +15,9 @@ class MenuDAO extends AbstractDAO
 
     public function __construct()
     {
-        $filters = [
+        $this->filters = [
             'sort' => 'name,asc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()

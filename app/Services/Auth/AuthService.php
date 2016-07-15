@@ -22,8 +22,10 @@ class AuthService implements Guard
 
     protected function doAuthTokensMatch()
     {
-        if ($this->request->cookie('authenticated_user_id') === $this->request->session->get('authenticated_user_id')) {
-            $sessionToken = $this->request->session->get('session_token');
+        $has = session()->has('authenticated_user_id');
+        $match = $this->request->cookie('authenticated_user_id') === session()->get('authenticated_user_id');
+        if ($has && $match) {
+            $sessionToken = session()->get('session_token');
             $cookieToken =  $this->request->cookie('session_token');
             if ($sessionToken === $cookieToken) {
                 return true;
@@ -34,7 +36,7 @@ class AuthService implements Guard
 
     protected function doRememberTokensMatch()
     {
-
+        return true;
     }
 
     protected function getUser($id)
@@ -47,7 +49,7 @@ class AuthService implements Guard
 
     protected function randomHash($string)
     {
-        return bcrypt(microtime(true) . $string);
+        return md5(microtime(true) . $string);
     }
 
     public function authenticate($id, $remember = false)

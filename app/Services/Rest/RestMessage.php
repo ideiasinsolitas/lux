@@ -2,9 +2,9 @@
 
 namespace App\Services\Rest;
 
-use App\Services\Contracts\RestMessageContract;
+//use App\Services\Contracts\RestMessageContract;
 
-class RestMessage implements RestMessageContract
+class RestMessage //implements RestMessageContract
 {
     protected $status;
 
@@ -66,8 +66,8 @@ class RestMessage implements RestMessageContract
             'data' => $this->data,
             'message' => $this->message,
             'errors' => $this->errors,
-        ], function ($k, $v) {
-            if ($v === null || $v === false) {
+        ], function ($v) {
+            if ($v === null) {
                 return false;
             }
             return true;

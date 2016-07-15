@@ -27,7 +27,13 @@ class ConfigService
         if ($this->user_id) {
             $config = array_merge($config, $this->dao->getUserConfig($this->user_id));
         }
-        $this->config = $config;
+        foreach ($config as $item) {
+            if (is_array($item)) {
+                $this->config[$item['key']] = $item['value'];
+            } elseif (is_object($item)) {
+                $this->config[$item->key] = $item->value;
+            }
+        }
         return $this;
     }
 

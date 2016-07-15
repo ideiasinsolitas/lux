@@ -5,15 +5,19 @@ namespace App\DAL\Core\Sys\Contracts;
 interface UserDAOContract
 {
     const TABLE = "core_users";
+
+    const PROFILE_TABLE = "core_user_profiles";
     
     const PK = "id";
+
+    const FK = "user_id";
 
     // DefaultModifier
     public function insert(array $input);
 
     public function update(array $input, $pk);
 
-    // Activity Deleter
+    // ActivityRestorer
     public function restore($pk);
 
     // ActivityUpdater

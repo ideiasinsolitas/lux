@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Core\Sys\Config;
+namespace App\Http\Controllers\Core\Sys;
 
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
@@ -43,7 +43,7 @@ class ConfigController extends Controller
     public function index()
     {
         $configs = $this->configs->getDefaultConfig();
-        return $this->rest->process($configs);
+        return $configs;
     }
 
     /**
@@ -59,7 +59,7 @@ class ConfigController extends Controller
         } else {
             $config = $this->configs->insert($input);
         }
-        return $this->rest->process($config);
+        return $config;
     }
 
     /**
@@ -71,6 +71,6 @@ class ConfigController extends Controller
     public function destroy($pk, DeleteRequest $request)
     {
         $config = $this->configs->update(['activity' => 0], (int) $pk);
-        return $this->rest->process($config);
+        return $config;
     }
 }

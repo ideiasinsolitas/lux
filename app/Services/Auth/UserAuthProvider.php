@@ -3,6 +3,8 @@
 namespace App\Services\Auth;
 
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Contracts\Auth\Authenticatable;
+use App\DAL\Core\Sys\Contracts\AuthDAOContract;
 
 class UserAuthProvider implements UserProvider
 {

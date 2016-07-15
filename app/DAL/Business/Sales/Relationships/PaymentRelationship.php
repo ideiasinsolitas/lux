@@ -1,0 +1,12 @@
+<?php
+
+namespace App\DAL\Business\Sales\Relationships;
+
+use App\DAL\Common\Relationships;
+
+trait PaymentRelationship
+{
+    use Relationships\,
+        Relationships\,
+        Relationships\;
+}

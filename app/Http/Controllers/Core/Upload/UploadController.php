@@ -15,9 +15,15 @@ class UploadController extends Controller
     
     protected $files;
 
-    public function __construct(RestProcessorContract $rest, FileDAOContract $files)
+    public function __construct(RestProcessorContract $rest, FileDAOContract $files, UploadServiceContract $upload_service)
     {
         $this->rest = $rest;
         $this->files = $files;
+        $this->upload_service = $upload_service;
+    }
+
+    public function upload()
+    {
+
     }
 }

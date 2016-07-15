@@ -41,8 +41,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = $this->comments->getAll();
-        return $this->rest->process($comments);
+        $comments = $this->comments->getAll(request()->get("filters"));
+        return $comments;
     }
 
     /**
@@ -58,7 +58,7 @@ class CommentController extends Controller
         } else {
             $comment = $this->comments->insert($input);
         }
-        return $this->rest->process($comment);
+        return $comment;
     }
 
     /**
@@ -69,7 +69,7 @@ class CommentController extends Controller
     public function show($pk)
     {
         $comment = $this->comments->getOne(['pk' => (int) $pk]);
-        return $this->rest->process($comment);
+        return $comment;
     }
 
     /**
@@ -81,6 +81,6 @@ class CommentController extends Controller
     public function destroy($pk, DeleteRequest $request)
     {
         $comment = $this->comments->delete((int) $pk);
-        return $this->rest->process($comment);
+        return $comment;
     }
 }

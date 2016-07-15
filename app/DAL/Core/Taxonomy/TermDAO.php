@@ -4,6 +4,7 @@ namespace App\DAL\Core\Taxonomy;
 use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Taxonomy\Contracts\TermDAOContract;
 use App\DAL\Core\Taxonomy\Actions\TermAction;
@@ -11,8 +12,7 @@ use App\DAL\Core\Taxonomy\Relationships\TermRelationship;
 
 class TermDAO extends AbstractDAO implements TermDAOContract
 {
-    use TermAction;
-    use TermRelationship;
+    use DAOTrait, TermAction, TermRelationship;
 
     public function __construct()
     {

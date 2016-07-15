@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Core\SiteBuilding\Area;
+namespace App\Http\Controllers\Core\SiteBuilding;
 
 use Illuminate\Routing\Controller;
 
-use App\DAL\Core\SiteBuilding\AreaRepository;
+use App\DAL\Core\SiteBuilding\AreaDAO;
 use App\Services\Rest\RestProcessorContract;
 use App\Http\Requests\Generic\StoreRequest;
 use App\Http\Requests\Generic\DeleteRequest;
@@ -21,21 +21,12 @@ class AreaController extends Controller
 
     /**
      * /
-     * @param AreaRepository $areas [description]
+     * @param AreaDAO $areas [description]
      */
-    public function __construct(RestProcessorContract $rest, AreaRepository $areas)
+    public function __construct(RestProcessorContract $rest, AreaDAO $areas)
     {
         $this->rest = $rest;
         $this->areas = $areas;
-    }
-
-    /**
-     * /
-     * @return [type] [description]
-     */
-    public function app()
-    {
-        return view('core.site_building.area');
     }
 
     /**
@@ -45,8 +36,8 @@ class AreaController extends Controller
      */
     public function index()
     {
-        $areas = $this->areas->getAll();
-        return $this->rest->process($areas);
+        $areas = $this->areas->getAll(request()->get("filters"));
+        return $areas;
     }
 
     /**
@@ -57,12 +48,12 @@ class AreaController extends Controller
     public function store(StoreRequest $request)
     {
         $input = $request->only(['id', 'name', 'activity']);
-        if (isset($input['id'])) {
+        if ($request->has('id')) {
             $area = $this->areas->create($input);
         } else {
-            $area = $this->areas->update($input);
+            $area = $this->areas->update($input, (int) $request->get('pk'));
         }
-        return $this->rest->process($area);
+        return $area;
     }
 
     /**
@@ -70,10 +61,10 @@ class AreaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($pk)
     {
-        $area = $this->areas->findOrFail($id, true);
-        return $this->rest->process($area);
+        $area = $this->areas->getOne(['pk' => (int) $pk]);
+        return $area;
     }
 
     /**
@@ -85,17 +76,6 @@ class AreaController extends Controller
     public function destroy($id, DeleteRequest $request)
     {
         $area = $this->areas->delete($id);
-        return $this->rest->process($area);
-    }
-
-    public function addBlock($area_id, StoreRequest $request)
-    {
-        $block_id = $request->get('block_id');
-        return $this->rest->process($area);
-    }
-
-    public function removeBlock($area_id, $block_id)
-    {
-        return $this->rest->process($area);
+        return $area;
     }
 }

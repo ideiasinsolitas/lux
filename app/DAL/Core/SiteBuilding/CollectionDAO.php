@@ -16,11 +16,9 @@ class CollectionDAO extends AbstractDAO implements CollectionDAOContract
 
     public function __construct()
     {
-        $filters = [
+        $this->filters = [
             'sort' => 'created,desc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()

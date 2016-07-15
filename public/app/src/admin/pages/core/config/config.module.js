@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.core.config', [])
+  angular.module('Lux.pages.core.config', [])
     .config(routeConfig);
 
   /** @ngInject */

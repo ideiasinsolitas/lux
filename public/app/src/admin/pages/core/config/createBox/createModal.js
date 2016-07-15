@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.config.dashboard')
+  angular.module('Lux.pages.config.dashboard')
     .service('createModal', createModal);
 
   /** @ngInject */

@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.core.type', [])
+  angular.module('Lux.pages.core.type', [])
     .config(routeConfig);
 
   /** @ngInject */
@@ -13,6 +13,8 @@
     $stateProvider
       .state('core.type', {
         url: '/type',
+        controller: 'TypePanelCtrl',
+        controllerAs: 'vm',
         templateUrl: 'app/pages/core/type/panel.html',
           title: 'Types',
           sidebarMeta: {

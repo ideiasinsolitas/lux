@@ -10,7 +10,7 @@ use App\DAL\Core\Sys\Contracts\TokenDAOContract;
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
 use App\Http\Requests\Generic\GenericRequest;
 use App\Http\Requests\Generic\StoreRequest;
-use App\Services\Rest\RestProcessor;
+use App\Services\Rest\RestProcessorContract;
 
 class AuthController extends Controller
 {
@@ -41,6 +41,14 @@ class AuthController extends Controller
             }
         }
         return redirect('/dashboard');
+    }
+
+    public function logout()
+    {
+        if (!$this->auth->guest()) {
+            $this->auth->logout();
+        }
+        return redirect('/login');
     }
 
     public function register(StoreRequest $request)

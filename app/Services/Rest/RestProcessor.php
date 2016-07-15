@@ -24,42 +24,32 @@ class RestProcessor implements RestProcessorContract, HttpStatusCodesContract
         ];
     }
 
-    protected function resolveRequest($request)
-    {
-        $json = $request->json()->all();
-
-        if (is_array($json) && !empty($json)) {
-            return $json;
-        }
-        
-        return $request->all();
-    }
-
     protected function send()
     {
         $data = $this->body->toArray();
         return ResponseFactory::make($data, $this->code);
     }
 
-    public function process(array $data, $code = 200, $errors = null)
+    public function process($data, $code = 200, $errors = null)
     {
         // not found exception
-        if ($data === null && $code === null) {
+        if (empty($data)) {
             $this->code = 404;
         }
+
         // everything else works...
-        if ($code !== null) {
+        if ($code) {
             $this->code = $code;
         } else {
             $this->code = 200;
         }
 
         if ($data && !$errors) {
-            if (is_scalar($data)) {
-                $this->body->setData(array('test' => $data));
-            } else {
-                $this->body->setData($data);
+            $body = $data;
+            if ($data instanceof \Illuminate\Http\Response) {
+                $body = $data->original;
             }
+            $this->body->setData($body);
         }
 
         if (!$errors) {

@@ -6,7 +6,6 @@ use App\DAL\Common\Relationships as CommonRelationships;
 
 trait CommentRelationship
 {
-    use CommonRelationships\Translatable,
-        CommonRelationships\Nodable,
+    use CommonRelationships\Nodable,
         CommonRelationships\Ownable;
 }

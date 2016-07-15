@@ -16,12 +16,9 @@ class CommentDAO extends AbstractDAO implements CommentDAOContract
 
     public function __construct()
     {
-        $filters = [
-            'per_page' => 20,
+        $this->filters = [
             'sort' => 'created,desc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()

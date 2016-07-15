@@ -18,11 +18,9 @@ class ResourceDAO extends AbstractDAO
      */
     public function __construct()
     {
-        $filters = [
+        $this->filters = [
             'sort' => 'created,desc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()

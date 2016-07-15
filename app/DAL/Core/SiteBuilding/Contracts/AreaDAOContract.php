@@ -8,7 +8,13 @@ interface AreaDAOContract
 
     const PK = "id";
 
-    public function getBlocks(array $filters = array());
+    const FK = "area_id";
+
+    const BLOCK_TABLE = "core_blocks";
+
+    const BLOCK_PK = "id";
+
+    public function getBlocks($pk);
 
     // DefaultModifier
     public function insert(array $input);
@@ -21,5 +27,5 @@ interface AreaDAOContract
     // DefaultSelector
     public function getAll(array $filters = array());
 
-    public function getOne(array $filters = array());
+    public function getOne(array $filters);
 }

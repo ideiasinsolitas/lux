@@ -20,7 +20,7 @@ class TokenDAO implements TokenDAOContract
                 'type' => $type
             ]);
         
-        if ($id) {
+        if (!$id) {
             throw new GeneralException("Unable to generate token", 001);
         }
 
@@ -38,7 +38,7 @@ class TokenDAO implements TokenDAOContract
             ->delete();
 
         if (!$result) {
-            throw new \Exception("Token does not exist.", 1);
+            throw new GeneralException("Token does not exist.", 1);
         }
 
         return $this->generate($user_id, $type);
@@ -60,13 +60,17 @@ class TokenDAO implements TokenDAOContract
             throw new GeneralException("Invalid token", 1);
         }
 
-        DB::table(self::TABLE)
+        if ($result->user_id !== $token['user_id']) {
+            throw new GeneralException("Invalid token", 1);
+        }
+
+        $delete = DB::table(self::TABLE)
             ->where('type', $type)
             ->where('token', $token['token'])
             ->delete();
 
-        if ($result->user_id !== $token['user_id']) {
-            throw new GeneralException("Invalid token", 1);
+        if (!$delete) {
+            throw new GeneralException("Could not delete token", 1);
         }
 
         return $result;

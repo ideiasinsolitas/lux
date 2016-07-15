@@ -10,6 +10,8 @@ interface FileDAOContract
 
     const INTERNAL_TYPE = "File";
 
+    const FK = "file_id";
+
     // DefaultModifier
     public function insert(array $input);
 

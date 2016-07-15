@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.core.user', [])
+  angular.module('Lux.pages.core.user', [])
     .config(routeConfig);
 
   /** @ngInject */
@@ -20,7 +20,6 @@ function routeConfig($stateProvider) {
             url: '/user/profile',
             templateUrl: 'app/pages/core/user/profile/profile.html',
             title: 'Profile',
-        })
-        ;
+        });
     }
 })();

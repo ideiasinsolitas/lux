@@ -8,6 +8,8 @@ interface BlockDAOContract
 
     const PK = "id";
 
+    const FK = "block_id";
+
     public function getArea(array $filters = array());
 
     public function getByAreaId(array $filters = array());

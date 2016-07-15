@@ -1,19 +1,23 @@
 // factory
 angular
-    .module('BlurAdmin.pages.core.user')
+    .module('Lux.pages.core.user')
     .factory('userService', userService)
     .factory('userLoader', userLoader)
     .factory('userMultiLoader', userMultiLoader);
 
-// do you need it?
-// typeService.$inject = ['$http', '$location', '$q', 'apiService'];
+typeService.$inject = ['$http', '$location', '$q', 'apiService'];
 
 function userService($http, $location, $q, apiService) {
+    
     apiService.setEndpoint('user');
+    
     var service = {
         save: save,
+        delete: delete,
+        findOne: findOne,
         findAll: findAll
     };
+    
     return service;
 
     ////////////
@@ -35,8 +39,8 @@ function userService($http, $location, $q, apiService) {
     }
 }
 
-function userLoader(userService) {
-    return userService.findOne();
+function userLoader(userService, pk) {
+    return userService.findOne(pk);
 }
 
 function userMultiLoader() {

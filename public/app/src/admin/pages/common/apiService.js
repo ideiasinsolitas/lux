@@ -1,11 +1,12 @@
 // factory
 angular
-    .module('BlurAdmin.pages')
+    .module('Lux.pages')
     .factory('apiService', Service);
 
 apiService.$inject = ['$http', '$location', '$q'];
 
 function apiService($http, $location, $q) {
+    
     var service = {
         save: save,
         findOne: findOne,
@@ -14,6 +15,7 @@ function apiService($http, $location, $q) {
         validate: validate,
         setEndpoint: setEndpoint
     };
+    
     return service;
 
     ////////////
@@ -27,8 +29,8 @@ function apiService($http, $location, $q) {
             .then(apiSaveSuccess)
             .catch(apiSaveFail);
 
-        function apiSaveSuccess(data, status, headers, config) {
-            return data.data;
+        function apiSaveSuccess(result, status, headers, config) {
+            return result.data;
         }
 
         function apiSaveFail(e) {
@@ -42,8 +44,8 @@ function apiService($http, $location, $q) {
             .then(apifindOneSuccess)
             .catch(apifindOneFail);
 
-        function apifindOneSuccess(data, status, headers, config) {
-            return data.data;
+        function apifindOneSuccess(result, status, headers, config) {
+            return result.data;
         }
 
         function apifindOneFail(e) {

@@ -8,6 +8,12 @@ interface ConfigDAOContract
     
     const PK = "id";
 
+    const KEY = 'key';
+
+    const VALUE = 'value';
+
+    const FORMAT = 'format';
+
     public function getDefaultConfig();
 
     public function getUserConfig($user_id);

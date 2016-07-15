@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Core\Sys\Type;
+namespace App\Http\Controllers\Core\Sys;
 
 use Illuminate\Routing\Controller;
 use Carbon\Carbon;
@@ -41,8 +41,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-        $types = $this->types->getAll();
-        return $this->rest->process($types);
+        $types = $this->types->getAll(request()->get("filters"));
+        return $types;
     }
 
     /**
@@ -58,7 +58,7 @@ class TypeController extends Controller
         } else {
             $type = $this->types->insert($input);
         }
-        return $this->rest->process($type);
+        return $type;
     }
 
     /**
@@ -69,7 +69,7 @@ class TypeController extends Controller
     public function show($pk)
     {
         $type = $this->types->getOne(['pk' => (int) $pk]);
-        return $this->rest->process($type);
+        return $type;
     }
 
     /**
@@ -81,6 +81,6 @@ class TypeController extends Controller
     public function destroy($pk, DeleteRequest $request)
     {
         $type = $this->types->delete((int) $pk);
-        return $this->rest->process($type);
+        return $type;
     }
 }

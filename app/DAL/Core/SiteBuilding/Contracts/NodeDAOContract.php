@@ -8,6 +8,8 @@ interface NodeDAOContract
 
     const PK = "id";
 
+    const FK = "node_id";
+
     //
     public function insert(array $input);
 

@@ -4,6 +4,7 @@ namespace App\DAL\Core\Sys;
 use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Sys\Actions\TypeAction;
 use App\DAL\Core\Sys\Relationships\TypeRelationship;
@@ -11,15 +12,14 @@ use App\DAL\Core\Sys\Contracts\TypeDAOContract;
 
 class TypeDAO extends AbstractDAO implements TypeDAOContract
 {
-    use TypeAction;
+    use DAOTrait, TypeAction;
 
     public function __construct()
     {
-        $filters = [
+        $this->filters = [
             'sort' => 'name,asc'
         ];
-
-        parent::__construct($filters);
+        $this->builder = $this->getBuilder();
     }
 
     public function getBuilder()
