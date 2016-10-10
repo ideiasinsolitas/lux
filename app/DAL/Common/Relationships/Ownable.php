@@ -38,10 +38,10 @@ trait Ownable
         $ownable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_users')
             ->join('core_ownership', function ($q) use ($item_id, $ownable_type) {
-                return $q->on('core_ownership.ownable_type', $ownable_type)
+                return $q->on('core_ownership.ownable_type', '=', $ownable_type)
                     ->where('core_ownership.ownable_id', $item_id);
             })
-            ->join('core_ownership', 'core_users.id', 'core_ownership.user_id')
+            ->join('core_ownership', 'core_users.id', '=', 'core_ownership.user_id')
             ->select('core_users.id', 'core_users.first_name', 'core_users.middle_name', 'core_users.last_name')
             ->get()
             ->first();

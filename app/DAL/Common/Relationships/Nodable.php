@@ -2,14 +2,22 @@
 
 namespace App\DAL\Common\Relationships;
 
-use Illuminate\Support\Facade\DB;
+use Illuminate\Support\Facades\DB;
+
+use Carbon\Carbon;
 
 trait Nodable
 {
     public function createNode()
     {
+        $node = [];
+        $node['parent_id'] = 0;
+        $node['class'] = self::INTERNAL_TYPE;
+        $node['activity'] = 1;
+        $node['created'] = Carbon::now();
+        $node['modified'] = Carbon::now();
         return DB::table('core_nodes')
-            ->insertGetId(['type', self::INTERNAL_TYPE]);
+            ->insertGetId($node);
     }
 
     public function getOneByNodeId($node_id)

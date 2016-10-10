@@ -28,7 +28,7 @@ class UserAuthProvider implements UserProvider
      */
     public function retrieveById($identifier)
     {
-        return UserAuthModel::createFromUser($this->auth->getUserByPk($identifier));
+        return UserAuthEntity::createFromUser($this->auth->getUserByPk($identifier));
     }
 
     /**
@@ -40,7 +40,7 @@ class UserAuthProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        return UserAuthModel::createFromUser($this->auth->getUserByToken($identifier, $token));
+        return UserAuthEntity::createFromUser($this->auth->getUserByToken($identifier, $token));
     }
 
     /**
@@ -64,7 +64,7 @@ class UserAuthProvider implements UserProvider
     public function retrieveByCredentials(array $credentials)
     {
         $user = $this->auth->getByCredentials($credentials['email'], $credentials['password']);
-        return UserAuthModel::createFromUser($user);
+        return UserAuthEntity::createFromUser($user);
     }
 
     /**

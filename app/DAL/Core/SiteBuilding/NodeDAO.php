@@ -23,7 +23,8 @@ class NodeDAO extends AbstractDAO
         return DB::table(self::TABLE)
             ->select(
                 self::TABLE . '.' . self::PK,
-                self::TABLE . '.class',
+                self::TABLE . '.parent_id AS parent',
+                self::TABLE . '.class AS name',
                 self::TABLE . '.activity',
                 self::TABLE . '.created',
                 self::TABLE . '.modified',

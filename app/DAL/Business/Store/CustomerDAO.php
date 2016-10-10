@@ -50,8 +50,8 @@ class CustomerDAO extends AbstractDAO implements CustomerDAOContract
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.id', $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.id', $filters[self::PK]);
         }
 
         return $this->finish($filters);

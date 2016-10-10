@@ -2,23 +2,29 @@
 
 namespace App\DAL\Business\Sales;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\DefaultEntityTrait;
 
-class Invoice extends AbstractModel
+class Invoice extends AbstractEntity
 {
-    use DefaultModelTrait;
+    use DefaultEntityTrait;
 
     protected $id;
-
-    protected $hours;
-
-    protected $rate;
-
-    protected $total;
 
     protected $activity;
 
     protected $created;
 
+    protected $hours;
+
+    protected $rate;
+
+    protected $amount;
+
     protected $paid;
+
+    public function __toString()
+    {
+        return '';
+    }
 }

@@ -11,7 +11,6 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
  */
 class EventServiceProvider extends ServiceProvider
 {
-
     /**
      * The event handler mappings for the application.
      *
@@ -23,6 +22,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\Core\UserLoggedOut' => [
             'App\Listeners\Logger',
+            'App\Listeners\SaveCart',
         ],
         'App\Events\Core\UserRegistered' => [
             'App\Listeners\Postman',
@@ -40,7 +40,57 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Core\UserAccountConfirmed' => [
             'App\Listeners\Notification',
             'App\Listeners\Logger',
-        ]
+        ],
+
+        'App\Events\Business\UserAddedToProject' => [
+            'App\Listeners\Notification',
+            'App\Listeners\Logger',
+        ],
+
+        'App\Events\Business\TicketCreated' => [
+            'App\Listeners\Notification',
+            'App\Listeners\Logger',
+        ],
+
+        'App\Events\Business\TicketCommented' => [
+            'App\Listeners\Notification',
+            'App\Listeners\Logger',
+        ],
+
+        'App\Events\Business\OrderCreated' => [
+            'App\Listeners\Notification',
+            'App\Listeners\Logger',
+        ],
+
+        'App\Events\Business\InvoiceSent' => [
+            'App\Listeners\Postman',
+            'App\Listeners\Notification',
+            'App\Listeners\Logger'
+        ],
+
+        'App\Events\Business\PaymentReceived' => [
+            'App\Listeners\Postman',
+            'App\Listeners\Notification',
+            'App\Listeners\Logger',
+            'App\Listeners\Business\TakeFromStorage',
+        ],
+
+        'App\Events\Business\ShippingSent' => [
+            'App\Listeners\Postman',
+            'App\Listeners\Notification',
+            'App\Listeners\Logger'
+        ],
+
+        'App\Events\Business\ShippingArrived' => [
+            'App\Listeners\Postman',
+            'App\Listeners\Notification',
+            'App\Listeners\Logger'
+        ],
+
+        'App\Events\Business\CustomerFeedback' => [
+            'App\Listeners\Logger',
+            'App\Listeners\Business\FeedbackHandler',
+        ],
     ];
 
     /**

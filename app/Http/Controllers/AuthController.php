@@ -14,12 +14,10 @@ use App\Services\Rest\RestProcessorContract;
 
 class AuthController extends Controller
 {
-    protected $rest;
     protected $auth;
 
-    public function __construct(RestProcessorContract $rest, Guard $auth)
+    public function __construct(Guard $auth)
     {
-        $this->rest = $rest;
         $this->auth = $auth;
     }
 
@@ -90,7 +88,7 @@ class AuthController extends Controller
     public function resetPassword(StoreRequest $request)
     {
         if ($this->auth->guest()) {
-            $input = $request->only(['token']);
+            $input = $request->only(['password']);
             $result = $this->auth->reset($input);
             return redirect('/');
         }

@@ -6,7 +6,5 @@ use App\DAL\Common\Relatioships;
 
 trait CustomerRelatioship
 {
-    use Relatioships\,
-        Relatioships\,
-        Relatioships\;
+    use Relationships\Collector;
 }

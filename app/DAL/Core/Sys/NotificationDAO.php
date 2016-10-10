@@ -17,16 +17,25 @@ class NotificationDAO implements NotificationDAOContract
             ->insert($item);
     }
 
-    public function getAll(array $filters)
+    public function getBuilder()
     {
         return DB::table(self::TABLE)
+            ->select(
+                '',
+                ''
+            );
+    }
+
+    public function getAll(array $filters)
+    {
+        return $this->getBuilder()
             ->take($filters['limit'])
             ->get();
     }
 
     public function getUnseen(array $filters)
     {
-        return DB::table(self::TABLE)
+        return $this->getBuilder()
             ->where('seen', null)
             ->get();
     }
@@ -34,7 +43,7 @@ class NotificationDAO implements NotificationDAOContract
     public function markAsSeen($user_id, $notification_id, $datetime)
     {
         if (!is_int($user_id) || !is_int($notification_id) || !is_string($datetime)) {
-            throw new \Exception("Error Processing Request", 1);
+            throw new \Exception("types dont match", 1);
         }
         return DB::table(self::TABLE)
             ->where(self::TABLE . '.user_id', $user_id)
@@ -46,7 +55,7 @@ class NotificationDAO implements NotificationDAOContract
     public function markAllAsSeen($user_id, $datetime)
     {
         if (!is_int($user_id) || !is_string($datetime)) {
-            throw new \Exception("Error Processing Request", 1);
+            throw new \Exception("user id must be int, datetime must be string", 1);
         }
 
         return DB::table(self::TABLE)

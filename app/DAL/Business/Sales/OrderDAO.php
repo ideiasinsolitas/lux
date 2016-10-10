@@ -31,9 +31,23 @@ class OrderDAO extends AbstractDAO implements OrderDAOContract
     public function getBuilder()
     {
         return DB::table(self::TABLE)
-            ->join()
-            ->join()
-            ->select();
+            ->join('users AS u', self::TABLE . '.customer_id', '=', 'u.id')
+            ->join('users AS u2', self::TABLE . '.seller_id', '=', 'u2.id')
+            ->select(
+                self::TABLE . '.' . self::PK,
+                self::TABLE . '.customer_id',
+                'u.email AS customer_email',
+                self::TABLE . '.seller_id',
+                'u2.email AS seller_email',
+                self::TABLE . '.payment_method',
+                self::TABLE . '.shipping_method',
+                self::TABLE . '.price',
+                self::TABLE . '.taxes',
+                self::TABLE . '.extra_cost',
+                self::TABLE . '.shipping_cost',
+                self::TABLE . '.created',
+                self::TABLE . '.closed'
+            );
     }
 
     protected function parseFilters(array $filters = array(), $defaults = true)
@@ -50,8 +64,8 @@ class OrderDAO extends AbstractDAO implements OrderDAOContract
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.id', $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.id', $filters[self::PK]);
         }
 
         return $this->finish($filters);

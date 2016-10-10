@@ -6,5 +6,5 @@ use App\DAL\Common\Relationships;
 
 trait StorageRelationship
 {
-    use StorageHasPlace;
+    use Relationships\Placeable;
 }

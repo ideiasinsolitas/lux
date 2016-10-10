@@ -2,11 +2,12 @@
 
 namespace App\DAL\Business\Sales;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\DefaultEntityTrait;
 
-class Payment extends AbstractModel
+class Payment extends AbstractEntity
 {
-    use DefaultModelTrait;
+    use DefaultEntityTrait;
 
     protected $id;
 
@@ -15,4 +16,9 @@ class Payment extends AbstractModel
     protected $type_id;
 
     protected $amount;
+
+    public function __toString()
+    {
+        return '';
+    }
 }

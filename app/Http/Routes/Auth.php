@@ -1,14 +1,20 @@
 <?php
 
-Route::post('/register', 'AuthController@register')->name('core.sys.auth.register');
-Route::get('/register/email_sent', 'AuthController@confirmationEmailSent')->name('core.sys.auth.register_email_sent');
-Route::get('/register/confirm/{token}', 'AuthController@confirm')->name('core.sys.auth.confirm');
+$router->group(['namespace' => 'Auth'], function () use ($router) {
 
-Route::get('/login', 'AuthController@form')->name('core.sys.auth.form');
-Route::post('/login', 'AuthController@login')->name('core.sys.auth.login');
-Route::get('/logout', 'AuthController@logout')->name('core.sys.auth.logout');
+    Route::get('/login', 'AuthController@form')->name('core.auth.form');
+    Route::post('/login', 'AuthController@login')->name('core.auth.login');
+    Route::get('/logout', 'AuthController@logout')->name('core.auth.logout');
 
-Route::get('/password/forgot', 'AuthController@forgotPasswordForm')->name('core.sys.auth.forgot');
-Route::get('/password/reset', 'AuthController@resetForm')->name('core.sys.auth.reset');
-Route::get('/password/email_sent', 'AuthController@resetEmailSent')->name('core.sys.auth.reset_email_sent');
-Route::get('/password/reset/{token}', 'AuthController@resetPassword')->name('core.sys.auth.form');
+    $router->group(['prefix' => 'register'], function () use ($router) {
+        Route::post('/', 'AuthController@register')->name('core.auth.register');
+        Route::get('/email_sent', 'AuthController@confirmationEmailSent')->name('core.auth.register_email_sent');
+        Route::get('/confirm/{token}', 'AuthController@confirm')->name('core.auth.confirm');
+    });
+
+    $router->group(['prefix' => 'password'], function () use ($router) {
+        Route::get('/forgot', 'AuthController@forgotPasswordForm')->name('core.auth.forgot');
+        Route::get('/reset', 'AuthController@resetForm')->name('core.auth.reset');
+        Route::get('/reset/{token}', 'AuthController@resetPassword')->name('core.auth.form');
+    });
+});

@@ -10,11 +10,9 @@ use App\DAL\Business\ProjectManagement\Contracts\TimeTrackingDAOContract;
 use App\DAL\Business\ProjectManagement\Actions\TimeTrackingAction;
 use App\DAL\Business\ProjectManagement\Relationships\TimeTrackingRelationship;
 
-class TimeTrackingDAO extends AbstractDAO implements TimeTrackingDAOContract
+class TimeTrackingDAO implements TimeTrackingDAOContract
 {
-    use TimeTrackingAction,
-        TimeTrackingRelationship,
-        DAOTrait;
+    use DAOTrait;
 
     /**
      * /
@@ -31,9 +29,13 @@ class TimeTrackingDAO extends AbstractDAO implements TimeTrackingDAOContract
     public function getBuilder()
     {
         return DB::table(self::TABLE)
-            ->join()
-            ->join()
-            ->select('id', 'ticket_id', 'start', 'stop');
+            ->join('business_tickets', self::TABLE . '.ticket_id', '=', 'business_tickets.id')
+            ->select(
+                self::TABLE . '.id',
+                self::TABLE . '.ticket_id',
+                self::TABLE . '.start',
+                self::TABLE . '.stop'
+            );
     }
 
     protected function parseFilters(array $filters = array(), $defaults = true)
@@ -50,8 +52,8 @@ class TimeTrackingDAO extends AbstractDAO implements TimeTrackingDAOContract
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.id', $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.id', $filters[self::PK]);
         }
 
         return $this->finish($filters);
@@ -71,6 +73,11 @@ class TimeTrackingDAO extends AbstractDAO implements TimeTrackingDAOContract
             ->where('business_time_tracking.stop', null)
             ->where('core_users.user_id', $user_id)
             ->first();
+    }
+
+    public function getAll(array $filters = array())
+    {
+        return $this->parseFilters($filters, false);
     }
 
     /**
@@ -107,6 +114,6 @@ class TimeTrackingDAO extends AbstractDAO implements TimeTrackingDAOContract
                 ->update('stop', DB::raw('NOW()'))
                 ->where(self::PK, $pk);
         }
-        throw new \Exception("Nothing to stop.", 004);
+        return false;
     }
 }

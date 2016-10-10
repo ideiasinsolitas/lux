@@ -2,23 +2,24 @@
 
 namespace App\DAL\Business\Sales;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\DefaultEntityTrait;
 
-class Order extends AbstractModel
+class Order extends AbstractEntity
 {
-    use DefaultModelTrait;
+    use DefaultEntityTrait;
 
     protected $id;
 
-    protected $customer_id;
+    protected $customer;
 
-    protected $seller_id;
+    protected $seller;
 
-    protected $invoice_id;
+    protected $invoice;
 
-    protected $payment_method;
+    protected $shipping;
 
-    protected $shipping_method;
+    protected $payments;
 
     protected $price;
 
@@ -26,11 +27,20 @@ class Order extends AbstractModel
 
     protected $extra_cost;
 
-    protected $shipping_cost;
-
     protected $total;
 
     protected $created;
 
     protected $closed;
+
+    public function getTotal()
+    {
+        $shipping = $this->shipping && $this->shipping->cost ? $this->shipping->cost : 0;
+        return $this->price + $this->taxes + $this->extra_cost + $shipping;
+    }
+
+    public function __toString()
+    {
+        return '';
+    }
 }

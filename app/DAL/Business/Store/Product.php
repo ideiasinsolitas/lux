@@ -2,19 +2,14 @@
 
 namespace App\DAL\Business\Store;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\DefaultEntityTrait;
 
-class Product extends AbstractModel
+class Product extends AbstractEntity
 {
-    use DefaultModelTrait;
+    use DefaultEntityTrait;
 
-    protected $id;
-
-    protected $node_id;
-
-    protected $store_id;
-
-    protected $in_stock;
+    protected $store;
 
     protected $price;
 
@@ -25,12 +20,4 @@ class Product extends AbstractModel
     protected $width;
 
     protected $depth;
-
-    protected $activity;
-
-    protected $created;
-
-    protected $modified;
-
-    protected $deleted;
 }

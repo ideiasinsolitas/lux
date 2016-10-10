@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\DAL\AbstractDAO;
 use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
-use App\DAL\Business\Sales\Actions\InvoiceDAOContract;
+use App\DAL\Business\Sales\Contracts\InvoiceDAOContract;
 use App\DAL\Business\Sales\Actions\InvoiceAction;
 use App\DAL\Business\Sales\Relationships\InvoiceRelationship;
 
@@ -33,7 +33,15 @@ class InvoiceDAO extends AbstractDAO implements InvoiceDAOContract
         return DB::table(self::TABLE)
             ->join()
             ->join()
-            ->select();
+            ->select(
+                self::TABLE . '.' . self::PK,
+                self::TABLE . '.hours',
+                self::TABLE . '.rate',
+                self::TABLE . '.total',
+                self::TABLE . '.activity',
+                self::TABLE . '.created',
+                self::TABLE . '.paid'
+            );
     }
 
     protected function parseFilters(array $filters = array(), $defaults = true)
@@ -50,8 +58,8 @@ class InvoiceDAO extends AbstractDAO implements InvoiceDAOContract
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.id', $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.id', $filters[self::PK]);
         }
 
         return $this->finish($filters);

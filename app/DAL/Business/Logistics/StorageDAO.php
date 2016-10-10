@@ -55,17 +55,17 @@ class StorageDAO extends AbstractDAO implements StorageDAOContract
         if ($defaults) {
             $filters = array_merge($this->filters, $filters);
         }
-        
+
         if (isset($filters['activity'])) {
-            $this->builder->where(self::TABLE . '.activity', $filters['activity']);
+            $this->builder->where(self::TABLE . '.activity', $filters['activity'] ? 1 : 0);
         }
         
         if (isset($filters['activity_greater'])) {
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.' . self::PK, $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.' . self::PK, $filters[self::PK]);
         }
 
         return $this->finish($filters);

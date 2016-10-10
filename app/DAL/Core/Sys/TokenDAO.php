@@ -19,7 +19,7 @@ class TokenDAO implements TokenDAOContract
                 'token' => DB::raw('UUID()'),
                 'type' => $type
             ]);
-        
+
         if (!$id) {
             throw new GeneralException("Unable to generate token", 001);
         }

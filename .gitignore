@@ -1,9 +1,7 @@
 /vendor
-/public/app/docs
-/public/app/gulp
-/public/app/*.md
-/public/app/gulp
+/public
 /node_modules
+/storage/logs
 /notes
 Homestead.yaml
 Homestead.json
@@ -16,4 +14,7 @@ Homestead.json
 _ide_helper.php
 composer.phar
 error.log
-Todo.rtf
+*.sql
+*.log
+*.bak
+*.mwb

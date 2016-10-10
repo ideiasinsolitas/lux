@@ -1,10 +1,10 @@
 <?php
 
-namespace App\DAL\Business\Store;
+namespace App\DAL\Business\Sales;
 
-use App\DAL\AbstractModel;
+use App\DAL\Core\Sys\User;
 
-class Customer extends AbstractModel
+class Customer extends User
 {
-    use DefaultModelTrait;
+
 }

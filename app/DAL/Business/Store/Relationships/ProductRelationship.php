@@ -6,7 +6,10 @@ use App\DAL\Common\Relationships;
 
 trait ProductRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
+    use Relationships\Collectable,
+        Relationships\Likeable,
+        Relationships\Votable,
+        Relationships\Ownable,
+        Relationships\OwnerTaggable,
+        Relationships\Nodable;
 }

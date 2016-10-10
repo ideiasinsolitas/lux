@@ -6,7 +6,6 @@ use App\DAL\Common\Relationships;
 
 trait ShopRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
+    use Relationships\Collector,
+        Relationships\Nodable;
 }

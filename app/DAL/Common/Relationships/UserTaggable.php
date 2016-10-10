@@ -2,21 +2,10 @@
 
 namespace App\DAL\Common\Relationships;
 
+use Illuminate\Support\Facades\DB;
+
 trait UserTaggable
 {
-    private function getOrCreateTermId($term)
-    {
-        if (!is_string($term)) {
-            throw new \Exception("Error Processing Request", 1);
-        }
-        $item = DB::table('core_terms')->select('pk')->where('name', $term);
-        if ($item) {
-            return $item->pk;
-        }
-        $term_id = DB::table('core_terms')->insertGetId(['name' => $term]);
-        return $term_id;
-    }
-
     public function addFolksonomyTerm($user_id, $item_id, $term)
     {
         if (!is_int($item_id) || !is_int($item_id) || !is_string($term)) {
@@ -53,7 +42,7 @@ trait UserTaggable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_folksonomy')
-            ->join('core_terms', 'core_folksonomy.term_id', 'core_terms.id')
+            ->join('core_terms', 'core_folksonomy.term_id', '=', 'core_terms.id')
             ->select('core_terms.name', 'core_terms.id')
             ->where('core_folksonomy.usertaggable_type', self::INTERNAL_TYPE)
             ->where('core_folksonomy.usertaggable_id', $item_id)
@@ -67,7 +56,7 @@ trait UserTaggable
         }
         $usertaggable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_folksonomy')
-            ->join('core_terms', 'core_folksonomy.term_id', 'core_terms.id')
+            ->join('core_terms', 'core_folksonomy.term_id', '=', 'core_terms.id')
             ->select('core_terms.name', 'core_terms.id')
             ->where('core_folksonomy.usertaggable_type', self::INTERNAL_TYPE)
             ->where('core_folksonomy.usertaggable_id', $item_id)
@@ -81,7 +70,7 @@ trait UserTaggable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_folksonomy')
-            ->join('core_terms', 'core_folksonomy.term_id', 'core_terms.id')
+            ->join('core_terms', 'core_folksonomy.term_id', '=', 'core_terms.id')
             ->where('core_folksonomy.usertaggable_type', self::INTERNAL_TYPE)
             ->where('core_folksonomy.usertaggable_id', $item_id)
             ->where('core_folksonomy.user_id', $user_id)

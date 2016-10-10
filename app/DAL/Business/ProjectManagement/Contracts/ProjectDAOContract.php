@@ -6,4 +6,5 @@ interface ProjectDAOContract
 {
     const PK = "id";
     const TABLE = "business_projects";
+    const INTERNAL_TYPE = "Project";
 }

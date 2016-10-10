@@ -31,9 +31,22 @@ class ProductDAO extends AbstractDAO implements ProductDAOContract
     public function getBuilder()
     {
         return DB::table(self::TABLE)
-            ->join()
-            ->join()
-            ->select();
+            ->join('', self::TABLE . '', '', '')
+            ->select(
+                self::TABLE . '.' . self::PK,
+                self::TABLE . '.node_id',
+                self::TABLE . '.shop_id',
+                self::TABLE . '.in_stock',
+                self::TABLE . '.price',
+                self::TABLE . '.weight',
+                self::TABLE . '.height',
+                self::TABLE . '.width',
+                self::TABLE . '.depth',
+                self::TABLE . '.activity',
+                self::TABLE . '.created',
+                self::TABLE . '.modified',
+                self::TABLE . '.deleted'
+            );
     }
 
     protected function parseFilters(array $filters = array(), $defaults = true)
@@ -50,8 +63,8 @@ class ProductDAO extends AbstractDAO implements ProductDAOContract
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.id', $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.id', $filters[self::PK]);
         }
 
         return $this->finish($filters);

@@ -22,8 +22,8 @@ interface CollectionDAOContract
     // DefaultDeleter
     public function delete($pk);
 
-    public function deleteMany($pk);
-
+    public function deleteMany(array $pks);
+ /*
     // ActivityRestorer
     public function restore($pk);
 
@@ -42,4 +42,5 @@ interface CollectionDAOContract
     public function demote($pk);
 
     public function promote($pk);
+*/
 }

@@ -38,14 +38,13 @@ class ShippingDAO extends AbstractDAO implements ShippingDAOContract
             ->join('core_types', self::TABLE . '.type_id', '=', 'core_types.id')
             ->select(
                 self::TABLE . '.' . self::PK,
-                self::TABLE . '.order_id',
-                self::TABLE . '.type_id',
+                'core_types.name AS type',
+                'core_types.class',
                 self::TABLE . '.tracking_ref',
                 self::TABLE . '.activity',
                 self::TABLE . '.created',
                 self::TABLE . '.shipped',
-                self::TABLE . '.delivered',
-                DB::raw('core_types.name AS type')
+                self::TABLE . '.delivered'
             );
     }
 
@@ -60,17 +59,17 @@ class ShippingDAO extends AbstractDAO implements ShippingDAOContract
         if ($defaults === true) {
             $filters = array_merge($this->filters, $filters);
         }
-        
+
         if (isset($filters['activity'])) {
             $this->builder->where(self::TABLE . '.activity', $filters['activity']);
         }
-        
+
         if (isset($filters['activity_greater'])) {
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['pk'])) {
-            $this->builder->where(self::TABLE . '.' . self::PK, $filters['pk']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.' . self::PK, $filters[self::PK]);
         }
 
         return $this->finish($filters);

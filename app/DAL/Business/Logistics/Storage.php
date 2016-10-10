@@ -2,17 +2,15 @@
 
 namespace App\DAL\Business\Logistics;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\DefaultEntityTrait;
+use App\DAL\Common\Properties;
 
-class Storage extends AbstractModel
+class Storage extends AbstractEntity
 {
-    use DefaultModelTrait;
-
-    protected $id;
-
-    protected $place_id;
-
-    protected $name;
-
-    protected $description;
+    use DefaultEntityTrait,
+        Properties\Identifiable,
+        Properties\Description,
+        Properties\Name,
+        \App\DAL\Intel\GeoLocation\Properties\Placeable;
 }

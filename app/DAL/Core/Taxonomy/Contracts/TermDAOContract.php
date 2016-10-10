@@ -33,7 +33,7 @@ interface TermDAOContract
     public function generateSlug($string);
 
     public function slugExists($slug);
-
+/*
     public function getAllActive(array $filters = array());
 
     public function getAllDeactivated(array $filters = array());
@@ -65,4 +65,5 @@ interface TermDAOContract
     public function addLeaves($branch_id, $leaves_id);
 
     public function removeLeaf($leaf_id);
+*/
 }

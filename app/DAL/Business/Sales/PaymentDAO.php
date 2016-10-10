@@ -33,7 +33,13 @@ class PaymentDAO extends AbstractDAO implements PaymentDAOContract
         return DB::table(self::TABLE)
             ->join()
             ->join()
-            ->select();
+            ->select(
+                self::TABLE . '.' . self::PK,
+                self::TABLE . '.invoice_id',
+                self::TABLE . '.type_id',
+                self::TABLE . '.amount',
+                self::TABLE . '.created'
+            );
     }
 
     protected function parseFilters(array $filters = array(), $defaults = true)
@@ -50,8 +56,8 @@ class PaymentDAO extends AbstractDAO implements PaymentDAOContract
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.id', $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.id', $filters[self::PK]);
         }
 
         return $this->finish($filters);

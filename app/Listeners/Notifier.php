@@ -2,9 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Services\NotificationService;
+
 class NotificationListener
 {
-    use Notifiable;
+    use App\Listeners\Common\Notifiable;
 
     protected $service;
 
@@ -16,6 +18,6 @@ class NotificationListener
     public function handle($event)
     {
         $user = $event->getUser();
-        return $this->notify($user->id, $event->getNotification());
+        return $this->notify($user->pk, $event->getNotification());
     }
 }

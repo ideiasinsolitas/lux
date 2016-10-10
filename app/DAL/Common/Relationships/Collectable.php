@@ -2,6 +2,8 @@
 
 namespace App\DAL\Common\Relationships;
 
+use Illuminate\Support\Facades\DB;
+
 trait Collectable
 {
     public function addToCollection($collection_id, $item_id, $order)

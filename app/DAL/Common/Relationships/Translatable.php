@@ -2,6 +2,8 @@
 
 namespace App\DAL\Common\Relationships;
 
+use Illuminate\Support\Facades\DB;
+
 trait Translatable
 {
     protected function handleTranslationInput($input)
@@ -10,13 +12,13 @@ trait Translatable
             $input,
             function ($k, $v) {
                 return in_array($k, [
-                        'core_translations.name',
-                        'core_translations.description',
-                        'core_translations.title',
-                        'core_translations.subtitle',
-                        'core_translations.tagline',
-                        'core_translations.excerpt',
-                        'core_translations.body',
+                        'name',
+                        'description',
+                        'title',
+                        'subtitle',
+                        'tagline',
+                        'excerpt',
+                        'body',
                     ]);
             }
         );
@@ -101,6 +103,7 @@ trait Translatable
         if (!is_int($item_id) || !is_string($lang)) {
             throw new \Exception("Error Processing Request", 1);
         }
+
         return DB::table('core_translations')
             ->select('core_translations.slug')
             ->where('core_translations.translatable_type', self::INTERNAL_TYPE)
@@ -114,6 +117,7 @@ trait Translatable
         if (!is_string($slug)) {
             throw new \Exception("Error Processing Request", 1);
         }
+
         return $this->getTranslationBuilder()
             ->where('core_translationsslug', $slug)
             ->get();
@@ -124,6 +128,7 @@ trait Translatable
         if (!is_int($item_id) || !is_string($lang)) {
             throw new \Exception("Error Processing Request", 1);
         }
+
         $translatable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_translations')
             ->where('tranlatable_type', self::INTERNAL_TYPE)
@@ -145,24 +150,25 @@ trait Translatable
         $string = preg_replace('~[^-\w]+~', '', $string);
 
         if (empty($string)) {
-            $slug = 'n-a';
+            throw new \Exception("Could not generate slug.", 1);
         }
 
-        $slug = $string;
         $i = 1;
-        $slugTpl = $slug . '-';
+        $slug = $string . '-';
         while ($this->slugExists($slug)) {
-            $slug = $slugTpl . $i;
+            $slug .= $i;
             $i++;
         }
+
         return $slug;
     }
 
-    public function slugExists($slug)
+    protected function slugExists($slug)
     {
         if (!is_string($slug)) {
             throw new \Exception("Invalid input type", 1);
         }
-        return DB::table('translations')->select('id')->where('slug', $slug) ? true : false;
+
+        return DB::table('translations')->select('id')->where('slug', $slug)->first() ? true : false;
     }
 }

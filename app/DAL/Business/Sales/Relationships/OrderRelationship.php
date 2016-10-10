@@ -6,7 +6,4 @@ use App\DAL\Common\Relationships;
 
 trait OrderRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
 }

@@ -6,7 +6,4 @@ use App\DAL\Common\Relationships;
 
 trait PaymentRelationship
 {
-    use Relationships\,
-        Relationships\,
-        Relationships\;
 }

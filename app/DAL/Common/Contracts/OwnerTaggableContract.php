@@ -4,6 +4,8 @@ namespace App\DAL\Common\Contract;
 
 interface OwnerTaggableContract
 {
+    const OWNER_TAGGABLE_TABLE = 'core_votes';
+
     public function getOrCreateTermId($term);
 
     public function addTaxonomyTerm($item_id, $term);

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
 use App\DAL\DAOTrait;
+use App\DAL\LastInsertIdTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Business\ProjectManagement\Contracts\ProjectDAOContract;
 use App\DAL\Business\ProjectManagement\Actions\ProjectAction;
@@ -14,6 +15,7 @@ class ProjectDAO extends AbstractDAO implements ProjectDAOContract
 {
     use ProjectAction,
         ProjectRelationship,
+        LastInsertIdTrait,
         DAOTrait;
 
     /**
@@ -33,7 +35,7 @@ class ProjectDAO extends AbstractDAO implements ProjectDAOContract
         return DB::table(self::TABLE)
             ->select(
                 self::TABLE . '.' . self::PK,
-                self::TABLE . '.node_id',
+                self::TABLE . '.node_id AS node',
                 self::TABLE . '.name',
                 self::TABLE . '.description',
                 self::TABLE . '.activity'

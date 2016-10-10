@@ -2,29 +2,78 @@
 
 namespace App\DAL\Business\ProjectManagement;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\DefaultEntityTrait;
+use App\DAL\Common\Properties;
 
-class Ticket extends AbstractModel
+class Ticket extends AbstractEntity
 {
-    use DefaultModelTrait;
+    use DefaultEntityTrait,
+        Properties\Identifiable,
+        Properties\Description,
+        Properties\Activity,
+        Properties\Created,
+        Properties\Modified,
+        Properties\Deleted,
+        Properties\Nodable;
 
-    protected $id;
+    protected $responsible;
 
-    protected $responsible_id;
+    protected $customer;
 
-    protected $customer_id;
-
-    protected $project_id;
+    protected $project;
 
     protected $problem_url;
 
-    protected $description;
+    protected $comments;
 
-    protected $activity;
+    public function setResponsible($value)
+    {
+        $this->responsible = $this->createEntity($value, "\App\DAL\Core\Sys\User");
+    }
 
-    protected $created;
+    public function getResponsible()
+    {
+        return $this->responsible === null ? $this->responsible : new \App\DAL\Core\Sys\User();
+    }
 
-    protected $modified;
+    public function setCustomer($value)
+    {
+        $this->customer = $this->createEntity($value, "\App\DAL\Core\Sys\User");
+    }
 
-    protected $deleted;
+    public function getCustomer()
+    {
+        return $this->customer === null ? $this->customer : new \App\DAL\Core\Sys\User();
+    }
+
+    public function setProject($value)
+    {
+        $this->project = $this->createEntity($value, "\App\DAL\Business\ProjectManagement\Project");
+    }
+
+    public function getProject()
+    {
+        return $this->project === null ? $this->project : new \App\DAL\Business\ProjectManagement\Project();
+    }
+
+    public function setProblemUrl($value)
+    {
+        $this->problem_url = $this->checkValueType($value, 'string');
+    }
+
+    public function getProblemUrl()
+    {
+        return $this->problem_url || "";
+    }
+
+    public function setComments($comments)
+    {
+        $this->comments = $this->createEntityCollection($comments, 'App\DAL\Core\Interaction\Comment');
+    }
+
+    public function getComments()
+    {
+        return $this->comments;
+    }
 }

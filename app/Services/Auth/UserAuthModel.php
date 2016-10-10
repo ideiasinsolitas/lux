@@ -5,7 +5,7 @@ namespace App\Services\Auth;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Collection;
 
-class UserAuthModel implements Authenticatable
+class UserAuthEntity implements Authenticatable
 {
     protected $id;
     protected $token;
@@ -21,7 +21,6 @@ class UserAuthModel implements Authenticatable
         }
         throw new \Exception("Error Processing Request", 1);
     }
-
 
     public function __construct($id = null, $token = null, $password = null)
     {

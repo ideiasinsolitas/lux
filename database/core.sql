@@ -1,13 +1,9 @@
-/* user management
- */
+/* user management */
 DROP TABLE IF EXISTS `core_users`;
 CREATE TABLE `core_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 1, -- 0 = inactive, 1 = active
@@ -19,8 +15,18 @@ CREATE TABLE `core_users` (
   UNIQUE(`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `core_users` (`id`,`username`,`email`,`first_name`,`last_name`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
-(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro', 'Koblitz', 'Pedro Koblitz', '', 1, NOW(), NOW());
+INSERT INTO `core_users` (`id`,`username`,`email`,`display_name`,`password`,`activity`,`created`,`modified`) VALUES
+(1, 'pedrokoblitz', 'pedrokoblitz@gmail.com', 'Pedro Koblitz', '', 1, NOW(), NOW());
+
+DROP TABLE IF EXISTS `core_users_profiles`;
+CREATE TABLE `core_users_profiles` (
+  `user_id` int(10) unsigned NOT NULL,
+  `first_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `middle_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",
+  `last_name` varchar(120) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+INSERT INTO `core_users_profiles` (`user_id`, `first_name`, `middle_name`, `last_name`) VALUES
+(1, 'Pedro', '', 'Koblitz');
 
 /* Everything that has a type id points here */
 DROP TABLE IF EXISTS `core_types`;
@@ -121,10 +127,7 @@ CREATE TABLE `core_tokens` (
   UNIQUE(`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-/*
-store text based content for all entities and group by language
-Polymorphic
- */
+/* store text based content for all entities and group by language Polymorphic */
 DROP TABLE IF EXISTS `core_translations`;
 CREATE TABLE `core_translations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -172,7 +175,7 @@ CREATE TABLE `core_votes` (
   `user_id` int(10) unsigned NOT NULL,
   `votable_type` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `votable_id` int(10) unsigned NOT NULL,
-  `vote` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `vote` int(10) unsigned NOT NULL,
   UNIQUE(`user_id`, `votable_type`, `votable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -332,22 +335,6 @@ CREATE TABLE `core_blocks` (
   `area_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-/* blocks contain a dropdown with widgets? */
-DROP TABLE IF EXISTS `core_menus`;
-CREATE TABLE `core_menus` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_id` int(10) unsigned DEFAULT NULL,
-  `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-DROP TABLE IF EXISTS `core_menus_resources`;
-CREATE TABLE `core_menus_resources` (
-  `menu_id` int(10) unsigned NOT NULL,
-  `resource_id` int(10) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 
 DROP TABLE IF EXISTS `core_notifications`;
 CREATE TABLE `core_notifications` (

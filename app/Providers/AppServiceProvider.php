@@ -8,74 +8,58 @@ use Illuminate\Support\ServiceProvider;
  */
 class AppServiceProvider extends ServiceProvider
 {
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
-        //
     }
-
-    /**
-     * Register any application services.
-     *
-     * This service provider is a great spot to register your various container
-     * bindings with the application. As you can see, we are registering our
-     * "Registrar" implementation here. You can add your own bindings too!
-     *
-     * @return void
-     */
+    
     public function register()
     {
-        $domains = array(
-            'Config',
-            'Type',
-            'User',
-            'Auth',
-            'Notification',
-            'Token'
+        $name = "Core";
+
+        $packages = array(
+            'Sys' => [
+                'User',
+                'Notification',
+                'Config',
+                'Type'
+            ],
+            'SiteBuilding' => [
+            ],
+            'Interaction' => [
+                'Comment',
+            ],
+            'Taxonomy' => [
+            ]
         );
 
-        foreach ($domains as $domain) {
-            if (!interface_exists("App\DAL\Core\Sys\Contracts\\{$domain}DAOContract")) {
-                throw new \Exception("Contract ${domain}DAOContract not Found", 1);
-            }
+        // $this->_register($name, $packages);
 
-            if (!class_exists("App\DAL\Core\Sys\\{$domain}DAO")) {
-                throw new \Exception("Class ${domain}DAO not Found", 1);
-            }
-
-            $this->app->bind("App\DAL\Core\Sys\Contracts\\{$domain}DAOContract", "App\DAL\Core\Sys\\{$domain}DAO");
-        }
-/*
-        $components = load_from_file('components.yml');
-        foreach ($components as $component => $domains) {
-            $component_namespace = str_replace('.', '\\', $component);
-
-            foreach ($domains as $domain) {
-                if (!interface_exists("App\DAL\\{$component_namespace}\Contracts\\{$domain}DAOContract")) {
-                    throw new \Exception("Contract ${domain}DAOContract not Found", 1);
+        foreach ($packages as $package => $entities) {
+            foreach ($entities as $entity) {
+                // entity exists?
+                if (!class_exists("App\DAL\\$name\\$package\\{$entity}")) {
+                    throw new \Exception("Class App\DAL\\$name\\$package\\{$entity} not found.", 1);
+                }
+                
+                // bind DAO
+                if (!interface_exists("App\DAL\\$name\\$package\Contracts\\{$entity}DAOContract")) {
+                    throw new \Exception("Contract App\DAL\\$name\\$package\Contracts\\{$entity}DAOContract not found", 1);
                 }
 
-                if (!class_exists("App\DAL\\{$component_namespace}\\{$domain}DAO")) {
-                    throw new \Exception("Class ${domain}DAO not Found", 1);
+                if (!class_exists("App\DAL\\$name\\$package\\{$entity}DAO")) {
+                    throw new \Exception("Class App\DAL\\$name\\$package\\{$entity}DAO not found.", 1);
                 }
 
-                $this->app->bind("App\DAL\\{$component_namespace}\Contracts\\{$domain}DAOContract", "App\DAL\\{$component_namespace}\\{$domain}DAO");
+                $this->app->bind("App\DAL\\$name\\$package\Contracts\\{$entity}DAOContract", "App\DAL\\$name\\$package\\{$entity}DAO");
+
+                // bind DataMapper
+                $isInterface = interface_exists("App\DAL\\$name\\$package\Contracts\\{$entity}DataMapperContract");
+                $isClass = class_exists("App\DAL\\$name\\$package\\{$entity}DataMapper");
+
+                if ($isInterface && $isClass) {
+                    $this->app->bind("App\DAL\\$name\\$package\Contracts\\{$entity}DataMapperContract", "App\DAL\\$name\\$package\\{$entity}DataMapper");
+                }
             }
-        }
-*/
-
-        $this->app->bind("Illuminate\Contracts\Auth\Guard", "App\Services\Auth\AuthService");
-        $this->app->bind("Illuminate\Contracts\Auth\UserProvider", "App\Services\Auth\UserAuthProvider");
-
-        $this->app->bind("App\Services\Rest\RestProcessorContract", "App\Services\Rest\RestProcessor");
-        
-        if ($this->app->environment() == 'local') {
-            $this->app->register(\Laracasts\Generators\GeneratorsServiceProvider::class);
         }
     }
 }

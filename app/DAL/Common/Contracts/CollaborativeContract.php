@@ -4,9 +4,9 @@ namespace App\DAL\Common\Contract;
 
 interface CollaborativeContract
 {
-    const COLLABORATIONS_TABLE = 'core_collaborations';
+    const COLLABORATION_TABLE = 'core_collaborations';
     
-    const COLLABORATIONS_PK = 'id';
+    const COLLABORATION_FK = 'collaborative_id';
 
     public function enterCollaboration($user_id, $item_id);
 

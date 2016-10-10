@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 class PostmanListener
 {
-    use Mailable;
+    use App\Listeners\Common\Mailable;
 
     public function handle($event)
     {

@@ -55,8 +55,8 @@ class TermDAO extends AbstractDAO implements TermDAOContract
 
         if (isset($filters['lang'])) {
             $this->builder->where(self::TRANSLATION_TABLE . '.translatable_type', self::INTERNAL_TYPE);
-            if (isset($filters['pk'])) {
-                $this->builder->where(self::TRANSLATION_TABLE . '.translatable_id', $filters['pk']);
+            if (isset($filters[self::PK])) {
+                $this->builder->where(self::TRANSLATION_TABLE . '.translatable_id', $filters[self::PK]);
             }
             $this->builder->where(self::TRANSLATION_TABLE . '.language', $filters['lang']);
         }

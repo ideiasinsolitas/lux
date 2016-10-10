@@ -2,6 +2,8 @@
 
 namespace App\DAL\Common\Relationships;
 
+use Illuminate\Support\Facades\DB;
+
 trait Likeable
 {
     public function like($user_id, $item_id)

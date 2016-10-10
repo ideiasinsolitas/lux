@@ -41,7 +41,7 @@ class AuthService implements Guard
 
     protected function getUser($id)
     {
-        if (!isset($this->model) || !($this->model instanceof UserAuthModel)) {
+        if (!isset($this->model) || !($this->model instanceof UserAuthEntity)) {
             $this->model = $this->user->retrieveById($id);
         }
         return $this->model;

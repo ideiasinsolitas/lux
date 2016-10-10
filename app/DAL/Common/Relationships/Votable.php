@@ -2,6 +2,8 @@
 
 namespace App\DAL\Common\Relationships;
 
+use Illuminate\Support\Facades\DB;
+
 trait Votable
 {
     public function hasVoted($user_id, $item_id)
@@ -48,7 +50,7 @@ trait Votable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::raw('core_votes')
-            ->select('core_votes.name', DB::raw('count(core_votes.name) AS core_votes.vote_count'))
+            ->select('core_votes.name', 'count(core_votes.name) AS vote_count')
             ->groupBy('core_votes.name')
             ->where('core_votes.votable_type', self::INTERNAL_TYPE)
             ->where('core_votes.votable_id', $item_id)

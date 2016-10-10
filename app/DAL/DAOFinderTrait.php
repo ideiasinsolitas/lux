@@ -8,7 +8,7 @@
  * @package AllScorings
  */
 
-namespace App\DAL\Features;
+namespace App\DAL;
 
 trait DAOFinderTrait
 {
@@ -17,9 +17,9 @@ trait DAOFinderTrait
      *
      * @return array|Illuminate\Database\Query\Builder
      */
-    public function find()
+    public function getAll($filters)
     {
-        return $this->getBuilder()->get();
+        return $this->parseFilters($filters);
     }
 
     /**
@@ -28,10 +28,10 @@ trait DAOFinderTrait
      * @param  integer $per_page rows per page
      * @return [type]           [description]
      */
-    public function findPaginated($per_page)
+    public function getPaginated($filters, $per_page)
     {
-        return $this->getBuilder()
-            ->paginate($per_page);
+        $filters['per_page'] = $per_page;
+        return $this->parseFilters($filters);
     }
 
     /**
@@ -40,10 +40,9 @@ trait DAOFinderTrait
      * @param  integer $id primary key index
      * @return [type]     [description]
      */
-    public function findOne($id)
+    public function getOne($id, $filters)
     {
-        return $this->getBuilder()
-            ->where($this->table . '.' . $this->primaryKey, $id)
-            ->get();
+        $filters[self::PK] = $id;
+        return $this->parseFilters($filters);
     }
 }

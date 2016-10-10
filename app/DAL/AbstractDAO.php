@@ -14,7 +14,7 @@ use App\DAL\Contracts\QueryBuilderContract;
 
 abstract class AbstractDAO
 {
-    protected $filters;
+    protected $filters = ['sort' => 'id,asc'];
 
     protected $builder;
 

@@ -2,6 +2,8 @@
 
 namespace App\DAL\Common\Actions;
 
+use Illuminate\Support\Facades\DB;
+
 /**
  * @author Pedro Koblitz
  * @package Maltz

@@ -2,17 +2,16 @@
 
 namespace App\DAL\Business\Store;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\DefaultEntityTrait;
 
-class Cart extends AbstractModel
+class Cart extends AbstractEntity
 {
-    use DefaultModelTrait;
+    use DefaultEntityTrait;
 
-    protected $id;
+    protected $customer;
 
-    protected $customer_id;
-
-    protected $product_id;
+    protected $product;
 
     protected $quantity;
 }

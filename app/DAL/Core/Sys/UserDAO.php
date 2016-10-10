@@ -24,10 +24,12 @@ class UserDAO extends AbstractDAO implements UserDAOContract
 
     public function getBuilder()
     {
+        $fk = self::PROFILE_TABLE . '.' . self::FK;
+        $pk = self::TABLE . '.' . self::PK;
         return DB::table(self::TABLE)
-            ->join(self::PROFILE_TABLE, self::PROFILE_TABLE . '.' . self::FK, '=', self::TABLE . '.' . self::PK)
+            ->join(self::PROFILE_TABLE, $fk, '=', $pk)
             ->select(
-                self::TABLE . '.' . self::PK,
+                $pk,
                 self::TABLE . '.email',
                 self::PROFILE_TABLE . '.first_name',
                 self::PROFILE_TABLE . '.middle_name',
@@ -69,12 +71,13 @@ class UserDAO extends AbstractDAO implements UserDAOContract
         list($userInput, $userProfileInput) = $this->handleInput($input);
         $user_id = DB::table(self::TABLE)->insertGetId($userInput);
         $userProfileInput[self::FK] = $user_id;
+
         $insertProfile = DB::table(self::PROFILE_TABLE)
             ->insert($userProfileInput);
+        
         if ($user_id && $insertProfile) {
             return $user_id;
         }
-        throw new \Exception("Error Processing Request", 1);
     }
 
     public function update(array $input, $pk)
@@ -83,12 +86,16 @@ class UserDAO extends AbstractDAO implements UserDAOContract
             throw new \Exception("Error Processing Request", 1);
         }
         list($userInput, $userProfileInput) = $this->handleInput($input);
+        
+        unset($userInput[self::PK]);
         $result = DB::table(self::TABLE)
             ->where(self::PK, $pk)
             ->update($userInput);
         if (!$result) {
-            throw new \Exception("Error Processing Request", 1);
+            return "null";
         }
+
+        unset($userProfileInput[self::FK]);
         return DB::table(self::PROFILE_TABLE)
             ->where(self::FK, $pk)
             ->update($userProfileInput);

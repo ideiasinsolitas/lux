@@ -2,19 +2,32 @@
 
 namespace App\DAL\Business\ProjectManagement;
 
-use App\DAL\AbstractModel;
+use App\DAL\AbstractEntity;
+use App\DAL\EntityCollection;
+use App\DAL\DefaultEntityTrait;
+use App\DAL\Common\Properties;
 
-class Project extends AbstractModel
+use Carbon\Carbon;
+
+class Project extends AbstractEntity
 {
-    use DefaultModelTrait;
+    use DefaultEntityTrait,
+        Properties\Identifiable,
+        Properties\Nodable,
+        Properties\Name,
+        Properties\Description,
+        Properties\Activity;
 
-    protected $id;
+    protected $tickets;
 
-    protected $node_id;
+    public function setTickets($value)
+    {
+        $this->tickets = $this->createEntityCollection($value, "App\DAL\Business\ProjectManagement\Ticket");
+    }
 
-    protected $name;
-
-    protected $description;
-
-    protected $activity;
+    public function getTickets()
+    {
+        $isCollection = $this->tickets instanceof EntityCollection;
+        return $isCollection ? $this->tickets : new EntityCollection();
+    }
 }

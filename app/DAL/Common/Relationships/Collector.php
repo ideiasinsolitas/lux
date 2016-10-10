@@ -2,6 +2,8 @@
 
 namespace App\DAL\Common\Relationships;
 
+use Illuminate\Support\Facades\DB;
+
 trait Collector
 {
     public function createCollection($item_id)

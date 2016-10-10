@@ -150,7 +150,12 @@ return [
 		 * Application Service Providers...
 		 */
         'App\Providers\AppServiceProvider',
-        // 'App\Providers\BusServiceProvider',
+        'App\Providers\InputApiServiceProvider',
+        'App\Providers\BusinessServiceProvider',
+        /*
+        'App\Providers\IntelServiceProvider',
+        'App\Providers\PublishingServiceProvider',
+        */
         'App\Providers\ConfigServiceProvider',
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
@@ -162,7 +167,6 @@ return [
         'HieuLe\Active\ActiveServiceProvider',
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
-//        'Potsky\LaravelLocalizationHelpers\LaravelLocalizationHelpersServiceProviderLaravel5',
 
     ],
 

@@ -31,9 +31,17 @@ class ShopDAO extends AbstractDAO implements ShopDAOContract
     public function getBuilder()
     {
         return DB::table(self::TABLE)
-            ->join()
-            ->join()
-            ->select();
+            ->select(
+                self::TABLE . '.' . self::PK,
+                self::TABLE . '.node_id',
+                self::TABLE . '.seller_id',
+                self::TABLE . '.name',
+                self::TABLE . '.description',
+                self::TABLE . '.activity',
+                self::TABLE . '.created',
+                self::TABLE . '.modified',
+                self::TABLE . '.deleted'
+            );
     }
 
     protected function parseFilters(array $filters = array(), $defaults = true)
@@ -50,8 +58,8 @@ class ShopDAO extends AbstractDAO implements ShopDAOContract
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
 
-        if (isset($filters['id'])) {
-            $this->builder->where(self::TABLE . '.id', $filters['id']);
+        if (isset($filters[self::PK])) {
+            $this->builder->where(self::TABLE . '.id', $filters[self::PK]);
         }
 
         return $this->finish($filters);

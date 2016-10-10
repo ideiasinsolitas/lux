@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DAL\Features;
+namespace App\DAL;
 
 use Illuminate\Support\Facades\DB;
 

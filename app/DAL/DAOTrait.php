@@ -4,6 +4,7 @@ namespace App\DAL;
 
 trait DAOTrait
 {
+    // internal
     final protected function finish(array $filters = array())
     {
         if (!isset($filters['sort'])) {
@@ -17,9 +18,10 @@ trait DAOTrait
             return (array) $this->builder->paginate($filters['per_page']);
         }
 
-        if (isset($filters['pk'])) {
-            return (array) $this->builder->where(self::TABLE . '.' . self::PK, $filters['pk'])->first();
+        if (isset($filters[self::PK])) {
+            return (array) $this->builder->where(self::TABLE . '.' . self::PK, $filters[self::PK])->first();
         }
+
         return $this->builder->get();
     }
 }
