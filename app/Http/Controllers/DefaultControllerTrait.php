@@ -16,7 +16,7 @@ trait DefaultControllerTrait
 
     protected function setEntityState($key, $entity)
     {
-        if ($entity > 0) {
+        if ($entity->id > 0) {
             $session = session();
             $savedHash = $session->get($key);
             $entityHash = $entity->getHash();

@@ -42,10 +42,8 @@ class ProductDAO extends AbstractDAO implements ProductDAOContract
                 self::TABLE . '.height',
                 self::TABLE . '.width',
                 self::TABLE . '.depth',
-                self::TABLE . '.activity',
                 self::TABLE . '.created',
-                self::TABLE . '.modified',
-                self::TABLE . '.deleted'
+                self::TABLE . '.modified'
             );
     }
 

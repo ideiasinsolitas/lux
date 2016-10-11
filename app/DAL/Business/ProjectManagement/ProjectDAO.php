@@ -37,8 +37,7 @@ class ProjectDAO extends AbstractDAO implements ProjectDAOContract
                 self::TABLE . '.' . self::PK,
                 self::TABLE . '.node_id AS node',
                 self::TABLE . '.name',
-                self::TABLE . '.description',
-                self::TABLE . '.activity'
+                self::TABLE . '.description'
             );
     }
   

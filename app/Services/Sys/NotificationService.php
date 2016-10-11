@@ -27,4 +27,10 @@ class NotificationService
         }
         return $result;
     }
+
+    public function receive($user_id)
+    {
+        $result = $this->dao->($user_id);
+        return $result;
+    }
 }

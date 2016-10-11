@@ -8,8 +8,11 @@ use Illuminate\Routing\Controller;
 
 class PlaceApiController extends Controller
 {
-    public function __construct()
+    protected $dao;
+
+    public function __construct(PlaceDAOContract $dao)
     {
+        $this->dao = $dao;
     }
 
     public function fillAddress(Request $request)

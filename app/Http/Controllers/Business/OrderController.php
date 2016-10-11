@@ -71,4 +71,14 @@ class OrderController extends Controller
         $order = $this->mapper->fetchById($pk);
         return response($order->toArray(), 200);
     }
+
+    protected function saveHashes($entity)
+    {
+        
+    }
+
+    protected function setStates($entity)
+    {
+        
+    }
 }

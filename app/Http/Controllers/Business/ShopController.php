@@ -71,4 +71,14 @@ class ShopController extends Controller
         $shop = $this->mapper->fetchById($pk);
         return response($shop->toArray(), 200);
     }
+
+    protected function saveHashes($entity)
+    {
+        
+    }
+
+    protected function setStates($entity)
+    {
+        
+    }
 }

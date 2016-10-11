@@ -49,10 +49,8 @@ class TicketDAO extends AbstractDAO implements TicketDAOContract
                 'bp.description',
                 self::TABLE . '.problem_url',
                 self::TABLE . '.description',
-                self::TABLE . '.activity',
                 self::TABLE . '.created',
-                self::TABLE . '.modified',
-                self::TABLE . '.deleted'
+                self::TABLE . '.modified'
             );
     }
 

@@ -37,10 +37,8 @@ class ShopDAO extends AbstractDAO implements ShopDAOContract
                 self::TABLE . '.seller_id',
                 self::TABLE . '.name',
                 self::TABLE . '.description',
-                self::TABLE . '.activity',
                 self::TABLE . '.created',
-                self::TABLE . '.modified',
-                self::TABLE . '.deleted'
+                self::TABLE . '.modified'
             );
     }
 

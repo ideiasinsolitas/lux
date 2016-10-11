@@ -80,7 +80,6 @@ class ProjectController extends Controller
         if (!$project) {
             return new Response([], 404, $this->mapper->getMessages());
         }
-        $key = 'project_' . $pk;
         $this->saveHashes($project);
         return new Response($project->toArray(), 200, $this->mapper->getMessages());
     }
@@ -95,7 +94,7 @@ class ProjectController extends Controller
             $commentHashes = array_merge($commentHashes, $ticket->comments->getHashes());
         }
         foreach ($projectHashes as $key => $value) {
-            $this->saveEntityHash('project' . $key, $value);
+            $this->saveEntityHash('project_' . $key, $value);
         }
         foreach ($ticketHashes as $key => $value) {
             $this->saveEntityHash('ticket_' . $key, $value);

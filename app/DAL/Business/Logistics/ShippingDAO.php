@@ -38,10 +38,7 @@ class ShippingDAO extends AbstractDAO implements ShippingDAOContract
             ->join('core_types', self::TABLE . '.type_id', '=', 'core_types.id')
             ->select(
                 self::TABLE . '.' . self::PK,
-                'core_types.name AS type',
-                'core_types.class',
                 self::TABLE . '.tracking_ref',
-                self::TABLE . '.activity',
                 self::TABLE . '.created',
                 self::TABLE . '.shipped',
                 self::TABLE . '.delivered'
