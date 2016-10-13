@@ -20,16 +20,9 @@ Lux also make use of a lower level api, ignoring the data mapper layer and calli
 
 current Laravel version: 5.2
 
-## TODO LIST
-
 ### Module Set: Business
 
-* migrations less than 50% todo
-* seeds more than 50% todo
-* DAL\Business\Sales\Relationships
-* DAL\Business\Sales\Seller
-* DAL\Business\Store\Relationships
-* DAL\Business\Store\Customer
+ProjectManagement, Ecommerce, MarketPlace and SalesReports
 
 #### Project
 
