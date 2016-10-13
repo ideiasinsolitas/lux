@@ -23,7 +23,7 @@ class CreateCoreUsersTable extends Migration
             $table->string('activity');
             $table->dateTime('created');
             $table->dateTime('modified');
-            $table->dateTime('deleted');
+            $table->dateTime('deleted')->nullable();
 
             $table->unique('username');
             $table->unique('email');

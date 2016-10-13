@@ -18,10 +18,10 @@ class CreateBusinessShopsTable extends Migration
             $table->integer('seller_id');
             $table->string('name');
             $table->string('description');
-            $table->tinyInt('activity');
+            $table->tinyInteger('activity');
             $table->dateTime('created');
             $table->dateTime('modified');
-            $table->dateTime('deleted');
+            $table->dateTime('deleted')->nullable();
         });
     }
 

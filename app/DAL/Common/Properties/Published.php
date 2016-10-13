@@ -2,17 +2,17 @@
 
 namespace App\DAL\Common\Properties;
 
-trait DatePublished
+trait Published
 {
-    protected $date_published;
+    protected $published;
 
     public function setDatePublished($value)
     {
-        $this->date_published = $this->checkDateValue($value);
+        $this->published = $this->checkDateValue($value);
     }
 
     public function getDatePublished()
     {
-        return $this->date_published;
+        return $this->published;
     }
 }

@@ -14,7 +14,10 @@ class CreateBusinessInvoicesTable extends Migration
     {
         Schema::create('business_invoices', function (Blueprint $table) {
             $table->increments('id');
-            //
+            $table->decimal('amout', 10, 2);
+            $table->tinyInteger('activity');
+            $table->dateTime('created');
+            $table->dateTime('paid');
         });
     }
 

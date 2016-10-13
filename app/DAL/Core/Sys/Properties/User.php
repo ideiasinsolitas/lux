@@ -1,10 +1,10 @@
 <?php
 
-namespace App\DAL;
+namespace App\DAL\Core\Sys\Properties;
 
-use App\DAL\System\User;
+use App\DAL\Sys\User;
 
-trait UserEntityTrait
+trait User
 {
     protected $user;
 

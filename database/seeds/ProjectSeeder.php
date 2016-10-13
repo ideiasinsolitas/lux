@@ -11,17 +11,7 @@ class ProjectSeeder extends BaseSeeder
 
     public function init()
     {
-        $faker = new \Faker\Generator();
-        $faker->addProvider(new \Faker\Provider\pt_BR\Person($faker));
-        $faker->addProvider(new \Faker\Provider\pt_BR\Address($faker));
-        $faker->addProvider(new \Faker\Provider\pt_BR\Company($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Text($faker));
-        $faker->addProvider(new \Faker\Provider\pt_BR\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\DateTime($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-        $faker->addProvider(new \Faker\Provider\Lorem($faker));
-
-        $this->faker = $faker;
+        $this->faker = $this->getFaker();
     }
 
     public function insertProject()
@@ -33,12 +23,12 @@ class ProjectSeeder extends BaseSeeder
             'created' => $this->faker->dateTimeThisMonth,
             'modified' => Carbon::now(),
         ];
-        $node = $this->getNodeTemplate();
-        $node['class'] = 'Project';
+        $node = $this->getNodeTemplate('Project');
         $node_id = DB::table('core_nodes')->insertGetId($node);
+        $this->current_node_id = $node_id;
         $project['node_id'] = $node_id;
-        $this->parent_node_id = $node_id;
         $this->current_project_id = DB::table('business_projects')->insertGetId($project);
+        return $this->current_project_id;
     }
 
     public function insertTicket()
@@ -53,12 +43,12 @@ class ProjectSeeder extends BaseSeeder
             'modified' => Carbon::now(),
             'project_id' => $this->current_project_id
         ];
-        $node = $this->getNodeTemplate();
-        $node['class'] = 'Ticket';
+        $node = $this->getNodeTemplate('Ticket');
         $node_id = DB::table('core_nodes')->insertGetId($node);
+        $this->current_node_id = $node_id;
         $ticket['node_id'] = $node_id;
-        $this->parent_node_id = $node_id;
         $this->current_ticket_id = DB::table('business_tickets')->insertGetId($ticket);
+        return $this->current_ticket_id;
     }
 
     public function insertComment()
@@ -73,12 +63,11 @@ class ProjectSeeder extends BaseSeeder
             'created' => $this->faker->dateTimeThisMonth,
             'modified' => Carbon::now(),
         ];
-        $node = $this->getNodeTemplate();
-        $node['class'] = 'Comment';
+        $node = $this->getNodeTemplate('Comment');
         $node_id = DB::table('core_nodes')->insertGetId($node);
+        $this->current_node_id = $node_id;
         $comment['node_id'] = $node_id;
-        $this->parent_node_id = $node_id;
-        DB::table('core_comments')->insert($comment);
+        return DB::table('core_comments')->insertGetId($comment);
     }
 
     public function insertVote()
@@ -90,7 +79,7 @@ class ProjectSeeder extends BaseSeeder
             'votable_id' => $this->current_ticket_id,
             'created' => $this->faker->dateTimeThisMonth,
         ];
-        DB::table('core_votes')->insert($vote);
+        return DB::table('core_votes')->insertGetId($vote);
     }
 
     public function run()
@@ -98,16 +87,20 @@ class ProjectSeeder extends BaseSeeder
         $this->init();
         for ($i=1; $i < 5; $i++) {
             $this->insertProject();
+            $this->parent_node_id = $this->current_node_id;
 
-            for ($a=1; $a < rand(20, 40); $a++) {
+            for ($a=1; $a < rand(5, 10); $a++) {
                 $this->insertTicket();
+                $oldNodeVal = $this->parent_node_id;
+                $this->parent_node_id = $this->current_node_id;
 
-                for ($x=1; $x < rand(10, 30); $x++) {
+                for ($x=1; $x < rand(3, 8); $x++) {
                     $this->insertComment();
                 }
-
                 $this->insertVote();
+                $this->parent_node_id = $oldNodeVal;
             }
+            $this->parent_node_id = 0;
         }
     }
 }

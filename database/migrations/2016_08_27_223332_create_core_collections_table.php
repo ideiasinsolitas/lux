@@ -22,7 +22,7 @@ class CreateCoreCollectionsTable extends Migration
             $table->tinyInteger('activity');
             $table->dateTime('created');
             $table->dateTime('modified');
-            $table->dateTime('deleted');
+            $table->dateTime('deleted')->nullable();
 
             $table->unique(['collector_type', 'collector_id'], 'core_collections_unique');
             $table->unique(['node_id']);

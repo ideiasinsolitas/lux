@@ -1,90 +1,108 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
 use Carbon\Carbon;
 
-class ShopSeeder extends Seeder
+class ShopSeeder extends BaseSeeder
 {
+    protected $parent_node_id;
+
     protected $current_project_id;
     protected $current_ticket_id;
-    
-    protected $parent_node_id;
 
     public function init()
     {
-        $faker = new \Faker\Generator();
-        $faker->addProvider(new \Faker\Provider\pt_BR\Person($faker));
-        $faker->addProvider(new \Faker\Provider\pt_BR\Address($faker));
-        $faker->addProvider(new \Faker\Provider\pt_BR\Company($faker));
-        $faker->addProvider(new \Faker\Provider\en_US\Text($faker));
-        $faker->addProvider(new \Faker\Provider\pt_BR\PhoneNumber($faker));
-        $faker->addProvider(new \Faker\Provider\DateTime($faker));
-        $faker->addProvider(new \Faker\Provider\Internet($faker));
-        $faker->addProvider(new \Faker\Provider\Lorem($faker));
+        $this->faker = $this->getFaker();
+        $this->setTypes();
+    }
 
-        $this->faker = $faker;
+    public function setTypes()
+    {
     }
 
     public function insertSeller()
     {
+        $this->insertUser();
         $seller = [
-            'reference_type' => ,
-            'reference_number' => ,
-            'company_name' => ,
-            'bank_id' => ,
-            'bank_agency' => ,
-            'bank_account'
+            'user_id' => $this->current_user_id,
+            'reference_type' => "cnpj",
+            'reference_number' => $this->faker->cnpj,
+            'name' => $this->faker->name,
         ];
-        DB::table('business_seller_profiles')->insert($seller);
+        $this->current_seller_id = DB::table('business_agents')->insertGetId($seller);
     }
 
-    public function insertShop()
+    public function insertShopAndStorage()
     {
+        $node = $this->getNodeTemplate('Shop');
+        $node_id = DB::table('core_nodes')->insertGetId($node);
         $shop = [
-            'node_id' => ,
-            'seller_id' => ,
-            'name' => ,
-            'description' => ,
-            'activity' => ,
-            'created' => Carbon::now(),
+            'node_id' => $node_id,
+            'seller_id' => $this->current_seller_id,
+            'name' => $this->faker->name,
+            'description' => $this->faker->realText(),
+            'activity' => 1,
+            'created' => Carbon::now()->subDays(rand(1, 200)),
             'modified' => Carbon::now(),
-            'deleted' => ,
+            'deleted' => null
         ];
-        DB::table('business_shops')->insert($shop);
+        $this->current_shop_id = DB::table('business_shops')->insertGetId($shop);
+        $this->insertStorage();
     }
 
     public function insertProduct()
     {
+        $node = $this->getNodeTemplate('Product');
+        $node_id = DB::table('core_nodes')->insertGetId($node);
         $product = [
-            'node_id' => ,
-            'shop_id' => ,
-            'in_stock' => ,
-            'price' => ,
-            'weight' => ,
-            'height' => ,
-            'width' => ,
-            'depth' => ,
-            'activity' => ,
-            'created' => Carbon::now(),
+            'node_id' => $node_id,
+            'shop_id' => $this->current_shop_id,
+            'in_stock' => $this->faker->randomNumber,
+            'price' => $this->faker->randomNumber(2),
+            'weight' => $this->faker->randomNumber(2),
+            'height' => $this->faker->randomNumber(2),
+            'width' => $this->faker->randomNumber(2),
+            'depth' => $this->faker->randomNumber(2),
+            'activity' => 1,
+            'created' => Carbon::now()->subDays(rand(1, 200)),
             'modified' => Carbon::now(),
-            'deleted' => ,
+            'deleted' => null,
         ];
-        DB::table('business_products')->insert($product);
+        $this->current_product_id = DB::table('business_products')->insertGetId($product);
     }
 
     public function insertCustomer()
     {
-        $customer = [];
-        DB::table('business_customers')->insert($customer);
+        $this->insertUser();
+        $customer = [
+            'user_id' => $this->current_user_id,
+            'reference_type' => "cpf",
+            'reference_number' => $this->faker->cpf,
+            'name' => $this->faker->name
+        ];
+        $this->current_customer_id = DB::table('business_agents')->insertGetId($customer);
     }
 
-    public function insertCart()
+    public function insertCustomerAndCart()
     {
         $this->insertCustomer();
 
-        $cart = [];
-        DB::table('business_carts')->insert($cart);
+        $cart = [
+            "customer_id" => $this->current_customer_id,
+            "product_id" => $this->current_product_id,
+            "quantity" => $this->faker->randomNumber(),
+        ];
+        $this->current_cart_id = DB::table('business_carts')->insertGetId($cart);
+    }
+
+    public function insertStorage()
+    {
+        $this->insertPlace();
+        $storage = [
+            "place_id" => $this->current_place_id,
+            "name" => $this->faker->name,
+            "description" => $this->faker->realText()
+        ];
+        $this->current_storage_id = DB::table('business_storages')->insertGetId($storage);
     }
 
     public function run()
@@ -93,17 +111,17 @@ class ShopSeeder extends Seeder
         for ($i=1; $i < 5; $i++) {
             $this->insertSeller();
 
-            for ($a=1; $a < rand(20, 40); $a++) {
-                $this->insertShop();
+            for ($a=1; $a < rand(2, 4); $a++) {
+                $this->insertShopAndStorage();
 
-                for ($x=1; $x < rand(10, 30); $x++) {
+                for ($x=1; $x < rand(10, 15); $x++) {
                     $this->insertProduct();
                 }
             }
         }
 
         for ($i=1; $i < 5; $i++) {
-            $this->insertCart();
+            $this->insertCustomerAndCart();
         }
     }
 }

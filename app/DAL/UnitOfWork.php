@@ -39,8 +39,8 @@ class UnitOfWork
         foreach ($this->storage as $entity) {
             $state = $this->storage[$entity];
             switch ($state) {
+                // case "CLEAN":
                 case "NEW":
-                case "CLEAN":
                 case "DIRTY":
                     $this->mapper->save($entity);
                     break;

@@ -53,7 +53,6 @@ class BlogController extends Controller
         $unitOfWork = new UnitOfWork($this->mapper, new ObjectStorage);
         try {
             $unitOfWork->register($entity)->commit();
-            $entity->setState("CLEAN");
             return response($entity, 200);
         } catch (Exception $e) {
             $unitOfWork->rollback();

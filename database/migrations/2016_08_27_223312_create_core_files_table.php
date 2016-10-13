@@ -26,7 +26,7 @@ class CreateCoreFilesTable extends Migration
             $table->integer('height');
             $table->dateTime('created');
             $table->dateTime('modified');
-            $table->dateTime('deleted');
+            $table->dateTime('deleted')->nullable();
 
             $table->unique(['node_id']);
         });

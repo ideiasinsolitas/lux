@@ -16,9 +16,9 @@ class CreateIntelPlacesTable extends Migration
             $table->increments('id');
             $table->integer('type_id');
             $table->integer('address_id');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('description')->nullable();
-            $table->string('address_line');
+            $table->string('address_line')->nullable();
         });
     }
 

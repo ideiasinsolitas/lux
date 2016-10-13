@@ -21,7 +21,7 @@ class CreateCoreNodesTable extends Migration
             $table->tinyInteger('activity');
             $table->dateTime('created');
             $table->dateTime('modified');
-            $table->dateTime('deleted');
+            $table->dateTime('deleted')->nullable();
         });
     }
 

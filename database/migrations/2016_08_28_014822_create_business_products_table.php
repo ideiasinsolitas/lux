@@ -22,10 +22,10 @@ class CreateBusinessProductsTable extends Migration
             $table->decimal('height', 10, 2);
             $table->decimal('width', 10, 2);
             $table->decimal('depth', 10, 2);
-            $table->tinyInt('activity');
+            $table->tinyInteger('activity');
             $table->dateTime('created');
             $table->dateTime('modified');
-            $table->dateTime('deleted');
+            $table->dateTime('deleted')->nullable();
         });
     }
 

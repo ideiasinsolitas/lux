@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBusinessSellerProfileTable extends Migration
+class CreateBusinessAgentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,14 @@ class CreateBusinessSellerProfileTable extends Migration
      */
     public function up()
     {
-        Schema::create('business_seller_profiles', function (Blueprint $table) {
+        Schema::create('business_agents', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
+            $table->string('name');
             $table->enum('reference_type', ['cpf', 'cnpj']);
             $table->string('reference_number');
-            $table->string('company_name')->nullable();
-            $table->integer('bank_id');
-            $table->string('bank_agency');
-            $table->string('bank_account');
+            $table->unique(['reference_type', 'name']);
+            $table->unique('reference_number');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateBusinessSellerProfileTable extends Migration
      */
     public function down()
     {
-        Schema::drop('business_seller_profiles');
+        Schema::drop('business_agents');
     }
 }

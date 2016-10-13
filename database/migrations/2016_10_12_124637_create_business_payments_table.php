@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIntelFactsTable extends Migration
+class CreateBusinessPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,12 @@ class CreateIntelFactsTable extends Migration
      */
     public function up()
     {
-        Schema::create('intel_facts', function (Blueprint $table) {
+        Schema::create('business_payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('description');
-            $table->tinyInteger('activity');
+            $table->integer('invoice_id');
+            $table->integer('type_id');
+            $table->decimal('amount', 10, 2);
             $table->dateTime('created');
-            $table->dateTime('deleted')->nullable();
-            $table->dateTime('modified');
         });
     }
 
@@ -30,6 +28,6 @@ class CreateIntelFactsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('intel_facts');
+        Schema::drop('business_payments');
     }
 }

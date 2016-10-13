@@ -4,4 +4,4 @@ mysql -uroot -proot -e "drop database laravel; create database laravel;";
 
 composer dumpautoload;
 php artisan migrate;
-php db:seed;
+php artisan db:seed;

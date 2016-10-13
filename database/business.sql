@@ -96,7 +96,6 @@ save cart if user is logged in
  */
 DROP TABLE IF EXISTS `business_carts`;
 CREATE TABLE `business_carts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) unsigned NOT NULL,
   `product_id` int(10) unsigned NOT NULL,
   `quantity` int(10) unsigned NOT NULL,

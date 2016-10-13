@@ -13,8 +13,9 @@ class CreateBusinessCartsTable extends Migration
     public function up()
     {
         Schema::create('business_carts', function (Blueprint $table) {
-            $table->increments('id');
-            //
+            $table->integer('customer_id');
+            $table->integer('product_id');
+            $table->integer('quantity');
         });
     }
 

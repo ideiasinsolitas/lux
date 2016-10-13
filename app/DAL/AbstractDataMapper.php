@@ -2,7 +2,7 @@
 
 namespace App\DAL;
 
-abstract class AbstractDataMapper implements DataMapperContract
+abstract class AbstractDataMapper
 {
     abstract public function fetchAll();
 

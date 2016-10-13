@@ -14,7 +14,11 @@ class CreateBusinessOrderablesTable extends Migration
     {
         Schema::create('business_orderables', function (Blueprint $table) {
             $table->increments('id');
-            //
+            $table->integer('order_id');
+            $table->string('orderable_type');
+            $table->integer('orderable_id');
+            $table->integer('quantity');
+            $table->decimal('unit_price', 10, 2);
         });
     }
 

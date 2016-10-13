@@ -2,8 +2,6 @@
 
 namespace App\DAL;
 
-use App\DAL\Exceptions\MappingException;
-
 trait IsNullAccessorTrait
 {
     public function isNull()

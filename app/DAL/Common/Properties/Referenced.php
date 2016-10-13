@@ -2,17 +2,17 @@
 
 namespace App\DAL\Common\Properties;
 
-trait DateReferenced
+trait Referenced
 {
-    protected $date_referenced;
+    protected $referenced;
 
     public function setDateReferenced($value)
     {
-        $this->date_referenced = $this->checkDateValue($value);
+        $this->referenced = $this->checkDateValue($value);
     }
 
     public function getDateReferenced()
     {
-        return $this->date_referenced;
+        return $this->referenced;
     }
 }

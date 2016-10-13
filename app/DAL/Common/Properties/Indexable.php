@@ -4,15 +4,15 @@ namespace App\DAL\Common\Properties;
 
 trait Indexable
 {
-    protected $index;
+    protected $position;
 
     public function setIndex($value)
     {
-        $this->index = $this->checkValueType($value, 'integer');
+        $this->position = $this->checkValueType($value, 'integer');
     }
 
     public function getIndex()
     {
-        return $this->index;
+        return $this->position;
     }
 }

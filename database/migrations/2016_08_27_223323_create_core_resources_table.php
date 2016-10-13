@@ -22,7 +22,7 @@ class CreateCoreResourcesTable extends Migration
             $table->string('embed');
             $table->tinyInteger('activity');
             $table->dateTime('created');
-            $table->dateTime('deleted');
+            $table->dateTime('deleted')->nullable();
 
             $table->unique(['node_id']);
         });

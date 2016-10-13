@@ -14,7 +14,9 @@ class CreateBusinessStoragesTable extends Migration
     {
         Schema::create('business_storages', function (Blueprint $table) {
             $table->increments('id');
-            //
+            $table->integer('place_id');
+            $table->string('name');
+            $table->string('description');
         });
     }
 
