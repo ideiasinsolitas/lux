@@ -6,8 +6,8 @@ use App\Services\Sys\NotificationService;
 
 trait Notifiable
 {
-    public function sendNotification($user_id, $notification)
+    public function notify($event)
     {
-        $this->notificationService->notify($user_id, $notification);
+        return $this->notificationService->send($event->getUser()->id, $event->getNotification());
     }
 }

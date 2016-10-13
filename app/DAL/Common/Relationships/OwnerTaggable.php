@@ -1,25 +1,17 @@
 <?php
 
-namespace App\DAL\Relationships\Common;
+namespace App\DAL\Common\Relationships;
+
+use Illuminate\Support\Facades\DB;
 
 trait OwnerTaggable
 {
-    public function getOrCreateTermId($term)
-    {
-        if (!is_string($term)) {
-            throw new \Exception("Error Processing Request", 1);
-        }
-        $term_id = DB::table('core_terms')->select('id')->where('name', $term);
-        if ($term_id) {
-            return $term_id->id;
-        }
-        $term_id = DB::table('core_terms')->insertGetId(['name' => $term]);
-        return $term_id;
-    }
-
     public function addTaxonomyTerm($item_id, $term)
     {
         if (!is_int($item_id) || !is_string($term)) {
+            throw new \Exception("Error Processing Request", 1);
+        }
+        if (!method_exists($this, 'getOrCreateTermId')) {
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_taxonomy')
@@ -52,7 +44,7 @@ trait OwnerTaggable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_taxonomy')
-            ->join('core_terms', 'core_taxonomy.term_id', 'core_terms.id')
+            ->join('core_terms', 'core_taxonomy.term_id', '=', 'core_terms.id')
             ->select('core_terms.name', 'core_terms.id')
             ->where('core_taxonomy.ownertaggable_type', self::INTERNAL_TYPE)
             ->where('core_taxonomy.ownertaggable_id', $item_id)
@@ -65,7 +57,7 @@ trait OwnerTaggable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_taxonomy')
-            ->join('core_terms', 'core_taxonomy.term_id', 'core_terms.id')
+            ->join('core_terms', 'core_taxonomy.term_id', '=', 'core_terms.id')
             ->where('core_taxonomy.ownertaggable_type', self::INTERNAL_TYPE)
             ->where('core_taxonomy.ownertaggable_id', $item_id)
             ->where('core_terms.term', $term)
@@ -78,7 +70,7 @@ trait OwnerTaggable
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_taxonomy')
-            ->join('core_terms', 'core_taxonomy.term_id', 'core_terms.id')
+            ->join('core_terms', 'core_taxonomy.term_id', '=', 'core_terms.id')
             ->where('core_taxonomy.ownertaggable_type', self::INTERNAL_TYPE)
             ->where('core_taxonomy.ownertaggable_id', $item_id)
             ->delete();

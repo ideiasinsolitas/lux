@@ -5,33 +5,35 @@ namespace App\DAL\Core\Sys;
 use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Sys\Actions\UserAction;
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
 
 class UserDAO extends AbstractDAO implements UserDAOContract
 {
+    use DAOTrait, UserAction;
 
     public function __construct()
     {
-        $filters = [
-            'per_page' => 20,
+        $this->filters = [
             'sort' => 'first_name,asc'
         ];
-
-        parent::__construct($filters);
+        $this->builder = $this->getBuilder();
     }
 
     public function getBuilder()
     {
+        $fk = self::PROFILE_TABLE . '.' . self::FK;
+        $pk = self::TABLE . '.' . self::PK;
         return DB::table(self::TABLE)
-            ->join('core_user_profiles', 'core_user_profiles.user_id', '=', 'core_users.id')
+            ->join(self::PROFILE_TABLE, $fk, '=', $pk)
             ->select(
-                self::TABLE . '.' . self::PK,
+                $pk,
                 self::TABLE . '.email',
-                'core_user_profiles.first_name',
-                'core_user_profiles.middle_name',
-                'core_user_profiles.last_name',
+                self::PROFILE_TABLE . '.first_name',
+                self::PROFILE_TABLE . '.middle_name',
+                self::PROFILE_TABLE . '.last_name',
                 self::TABLE . '.display_name',
                 self::TABLE . '.activity',
                 self::TABLE . '.created',
@@ -53,7 +55,7 @@ class UserDAO extends AbstractDAO implements UserDAOContract
         if (isset($filters['activity_greater'])) {
             $this->builder->where(self::TABLE . '.activity', '>', $filters['activity_greater']);
         }
-
+        
         return $this->finish($filters);
     }
 
@@ -68,9 +70,14 @@ class UserDAO extends AbstractDAO implements UserDAOContract
     {
         list($userInput, $userProfileInput) = $this->handleInput($input);
         $user_id = DB::table(self::TABLE)->insertGetId($userInput);
-        $userProfileInput['user_id'] = $user_id;
-        return DB::table('core_user_profiles')
+        $userProfileInput[self::FK] = $user_id;
+
+        $insertProfile = DB::table(self::PROFILE_TABLE)
             ->insert($userProfileInput);
+        
+        if ($user_id && $insertProfile) {
+            return $user_id;
+        }
     }
 
     public function update(array $input, $pk)
@@ -79,12 +86,18 @@ class UserDAO extends AbstractDAO implements UserDAOContract
             throw new \Exception("Error Processing Request", 1);
         }
         list($userInput, $userProfileInput) = $this->handleInput($input);
-        DB::table(self::TABLE)
+        
+        unset($userInput[self::PK]);
+        $result = DB::table(self::TABLE)
             ->where(self::PK, $pk)
             ->update($userInput);
-        $userProfileInput['user_id'] = $user_id;
-        return DB::table('core_user_profiles')
-            ->where('user_id', $pk)
+        if (!$result) {
+            return "null";
+        }
+
+        unset($userProfileInput[self::FK]);
+        return DB::table(self::PROFILE_TABLE)
+            ->where(self::FK, $pk)
             ->update($userProfileInput);
     }
 }

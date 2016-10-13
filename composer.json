@@ -41,6 +41,7 @@
     "autoload-dev": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         "psr-4": {
             "Testing\\": "tests/"
         }
@@ -59,6 +60,11 @@
         }
 >>>>>>> core-develop
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+        "psr-4": {
+            "Testing\\": "tests/"
+        }
+>>>>>>> develop
     },
     "scripts": {
         "post-install-cmd": [

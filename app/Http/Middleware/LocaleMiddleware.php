@@ -8,7 +8,6 @@ use Closure;
  */
 class LocaleMiddleware
 {
-
     /**
      * @var array
      */
@@ -25,6 +24,7 @@ class LocaleMiddleware
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (session()->has('locale') && in_array(session()->get('locale'), $this->languages)) {
 =======
         if(session()->has('locale') && in_array(session()->get('locale'), $this->languages))
@@ -37,6 +37,9 @@ class LocaleMiddleware
         if (session()->has('locale') && in_array(session()->get('locale'), $this->languages)) {
 >>>>>>> core-develop
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+        if (session()->has('locale') && in_array(session()->get('locale'), $this->languages)) {
+>>>>>>> develop
             app()->setLocale(session()->get('locale'));
         }
 

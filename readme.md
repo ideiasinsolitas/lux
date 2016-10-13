@@ -1,27 +1,84 @@
-## Laravel 5.* Boilerplate (Currently 5.1.23) [Screenshots](http://imgur.com/a/uEKuq)
+# Lux
 
-[![Project Status](http://stillmaintained.com/rappasoft/Laravel-5-Boilerplate.png)](http://stillmaintained.com/rappasoft/Laravel-5-Boilerplate) [![Latest Stable Version](https://poser.pugx.org/rappasoft/laravel-5-boilerplate/v/stable)](https://packagist.org/packages/rappasoft/laravel-5-boilerplate) [![Latest Unstable Version](https://poser.pugx.org/rappasoft/laravel-5-boilerplate/v/unstable)](https://packagist.org/packages/rappasoft/laravel-5-boilerplate)
+Lux is a domain model implementations of some common applications using the Laravel Framework. It doesnt work yet.
 
-### Introduction
+## Objective
 
-Laravel Boilerplate provides you with a massive head start on any size web application. It comes with a full featured access control system out of the box with an easy to learn API. We have put a lot of work into it and we hope it serves you well and saves you time!
+Lux's exposes only the top parts of its domain model, making the front end developer feels like their apps are talking to a NoSQL database while it mantains all of the advantages of a relational database and having alternative apis for user interaction and stats generation.
 
-### Wiki
+## Inner workings
 
-Please view the [wiki](https://github.com/rappasoft/laravel-5-boilerplate/wiki) for a list of [features](https://github.com/rappasoft/laravel-5-boilerplate/wiki#features) as well as [installation instructions](https://github.com/rappasoft/laravel-5-boilerplate/wiki/1.-Installation)
+The api is built with database transactions and a unit of work implementation that will only call the database for an update if the entity has changed. This check is made by storing an entity hash on the session after the entity is retrieved. One does not simply POST without GETting it first. 
 
-### Issues
+Yes. You use POST for both insert and update actions. If the top level entity has an id, it will be updated. The data mapper chain will go through every relationship and check every entity in the object tree and will update the database if it has a hash and its hash does not match the session hash. If it does match, it will be ignored. Otherwise - if said object does not have an id property - an entity will be created in the database.
 
-If you come across any issues please [report them here](https://github.com/rappasoft/Laravel-5-Boilerplate/issues).
+This makes it possible for the object to travel around the front-end and back-end layers with an unchanged structure while only calling the database when necessary reducing the costly update queries.
 
-### Contributing
+The response to any POST request will return a body with the updated/created object which can help reduce the number of AJAX calls in the frontend.
 
-Thank you for considering contributing to the Laravel Boilerplate project! Please feel free to make any pull requests, or e-mail me a feature request you would like to see in the future to Anthony Rappa at rappa819@gmail.com.
+Lux also make use of a lower level api, ignoring the data mapper layer and calling a DAO instance directly in the controller.
 
-### Security Vulnerabilities
+current Laravel version: 5.2
 
-If you discover a security vulnerability within this boilerplate, please send an e-mail to Anthony Rappa at rappa819@gmail.com, or create a pull request if possible. All security vulnerabilities will be promptly addressed. Please reference [this page](https://github.com/rappasoft/laravel-5-boilerplate/wiki/7.-Security-Fixes) to make sure you are up to date.
+## TODO LIST
 
-### License
+### Module Set: Business
 
-The Laravel framework is open-sourced software licensed under the MIT license
+* migrations less than 50% todo
+* seeds more than 50% todo
+* DAL\Business\Sales\Relationships
+* DAL\Business\Sales\Seller
+* DAL\Business\Store\Relationships
+* DAL\Business\Store\Customer
+
+#### Project
+
+```json
+
+{
+    "id" : 1,
+    "name" : "",
+    "description" : "",
+    "tickets" : [
+        {
+            "id" : 1,
+            "problem_url" : "",
+            "description" : "",
+            "comments" : [
+                {
+                    "id" : 1,
+                    "comment" : ""
+                }
+            ]
+        }
+    ]
+}
+
+```
+
+#### Shop
+
+```json
+
+```
+
+#### Order
+
+```json
+
+```
+
+#### Interaction API
+
+```json
+
+```
+
+#### Ecommerce API
+
+```json
+
+```
+
+### Other sets here later on...
+

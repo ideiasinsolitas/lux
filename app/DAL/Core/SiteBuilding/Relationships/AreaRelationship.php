@@ -6,4 +6,5 @@ use App\DAL\Common\Relationships as CommonRelationships;
 
 trait AreaRelationship
 {
+    use AreaHasBlocks;
 }

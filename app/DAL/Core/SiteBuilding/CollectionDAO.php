@@ -16,23 +16,22 @@ class CollectionDAO extends AbstractDAO implements CollectionDAOContract
 
     public function __construct()
     {
-        $filters = [
-            'per_page' => 20,
+        $this->filters = [
             'sort' => 'created,desc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()
     {
         return DB::table(self::TABLE)
+            ->join('core_types', self::TABLE . '.type_id', '=', 'core_types.id')
             ->select(
                 self::TABLE . '.' . self::PK,
                 self::TABLE . '.collector_type',
                 self::TABLE . '.collector_id',
                 self::TABLE . '.node_id',
-                self::TABLE . '.type_id',
+                'core_types.name AS type',
+                'core_types.class',
                 self::TABLE . '.order',
                 self::TABLE . '.activity',
                 self::TABLE . '.created',

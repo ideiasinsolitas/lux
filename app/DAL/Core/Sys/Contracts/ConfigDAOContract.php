@@ -8,16 +8,25 @@ interface ConfigDAOContract
     
     const PK = "id";
 
-    public function insert(array $input);
+    const KEY = 'key';
 
-    public function update(array $input, $pk);
+    const VALUE = 'value';
 
-    public function restore($pk);
+    const FORMAT = 'format';
 
     public function getDefaultConfig();
 
     public function getUserConfig($user_id);
 
+    // DefaultModifier
+    public function insert(array $input);
+
+    public function update(array $input, $pk);
+
+    // Activity Deleter
+    public function restore($pk);
+
+    // ActivityUpdater
     public function getActivity($pk);
 
     public function mark($pk, $activity);

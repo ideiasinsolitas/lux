@@ -2,12 +2,12 @@
 
 namespace App\Listeners\Common;
 
-use Log;
-
 trait Loggable
 {
-    public function log($level, $message)
+    public function log($event)
     {
-        Log::$level($message);
+        $level = $event->getLevel();
+        $message = $event->getMessage();
+        return \Log::$level($message);
     }
 }

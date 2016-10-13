@@ -10,18 +10,25 @@ interface FileDAOContract
 
     const INTERNAL_TYPE = "File";
 
+    const FK = "file_id";
+
+    // DefaultModifier
     public function insert(array $input);
 
     public function update(array $input, $pk);
 
+    // DefaultDeleter
     public function delete($pk);
 
     public function deleteMany($pk);
 
+    // ActivityRestorer
     public function restore($pk);
 
+    // DefaultSelector
     public function getAll(array $filters = array());
 
+    // ActivittUpdater
     public function getActivity($pk);
 
     public function mark($pk, $activity);

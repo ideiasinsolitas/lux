@@ -6,7 +6,7 @@ trait DefaultSelector
 {
     public function getOne(array $filters)
     {
-        if (!isset($filters['pk'])) {
+        if (!isset($filters[self::PK])) {
             throw new \Exception("Error Processing Request", 1);
         }
         return $this->parseFilters($filters);

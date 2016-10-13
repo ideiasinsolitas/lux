@@ -40,22 +40,31 @@ class ConfigService
     protected $config;
     protected $dao;
 
-    public function __construct(ConfigDAOContract $dao, $user_id = null)
+    public function __construct(ConfigDAOContract $dao)
     {
-        $this->user_id = (int) $user_id;
         $this->config = [];
         $this->dao = $dao;
-        $this->load();
     }
 
-    protected function load()
+    public function load()
     {
         $config = $this->dao->getDefaultConfig();
-        if ($this->user_id) {
-            $config = array_merge($config, $this->dao->getUserConfig($this->user_id));
+        if (\Auth::user()) {
+            $config = array_merge($config, $this->dao->getUserConfig(\Auth::user()->id));
         }
+<<<<<<< HEAD
         $this->config = $config;
 >>>>>>> core-develop
+=======
+        foreach ($config as $item) {
+            if (is_array($item)) {
+                $this->config[$item['key']] = $item['value'];
+            } elseif (is_object($item)) {
+                $this->config[$item->key] = $item->value;
+            }
+        }
+        return $this;
+>>>>>>> develop
     }
 
     public function all()
@@ -63,8 +72,8 @@ class ConfigService
         return $this->config;
     }
 
-    public function get($key)
+    public function get($key = null)
     {
-        return $this->config[$key];
+        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 }

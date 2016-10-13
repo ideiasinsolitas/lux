@@ -29,5 +29,5 @@ php:5.6:
   image: bobey/docker-gitlab-ci-runner-php5.6
   script:
     - echo "Running PHPUnit Tests"
-    - php vendor/bin/phpunit --colors --debug  --coverage-text
+    - php vendor/bin/phpunit --colors --debug  --coverage-text --filter="*Api*"
 

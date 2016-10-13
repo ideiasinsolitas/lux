@@ -8,52 +8,58 @@ use Illuminate\Support\ServiceProvider;
  */
 class AppServiceProvider extends ServiceProvider
 {
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
-        //
     }
-
-    /**
-     * Register any application services.
-     *
-     * This service provider is a great spot to register your various container
-     * bindings with the application. As you can see, we are registering our
-     * "Registrar" implementation here. You can add your own bindings too!
-     *
-     * @return void
-     */
+    
     public function register()
     {
+        $name = "Core";
 
-        $daos = array(
-            'Config',
-            'Type',
-            'User',
-            'Auth',
-            'Notification',
-            'Token'
+        $packages = array(
+            'Sys' => [
+                'User',
+                'Notification',
+                'Config',
+                'Type'
+            ],
+            'SiteBuilding' => [
+            ],
+            'Interaction' => [
+                'Comment',
+            ],
+            'Taxonomy' => [
+            ]
         );
 
-        foreach ($daos as $dao) {
-            if (!interface_exists("App\DAL\Core\Sys\Contracts\\{$dao}DAOContract")) {
-                throw new \Exception("Contract ${dao}DAOContract not Found", 1);
+        // $this->_register($name, $packages);
+
+        foreach ($packages as $package => $entities) {
+            foreach ($entities as $entity) {
+                // entity exists?
+                if (!class_exists("App\DAL\\$name\\$package\\{$entity}")) {
+                    throw new \Exception("Class App\DAL\\$name\\$package\\{$entity} not found.", 1);
+                }
+                
+                // bind DAO
+                if (!interface_exists("App\DAL\\$name\\$package\Contracts\\{$entity}DAOContract")) {
+                    throw new \Exception("Contract App\DAL\\$name\\$package\Contracts\\{$entity}DAOContract not found", 1);
+                }
+
+                if (!class_exists("App\DAL\\$name\\$package\\{$entity}DAO")) {
+                    throw new \Exception("Class App\DAL\\$name\\$package\\{$entity}DAO not found.", 1);
+                }
+
+                $this->app->bind("App\DAL\\$name\\$package\Contracts\\{$entity}DAOContract", "App\DAL\\$name\\$package\\{$entity}DAO");
+
+                // bind DataMapper
+                $isInterface = interface_exists("App\DAL\\$name\\$package\Contracts\\{$entity}DataMapperContract");
+                $isClass = class_exists("App\DAL\\$name\\$package\\{$entity}DataMapper");
+
+                if ($isInterface && $isClass) {
+                    $this->app->bind("App\DAL\\$name\\$package\Contracts\\{$entity}DataMapperContract", "App\DAL\\$name\\$package\\{$entity}DataMapper");
+                }
             }
-
-            if (!class_exists("App\DAL\Core\Sys\\{$dao}DAO")) {
-                throw new \Exception("Class ${dao}DAO not Found", 1);
-            }
-
-            $this->app->bind("App\DAL\Core\Sys\Contracts\\{$dao}DAOContract", "App\DAL\Core\Sys\\{$dao}DAO");
-        }
-
-        if ($this->app->environment() == 'local') {
-            $this->app->register(\Laracasts\Generators\GeneratorsServiceProvider::class);
         }
     }
 }

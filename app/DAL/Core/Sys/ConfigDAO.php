@@ -5,6 +5,7 @@ namespace App\DAL\Core\Sys;
 use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Sys\Actions\ConfigAction;
 use App\DAL\Core\Sys\Contracts\ConfigDAOContract;
@@ -12,16 +13,14 @@ use App\DAL\Core\Sys\Relationships\ConfigRelationship;
 
 class ConfigDAO extends AbstractDAO implements ConfigDAOContract
 {
-    use ConfigAction;
+    use DAOTrait, ConfigAction;
 
     public function __construct()
     {
-        $filters = [
-            'per_page' => 20,
-            'sort' => 'date_pub,desc'
+        $this->filters = [
+            'sort' => 'key,asc'
         ];
-
-        parent::__construct($filters);
+        $this->builder = $this->getBuilder();
     }
 
     public function getBuilder()

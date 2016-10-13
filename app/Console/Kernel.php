@@ -7,6 +7,7 @@ class Kernel extends ConsoleKernel
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
@@ -15,6 +16,8 @@ class Kernel extends ConsoleKernel
 =======
 >>>>>>> core-develop
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+>>>>>>> develop
     /**
      * The Artisan commands provided by your application.
      *

@@ -6,5 +6,7 @@ use App\DAL\Common\Relationships as CommonRelationships;
 
 trait FileRelationship
 {
-    use CommonRelationships\Ownable;
+    use CommonRelationships\Nodable,
+        CommonRelationships\Ownable,
+        CommonRelationships\Collectable;
 }

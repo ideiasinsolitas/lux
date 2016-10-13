@@ -1,3 +1,21 @@
+-- store
+
+DROP TABLE IF EXISTS `business_customer_profiles`;
+CREATE TABLE `business_customer_profiles` (
+  `user_id` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `business_seller_pf_profiles`;
+CREATE TABLE `business_seller_pf_profiles` (
+  `user_id` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `business_seller_pj_profiles`;
+CREATE TABLE `business_seller_pj_profiles` (
+  `user_id` int(10) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*  */
 DROP TABLE IF EXISTS `business_projects`;
 CREATE TABLE `business_projects` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -35,8 +53,7 @@ CREATE TABLE `business_time_tracking` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-/*
- */
+/* */
 DROP TABLE IF EXISTS `business_shops`;
 CREATE TABLE `business_shops` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -44,6 +61,10 @@ CREATE TABLE `business_shops` (
   `seller_id` int(10) unsigned NOT NULL,
   `name` varchar(120) NOT NULL,
   `description` TINYBLOB NOT NULL,
+  `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, /* 0 = deleted, 1 = unassigned, 2 = open, 3 = active, 4 = closed, 5 = charged */
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `deleted` datetime NULL,
   PRIMARY KEY (`id`),
   UNIQUE(`node_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -56,7 +77,7 @@ DROP TABLE IF EXISTS `business_products`;
 CREATE TABLE `business_products` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `node_id` int(10) unsigned NOT NULL,
-  `store_id` int(10) unsigned NOT NULL,
+  `shop_id` int(10) unsigned NOT NULL,
   `in_stock` int(10) unsigned NOT NULL DEFAULT 0,
   `price` decimal(10,2) unsigned NOT NULL,
   `weight` decimal(10,2) unsigned DEFAULT NULL,
@@ -75,7 +96,10 @@ save cart if user is logged in
  */
 DROP TABLE IF EXISTS `business_carts`;
 CREATE TABLE `business_carts` (
+<<<<<<< HEAD
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+=======
+>>>>>>> develop
   `customer_id` int(10) unsigned NOT NULL,
   `product_id` int(10) unsigned NOT NULL,
   `quantity` int(10) unsigned NOT NULL,
@@ -89,9 +113,13 @@ how much the work is worth
 DROP TABLE IF EXISTS `business_invoices`;
 CREATE TABLE `business_invoices` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
   `hours` DECIMAL(10,2) unsigned NOT NULL,
   `rate` DECIMAL(10,2) NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
+=======
+  `amount` DECIMAL(10,2) NOT NULL,
+>>>>>>> develop
   `activity` tinyint(1) unsigned NOT NULL DEFAULT 2, /* 0 = deleted, 1 = unassigned, 2 = open, 3 = active, 4 = closed, 5 = charged */
   `created` datetime NOT NULL,
   `paid` datetime NULL,
@@ -111,10 +139,7 @@ CREATE TABLE `business_orders` (
   `shipping_method` int(10) unsigned NOT NULL,
   `price` int(10) unsigned NOT NULL,
   `taxes` int(10) unsigned NOT NULL,
-  `extra_cost` int(10) unsigned NOT NULL,
-  `shipping_cost` int(10) unsigned NOT NULL,
-  `total` int(10) unsigned NOT NULL,
-  `created` datetime NOT NULL,
+  `extra_cost` int(10) unsigned NOT NULL
   `closed` datetime NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -130,8 +155,7 @@ CREATE TABLE `business_orderables` (
   `orderable_type` varchar(100) NOT NULL,
   `orderable_id` int(10) unsigned NOT NULL,
   `quantity` int(10) unsigned NOT NULL,
-  `unit_price` int(10) unsigned NOT NULL,
-  `total` int(10) unsigned NOT NULL,
+  `unit_price` int(10) unsigned NOT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -142,6 +166,7 @@ CREATE TABLE `business_payments` (
   `invoice_id` int(10) unsigned NOT NULL,
   `type_id` int(10) unsigned NOT NULL,
   `amount` decimal(10,2) unsigned NOT NULL,
+  `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -151,6 +176,7 @@ CREATE TABLE `business_shippings` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int(10) unsigned NOT NULL,
   `type_id` int(10) unsigned NOT NULL,
+  `cost` decimal(10,2) unsigned NOT NULL,
   `tracking_ref` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `activity` tinyint(1) NOT NULL DEFAULT 1,
   `created` datetime NOT NULL,
@@ -168,6 +194,7 @@ CREATE TABLE `business_storages` (
   `description` TINYBLOB NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+<<<<<<< HEAD
 
 /*--many2many*/
 DROP TABLE IF EXISTS `business_storages_products`;
@@ -177,3 +204,5 @@ CREATE TABLE `business_storages_products` (
   `quantity` int(10) unsigned NOT NULL,
   `tracking_ref` varchar(120) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+=======
+>>>>>>> develop

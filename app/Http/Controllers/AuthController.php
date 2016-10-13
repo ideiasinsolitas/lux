@@ -2,59 +2,96 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Routing\Controller;
+
 use App\DAL\Core\Sys\Contracts\AuthDAOContract;
 use App\DAL\Core\Sys\Contracts\TokenDAOContract;
 use App\DAL\Core\Sys\Contracts\UserDAOContract;
-use App\Services\Rest\RestProcessor;
-
+use App\Http\Requests\Generic\GenericRequest;
 use App\Http\Requests\Generic\StoreRequest;
+use App\Services\Rest\RestProcessorContract;
 
 class AuthController extends Controller
 {
-    protected $rest;
     protected $auth;
-    protected $token;
-    protected $user;
 
-    public function __construct(RestProcessor $rest, AuthDAOContract $auth, TokenDAOContract $token, UserDAOContract $user)
+    public function __construct(Guard $auth)
     {
-        $this->rest = $rest;
         $this->auth = $auth;
-        $this->token = $token;
-        $this->user = $user;
     }
 
     public function form()
     {
-        return view('auth.form');
+        if ($this->auth->guest()) {
+            return view('auth.form');
+        }
+        return redirect('/dashboard');
     }
 
     public function login(StoreRequest $request)
     {
-        $input = $request->only(['email', 'password']);
+        if ($this->auth->guest()) {
+            $input = $request->only(['email', 'password']);
+            $result = $this->auth->validate($input);
+            if (!$result) {
+                return redirect('/login');
+            }
+        }
+        return redirect('/dashboard');
+    }
+
+    public function logout()
+    {
+        if (!$this->auth->guest()) {
+            $this->auth->logout();
+        }
+        return redirect('/login');
     }
 
     public function register(StoreRequest $request)
     {
-        $input = $request->only(['first_name', 'last_name', 'email', 'password', 'password_confirmation']);
+        if ($this->auth->guest()) {
+            $input = $request->only(['first_name', 'last_name', 'email', 'password', 'password_confirmation']);
+            $result = $this->auth->func();
+            return redirect('/login');
+        }
+        return redirect('/dashboard');
     }
 
-    public function forgotPassword()
+    public function forgotPassword(GenericRequest $request)
     {
-        $input = $request->only(['email']);
+        if ($this->auth->guest()) {
+            $input = $request->only(['email']);
+            $result = $this->auth->register($input);
+            return redirect('/');
+        }
+        return redirect('/dashboard');
     }
 
     public function forgotPasswordForm()
     {
-        return view('auth.reset');
+        if ($this->auth->guest()) {
+            return view('auth.password');
+        }
+        return redirect('/dashboard');
     }
 
     public function resetForm()
     {
+        if ($this->auth->guest()) {
+            return view('auth.reset');
+        }
+        return redirect('/dashboard');
     }
 
     public function resetPassword(StoreRequest $request)
     {
-        $input = $request->only(['token']);
+        if ($this->auth->guest()) {
+            $input = $request->only(['password']);
+            $result = $this->auth->reset($input);
+            return redirect('/');
+        }
+        return redirect('/dashboard');
     }
 }

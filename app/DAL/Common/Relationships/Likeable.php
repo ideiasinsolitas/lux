@@ -1,6 +1,8 @@
 <?php
 
-namespace App\DAL\Relationships\Common;
+namespace App\DAL\Common\Relationships;
+
+use Illuminate\Support\Facades\DB;
 
 trait Likeable
 {

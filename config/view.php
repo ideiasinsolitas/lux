@@ -4,6 +4,7 @@ return [
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     /*
 =======
 	/*
@@ -11,6 +12,9 @@ return [
 =======
     /*
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+    /*
+>>>>>>> develop
 	|--------------------------------------------------------------------------
 	| View Storage Paths
 	|--------------------------------------------------------------------------
@@ -23,13 +27,17 @@ return [
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+>>>>>>> develop
     'paths' => [
         realpath(base_path('resources/views'))
     ],
 
     /*
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 	'paths' => [
@@ -40,6 +48,8 @@ return [
 >>>>>>> 95fd8fdeb03d9e96c89fc62e358cfcd2a7383b39
 =======
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+>>>>>>> develop
 	|--------------------------------------------------------------------------
 	| Compiled View Path
 	|--------------------------------------------------------------------------
@@ -52,6 +62,7 @@ return [
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     'compiled' => realpath(storage_path().'/framework/views'),
 =======
 	'compiled' => realpath(storage_path().'/framework/views'),
@@ -59,4 +70,7 @@ return [
 =======
     'compiled' => realpath(storage_path().'/framework/views'),
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+    'compiled' => realpath(storage_path().'/framework/views'),
+>>>>>>> develop
 ];

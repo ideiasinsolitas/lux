@@ -4,6 +4,7 @@ namespace App\DAL\Core\Taxonomy;
 use Illuminate\Support\Facades\DB;
 
 use App\DAL\AbstractDAO;
+use App\DAL\DAOTrait;
 use App\Exceptions\GeneralException;
 use App\DAL\Core\Taxonomy\Contracts\TermDAOContract;
 use App\DAL\Core\Taxonomy\Actions\TermAction;
@@ -11,14 +12,13 @@ use App\DAL\Core\Taxonomy\Relationships\TermRelationship;
 
 class TermDAO extends AbstractDAO implements TermDAOContract
 {
-    use TermAction;
-    use TermRelationship;
+    use DAOTrait, TermAction, TermRelationship;
 
     public function __construct()
     {
         $filters = [
             'per_page' => 20,
-            'sort' => 'date_pub,desc'
+            'sort' => self::PK . ',asc'
         ];
 
         parent::__construct($filters);
@@ -28,14 +28,14 @@ class TermDAO extends AbstractDAO implements TermDAOContract
     {
         $translatable_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table(self::TABLE)
-            ->join('core_translations', function ($q) use ($translatable_type) {
-                return $q->on('core_translations.translatable_type', $translatable_type)
-                    ->where('core_translations.translatable_id', self::TABLE . '.' . self::PK);
+            ->join(self::TRANSLATION_TABLE, function ($q) use ($translatable_type) {
+                return $q->on(self::TRANSLATION_TABLE . '.translatable_type', $translatable_type)
+                    ->where(self::TRANSLATION_TABLE . '.translatable_id', self::TABLE . '.' . self::PK);
             })
             ->select(
                 self::TABLE . '.' . self::PK,
                 self::TABLE . '.node_id',
-                'core_translations.name'
+                self::TRANSLATION_TABLE . '.name'
             );
     }
 
@@ -54,11 +54,11 @@ class TermDAO extends AbstractDAO implements TermDAOContract
         }
 
         if (isset($filters['lang'])) {
-            $this->builder->where('core_translations.translatable_type', self::INTERNAL_TYPE);
-            if (isset($filters['pk'])) {
-                $this->builder->where('core_translations.translatable_id', $filters['pk']);
+            $this->builder->where(self::TRANSLATION_TABLE . '.translatable_type', self::INTERNAL_TYPE);
+            if (isset($filters[self::PK])) {
+                $this->builder->where(self::TRANSLATION_TABLE . '.translatable_id', $filters[self::PK]);
             }
-            $this->builder->where('core_translations.language', $filters['lang']);
+            $this->builder->where(self::TRANSLATION_TABLE . '.language', $filters['lang']);
         }
         return $this->finish($filters);
     }

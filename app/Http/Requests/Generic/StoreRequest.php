@@ -1,5 +1,6 @@
-<?php namespace App\Http\Requests\Generic;
+<?php
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 use App\Http\Requests\FormRequest;
@@ -24,6 +25,11 @@ use App\Http\Requests\FormRequest;
 class StoreRequest extends FormRequest
 >>>>>>> core-develop
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+namespace App\Http\Requests\Generic;
+
+class StoreRequest extends Request
+>>>>>>> develop
 {
 
 }

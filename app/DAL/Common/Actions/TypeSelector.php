@@ -2,7 +2,7 @@
 
 namespace App\DAL\Common\Actions;
 
-use App\DAL\Core\TypeDAO;
+use Illuminate\Support\Facades\DB;
 
 trait TypeSelector
 {

@@ -151,6 +151,7 @@ return [
 		 */
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         'App\Providers\AccessServiceProvider',
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
@@ -178,6 +179,18 @@ return [
 =======
 >>>>>>> core-develop
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+        'App\Providers\AppServiceProvider',
+        'App\Providers\InputApiServiceProvider',
+        'App\Providers\BusinessServiceProvider',
+        /*
+        'App\Providers\IntelServiceProvider',
+        'App\Providers\PublishingServiceProvider',
+        */
+        'App\Providers\ConfigServiceProvider',
+        'App\Providers\EventServiceProvider',
+        'App\Providers\RouteServiceProvider',
+>>>>>>> develop
 
         /*
 		 * Third party service providers
@@ -193,7 +206,6 @@ return [
         'HieuLe\Active\ActiveServiceProvider',
         'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
         'Laravel\Socialite\SocialiteServiceProvider',
-//        'Potsky\LaravelLocalizationHelpers\LaravelLocalizationHelpersServiceProviderLaravel5',
 
     ],
 

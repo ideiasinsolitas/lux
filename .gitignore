@@ -1,6 +1,7 @@
 /vendor
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /public/app/docs
 /public/app/gulp
 /public/app/*.md
@@ -9,11 +10,14 @@
 =======
 =======
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+/public
+>>>>>>> develop
 /node_modules
+/storage/logs
 /notes
 Homestead.yaml
 Homestead.json
-.env
 /.DS_Store
 /Thumbs.db
 /*.sublime-project
@@ -22,6 +26,7 @@ Homestead.json
 .project
 _ide_helper.php
 composer.phar
+<<<<<<< HEAD
 error.log
 Todo.rtf
 <<<<<<< HEAD
@@ -35,3 +40,9 @@ Todo.rtf
 /npm_modules
 >>>>>>> core-develop
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+*.sql
+*.log
+*.bak
+*.mwb
+>>>>>>> develop

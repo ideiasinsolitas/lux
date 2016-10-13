@@ -1,6 +1,8 @@
 <?php
 
-namespace App\DAL\Relationships\Common;
+namespace App\DAL\Common\Relationships;
+
+use Illuminate\Support\Facades\DB;
 
 /**
  * @author Pedro Koblitz
@@ -28,10 +30,9 @@ trait Collaborative
         if (!is_int($user_id) || !is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        $collaborative_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_collaborations')
             ->where('core_collaborations.user_id', $user_id)
-            ->where('core_collaborations.collaborative_type', $collaborative_type)
+            ->where('core_collaborations.collaborative_type', self::INTERNAL_TYPE)
             ->where('core_collaborations.collaborative_id', $item_id)
             ->delete();
     }
@@ -41,11 +42,10 @@ trait Collaborative
         if (!is_int($user_id) || !is_int($item_id)) {
             throw new \Exception("Error Processing Request", 1);
         }
-        $collaborative_type = DB::raw('\"' . self::INTERNAL_TYPE . '\"');
         return DB::table('core_collaborations')
             ->select('core_collaborations.user_id')
             ->where('core_collaborations.user_id', $user_id)
-            ->where('core_collaborations.collaborative_type', $collaborative_type)
+            ->where('core_collaborations.collaborative_type', self::INTERNAL_TYPE)
             ->where('core_collaborations.collaborative_id', $item_id)
             ->first() ? true : false;
     }
@@ -56,7 +56,7 @@ trait Collaborative
             throw new \Exception("Error Processing Request", 1);
         }
         return DB::table('core_users')
-            ->join('core_collaborations', 'core_users.id', 'core_collaborations.user_id')
+            ->join('core_collaborations', 'core_users.id', '=', 'core_collaborations.user_id')
             ->select(
                 'core_users.id',
                 'core_users.display_name'

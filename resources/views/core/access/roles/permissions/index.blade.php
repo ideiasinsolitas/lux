@@ -1,4 +1,4 @@
-@inject('roles', 'App\Repositories\Core\Access\Role\RoleRepositoryContract')
+@inject('roles', 'App\DAL\Core\Access\Role\RoleRepositoryContract')
 
 @extends ('backend.layouts.master')
 

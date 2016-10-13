@@ -15,21 +15,19 @@ class BlockDAO extends AbstractDAO
 
     public function __construct()
     {
-        $filters = [
-            'per_page' => 20,
+        $this->filters = [
             'sort' => 'name,asc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()
     {
         return DB::table(self::TABLE)
+            ->join('core_areas', self::TABLE . '.area_id', '=', 'core_areas.id')
             ->select(
                 self::TABLE . '.' . self::PK,
                 self::TABLE . '.name',
-                self::TABLE . '.area_id'
+                'core_areas.name AS area'
             );
     }
 

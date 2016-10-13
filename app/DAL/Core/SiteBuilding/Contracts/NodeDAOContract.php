@@ -8,18 +8,25 @@ interface NodeDAOContract
 
     const PK = "id";
 
+    const FK = "node_id";
+
+    //
     public function insert(array $input);
 
     public function update(array $input, $pk);
 
+    //
     public function delete($pk);
 
     public function deleteMany($pk);
 
+    //
     public function restore($pk);
 
+    //
     public function getAll(array $filters = array());
 
+    //
     public function getActivity($pk);
 
     public function mark($pk, $activity);
@@ -32,6 +39,7 @@ interface NodeDAOContract
 
     public function promote($pk);
 
+    //
     public function generateTree(array $items);
 
     public function buildTree($branch_id = 0);

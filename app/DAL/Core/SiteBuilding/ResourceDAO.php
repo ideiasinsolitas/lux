@@ -18,21 +18,20 @@ class ResourceDAO extends AbstractDAO
      */
     public function __construct()
     {
-        $filters = [
-            'per_page' => 20,
+        $this->filters = [
             'sort' => 'created,desc'
         ];
-
-        parent::__construct($filters);
     }
 
     public function getBuilder()
     {
         return DB::table(self::TABLE)
+            ->join('core_types', self::TABLE . '.type_id', '=', 'core_types.id')
             ->select(
                 self::TABLE . '.' . self::PK,
-                self::TABLE . '.type_id',
                 self::TABLE . '.node_id',
+                'core_types.name AS type',
+                'core_types.class',
                 self::TABLE . '.name',
                 self::TABLE . '.description',
                 self::TABLE . '.url',

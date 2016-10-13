@@ -1,7 +1,8 @@
-<?php namespace App\Http\Requests\Generic;
+<?php
 
-use App\Http\Requests\Request;
+namespace App\Http\Requests\Generic;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -17,6 +18,8 @@ use App\Http\Requests\Request;
 =======
 >>>>>>> core-develop
 >>>>>>> 36b470222e974d45006476ea608af7a71de5bafd
+=======
+>>>>>>> develop
 class DeleteRequest extends Request
 {
 
